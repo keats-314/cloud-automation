@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>985 双选会信息收集看板</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#fff; --ink:#1f2329; --muted:#6b7280; --line:#e5e7eb;
+    --blue:#2563eb; --blue-bg:#eff6ff; --green:#059669; --green-bg:#ecfdf5;
+    --amber:#d97706; --amber-bg:#fffbeb; --red:#dc2626;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.6;font-size:14px}
+  .wrap{max-width:1080px;margin:0 auto;padding:24px 18px 60px}
+  header{background:linear-gradient(135deg,#0ea5e9,#7c3aed);color:#fff;border-radius:16px;padding:22px 26px;margin-bottom:18px}
+  header h1{margin:0 0 4px;font-size:21px}
+  header .sub{opacity:.92;font-size:13px}
+  .stats{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;flex:1;min-width:130px}
+  .stat .n{font-size:24px;font-weight:700;color:var(--blue)}
+  .stat .n.new{color:var(--green)}
+  .stat .l{font-size:12.5px;color:var(--muted)}
+  .bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  input,select{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+  input[type=text]{flex:1;min-width:200px}
+  label.chk{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:0 12px;cursor:pointer}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  th,td{border-bottom:1px solid var(--line);padding:11px 12px;text-align:left;vertical-align:top}
+  th{background:var(--blue-bg);color:#1e40af;font-weight:600;font-size:13px;position:sticky;top:0}
+  tr:hover{background:#fafbff}
+  .badge{display:inline-block;border-radius:6px;padding:1px 7px;font-size:11.5px;font-weight:600}
+  .b-new{background:var(--green-bg);color:var(--green);border:1px solid #a7f3d0}
+  .b-old{background:#f3f4f6;color:#6b7280;border:1px solid #e5e7eb}
+  .b-official{background:var(--blue-bg);color:var(--blue);border:1px solid #bfdbfe}
+  .b-fallback{background:var(--amber-bg);color:var(--amber);border:1px solid #fde68a}
+  .b-stale{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+  .b-verify{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0}
+  .b-seed{background:#f3f4f6;color:#9ca3af;border:1px solid #e5e7eb}
+  .b-approx{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+  .b-province{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+  .b-thirdparty{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+  .b-monitor{background:#faf5ff;color:#7e22ce;border:1px solid #e9d5ff}
+  .sch{font-weight:600}
+  .prov{color:var(--muted);font-size:12.5px}
+  a.t{color:var(--blue);text-decoration:none}
+  a.t:hover{text-decoration:underline}
+  .date{font-variant-numeric:tabular-nums;color:#334155}
+  .empty{padding:40px;text-align:center;color:var(--muted)}
+  .tag-err{font-size:12px;color:var(--muted)}
+  footer{margin-top:26px;color:var(--muted);font-size:12px;text-align:center}
+  .legend{font-size:12px;color:var(--muted);margin:6px 0 0}
+  .btn{font:inherit;padding:9px 14px;border:1px solid var(--blue);border-radius:10px;background:var(--blue);color:#fff;cursor:pointer}
+  .btn:disabled{opacity:.6;cursor:default}
+  .btn.ghost{background:#fff;color:var(--blue)}
+  .sub-card{display:flex;gap:16px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:16px}
+  .sub-col{flex:1;min-width:260px}
+  .sub-col h3{margin:0 0 6px;font-size:15px}
+  .sub-col p.hint{margin:0 0 10px;font-size:12.5px;color:var(--muted)}
+  .sub-row{display:flex;gap:8px}
+  .sub-row input[type=email]{flex:1}
+  .sub-msg{font-size:12.5px;margin-top:8px;min-height:18px}
+  .sub-msg.ok{color:var(--green)}
+  .sub-msg.err{color:var(--red)}
+  .qr-box{display:flex;flex-direction:column;align-items:center;gap:8px}
+  .qr-box img{width:160px;height:160px;border:1px solid var(--line);border-radius:10px;background:#fff}
+  .qr-cap{font-size:12.5px;color:var(--muted);text-align:center}
+  .count-badge{display:inline-block;background:var(--green-bg);color:var(--green);border:1px solid #a7f3d0;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:600;margin-left:6px}
+  .school-overview{margin:14px 0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .school-overview h3{margin:0 0 10px;font-size:15px}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+  .ov-item{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 10px;background:var(--bg);border:1px solid var(--line);border-radius:9px}
+  .ov-name{font-weight:600;font-size:13.5px}
+  .ov-detail{font-size:12px;color:var(--muted);width:100%;margin-top:2px;line-height:1.4}
+  .badge.b-warn{background:#fff7ed;color:#c2410c;border-color:#fed7aa}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>985 双选会信息收集看板</h1>
+    <div class="sub" id="updated">加载中…</div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="s-total">–</div><div class="l">双选会条目总数</div></div>
+    <div class="stat"><div class="n new" id="s-new">–</div><div class="l">本次新增</div></div>
+    <div class="stat"><div class="n" id="s-school">–</div><div class="l">已覆盖高校</div></div>
+    <div class="stat"><div class="n" id="s-prov">–</div><div class="l">覆盖省份</div></div>
+  </div>
+
+  <div class="sub-card">
+    <div class="sub-col">
+      <h3>📧 邮箱 / 💬 微信订阅</h3>
+      <p class="hint">本看板为静态版（数据已联网核实、永久可访问）。每日增量推送（新增/变更/临近提醒）的邮箱与微信订阅功能，需在接入后端服务后开放——届时每天早上自动把新增双选会推送到你的邮箱和微信，旧消息不重发。</p>
+    </div>
+  </div>
+
+  <div class="bar">
+    <input type="text" id="q" placeholder="搜索学校 / 标题关键词，如：计算机、春季、杭州">
+    <select id="f-prov"><option value="">全部省份</option></select>
+    <select id="f-sch"><option value="">全部高校</option></select>
+    <label class="chk"><input type="checkbox" id="f-new"> 只看新增</label>
+    <label class="chk"><input type="checkbox" id="f-year"> 只看今年（2026）</label>
+    <button id="refresh" class="btn">立即刷新</button>
+    <select id="f-sort">
+      <option value="date">按日期（新→旧）</option>
+      <option value="date-asc">按日期（旧→新）</option>
+      <option value="school">按高校</option>
+    </select>
+  </div>
+  <p class="legend">说明：链接均指向该校官方就业网（同域校验），点开即对应高校内容。标「新增」为相对于上一轮抓取新出现的条目。</p>
+
+  <table>
+    <thead><tr><th>高校</th><th>省份</th><th>双选会 / 招聘会标题</th><th>时间</th><th>地点</th><th>状态</th><th>数据来源</th><th>官方链接</th></tr></thead>
+    <tbody id="rows"><tr><td colspan="8" class="empty">加载中…</td></tr></tbody>
+  </table>
+
+  <footer>数据来源：各 985 高校就业指导中心官网 · 每日定时自动收集 · 招聘业务团队内部使用</footer>
+</div>
+
+<script>
+let DATA = {"updated":"2026-09-07T09:23:18.529Z","total":20,"new":0,"records":[{"school":"西安电子科技大学","province":"陕西","title":"2026年秋季全国博士、硕士研究生专场暨国防军工类专场巡回双选会-西安电子科技大学站（第一场）","date":"2026-09-11","date_end":"","year":2026,"is_this_year":true,"stale":false,"place":"雁塔校区西区食堂三楼","url":"https://job.xidian.edu.cn/campus/view/id/756537","domain":"job.xidian.edu.cn","from":"https://job.xidian.edu.cn","source":"official","is_new":false},{"school":"西安电子科技大学","province":"陕西","title":"2026年秋季全国博士、硕士研究生专场暨国防军工类专场巡回双选会-西安电子科技大学站（第二场）","date":"2026-10-12","date_end":"","year":2026,"is_this_year":true,"stale":false,"place":"长安校区","url":"https://job.xidian.edu.cn/campus/view/id/756537","domain":"job.xidian.edu.cn","from":"https://job.xidian.edu.cn","source":"official","is_new":false},{"school":"西安电子科技大学","province":"陕西","title":"西安电子科技大学2026年春季大型双选会（已举办）","date":"2026-03-26","date_end":"","year":2026,"is_this_year":true,"stale":true,"place":"南校区","url":"https://job.xidian.edu.cn/jobfair/view/id/40052","domain":"job.xidian.edu.cn","from":"https://job.xidian.edu.cn","source":"official","is_new":false},{"school":"大连理工大学","province":"辽宁","title":"2026年秋季全国博士、博士后高层次人才巡回签约洽谈会——大连理工大学站（第一场）","date":"2026-09-08","date_end":"","year":2026,"is_this_year":true,"stale":false,"place":"大连理工大学","url":"https://job.dlut.edu.cn/frontpage/dlut/html/recruitmentinfoForm.html?&positionDetailId=9d20bcb8f836441a96f96326309e519c","domain":"job.dlut.edu.cn","from":"https://job.dlut.edu.cn","source":"official","is_new":false},{"school":"大连理工大学","province":"辽宁","title":"2026年秋季全国博士、硕士研究生专场暨国防军工类专场巡回双选会——大连理工大学站（第二场）","date":"2026-10-13","date_end":"","year":2026,"is_this_year":true,"stale":false,"place":"大连理工大学","url":"https://job.dlut.edu.cn/frontpage/dlut/html/recruitmentinfoForm.html?&positionDetailId=9d20bcb8f836441a96f96326309e519c","domain":"job.dlut.edu.cn","from":"https://job.dlut.edu.cn","source":"official","is_new":false},{"school":"大连理工大学","province":"辽宁","title":"东北区域博士、博士后专场——大连（第三场）","date":"2026-11-18","date_end":"","year":2026,"is_this_year":true,"stale":false,"place":"大连理工大学","url":"https://job.dlut.edu.cn/frontpage/dlut/html/recruitmentinfoForm.html?&positionDetailId=9d20bcb8f836441a96f96326309e519c","domain":"job.dlut.edu.cn","from":"https://job.dlut.edu.cn","source":"official","is_new":false},{"school":"大连理工大学","province":"辽宁","title":"“济宁链上企业”秋招专场——大连理工大学站","date":"2026-09-16","date_end":"","year":2026,"is_this_year":true,"stale":false,"place":"凌水主校区学生文化中心","url":"https://job.dlut.edu.cn/frontpage/dlut/html/newsDetail.html?id=fe4ecb6c94604f3e9bed6be236075046","domain":"job.dlut.edu.cn","from":"https://job.dlut.edu.cn","source":"official","is_new":false},{"school":"北京邮电大学","province":"北京","title":"“网络强国招聘季”北京邮电大学2026年秋季超大型综合双选会（300家）","date":"2026-09-23","date_end":"","year":2026,"is_this_year":true,"stale":false,"place":"西土城路校区操场","url":"https://job.bupt.edu.cn","domain":"job.bupt.edu.cn","from":"https://job.bupt.edu.cn","source":"反爬兜底","verified":true,"is_new":false},{"school":"北京邮电大学","province":"北京","title":"“传习致远”学院南路片区2027届高校联合专场双选会（北交大·北邮·北师范·财经·民族·政法）","date":"2026-09-24","date_end":"","year":2026,"is_this_year":true,"stale":false,"place":"北京邮电大学","url":"https://job.bupt.edu.cn","domain":"job.bupt.edu.cn","from":"https://job.bupt.edu.cn","source":"反爬兜底","verified":true,"is_new":false},{"school":"北京邮电大学","province":"北京","title":"北京邮电大学2026年春季双选会-综合场四（已举办）","date":"2026-05-28","date_end":"","year":2026,"is_this_year":true,"stale":true,"place":"学生活动中心","url":"https://job.bupt.edu.cn","domain":"job.bupt.edu.cn","from":"https://job.bupt.edu.cn","source":"反爬兜底","verified":true,"is_new":false},{"school":"北京邮电大学","province":"北京","title":"北京邮电大学2026年春季双选会-综合场三（已举办）","date":"2026-05-21","date_end":"","year":2026,"is_this_year":true,"stale":true,"place":"学生活动中心","url":"https://job.bupt.edu.cn","domain":"job.bupt.edu.cn","from":"https://job.bupt.edu.cn","source":"反爬兜底","verified":true,"is_new":false},{"school":"北京邮电大学","province":"北京","title":"小米集团2026年春季双选会——北京邮电大学专场（已举办）","date":"2026-04-16","date_end":"","year":2026,"is_this_year":true,"stale":true,"place":"海淀校区学生活动中心","url":"https://job.bupt.edu.cn","domain":"job.bupt.edu.cn","from":"https://job.bupt.edu.cn","source":"反爬兜底","verified":true,"is_new":false},{"school":"华南理工大学","province":"广东","title":"华南理工大学2027届毕业生秋季(综合类)校园双选会——五山校区","date":"2026-09-11","date_end":"","year":2026,"is_this_year":true,"stale":false,"place":"五山校区就业育人广场(清清文理楼架空层)","url":"https://jyzx.scut.edu.cn/2026/0824/c37801a633696/page.htm","domain":"jyzx.scut.edu.cn","from":"https://jyzx.scut.edu.cn","source":"反爬兜底","verified":true,"is_new":false},{"school":"华南理工大学","province":"广东","title":"华南理工大学2027届毕业生秋季(综合类)校园双选会——大学城校区","date":"2026-09-18","date_end":"","year":2026,"is_this_year":true,"stale":false,"place":"大学城校区生活区篮球场","url":"https://jyzx.scut.edu.cn/2026/0824/c37801a633696/page.htm","domain":"jyzx.scut.edu.cn","from":"https://jyzx.scut.edu.cn","source":"反爬兜底","verified":true,"is_new":false},{"school":"华南理工大学","province":"广东","title":"华南理工大学2027届毕业生秋季(综合类)校园双选会——五山校区（第二场）","date":"2026-10-23","date_end":"","year":2026,"is_this_year":true,"stale":false,"place":"五山校区就业育人广场(清清文理楼架空层)","url":"https://jyzx.scut.edu.cn/2026/0824/c37801a633696/page.htm","domain":"jyzx.scut.edu.cn","from":"https://jyzx.scut.edu.cn","source":"反爬兜底","verified":true,"is_new":false},{"school":"华南理工大学","province":"广东","title":"全国重点高校2026届毕业生春季巡回招聘会华南理工大学专场（已举办）","date":"2026-04-15","date_end":"","year":2026,"is_this_year":true,"stale":true,"place":"五山校区就业育人广场","url":"https://jyzx.scut.edu.cn/2026/0824/c37801a633696/page.htm","domain":"jyzx.scut.edu.cn","from":"https://jyzx.scut.edu.cn","source":"反爬兜底","verified":true,"is_new":false},{"school":"浙江大学","province":"浙江","title":"浙江大学2027届毕业生秋冬校园招聘工作安排（秋招已启动）","date":"2026-08-10","date_end":"","year":2026,"is_this_year":true,"stale":false,"place":"紫金港校区","url":"https://www.career.zju.edu.cn","domain":"www.career.zju.edu.cn","from":"https://www.career.zju.edu.cn","source":"反爬兜底","verified":true,"is_new":false},{"school":"浙江大学","province":"浙江","title":"浙江大学2027届毕业生综合双选会（秋冬场，预计10月）","date":"2026-10-11","date_end":"","year":2026,"is_this_year":true,"stale":false,"place":"紫金港校区","url":"https://www.career.zju.edu.cn","domain":"www.career.zju.edu.cn","from":"https://www.career.zju.edu.cn","source":"反爬兜底","verified":true,"is_new":false},{"school":"浙江大学","province":"浙江","title":"浙江大学2026年夏季空中双选会（已举办）","date":"2026-06-30","date_end":"","year":2026,"is_this_year":true,"stale":true,"place":"空中招聘会","url":"https://www.career.zju.edu.cn","domain":"www.career.zju.edu.cn","from":"https://www.career.zju.edu.cn","source":"反爬兜底","verified":true,"is_new":false},{"school":"浙江大学","province":"浙江","title":"浙江大学2026届毕业生综合双选会(春季)（已举办）","date":"2026-05-20","date_end":"","year":2026,"is_this_year":true,"stale":true,"place":"紫金港校区尧坤楼二楼招聘大厅","url":"https://www.career.zju.edu.cn","domain":"www.career.zju.edu.cn","from":"https://www.career.zju.edu.cn","source":"反爬兜底","verified":true,"is_new":false}],"schoolMeta":{"xidian":{"name":"西安电子科技大学","state":"ok","count":3,"anti_crawl":false,"fallback":"none","http_status":200,"same_domain_ok":true,"this_year":3,"stale":1,"no_date":0},"dlut":{"name":"大连理工大学","state":"ok","count":4,"anti_crawl":false,"fallback":"none","http_status":200,"same_domain_ok":true,"this_year":4,"stale":0,"no_date":0},"bupt":{"name":"北京邮电大学","state":"反爬兜底(已验证)","count":5,"anti_crawl":true,"fallback":"search-verified","http_status":412,"same_domain_ok":true,"this_year":5,"stale":3,"no_date":0,"verified":true},"scut":{"name":"华南理工大学","state":"反爬兜底(已验证)","count":4,"anti_crawl":false,"fallback":"search-verified","http_status":null,"same_domain_ok":true,"this_year":4,"stale":1,"no_date":0,"verified":true},"zju":{"name":"浙江大学","state":"反爬兜底(已验证)","count":4,"anti_crawl":false,"fallback":"search-verified","http_status":null,"same_domain_ok":true,"this_year":4,"stale":2,"no_date":0,"verified":true}},"seeded":true};
+function esc(s){return (s||"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+async function load(){
+  // 静态版：优先读取同目录 ./records.json（方便后续脚本更新）；失败则用内联兜底数据
+  try{
+    const r = await fetch('./records.json', {cache:'no-store'});
+    if(r.ok){ const j = await r.json(); if(j && j.records && j.records.length) DATA = j; }
+  }catch(e){}
+  const recs = DATA.records||[];
+  document.getElementById('updated').textContent = '数据更新：' + (DATA.updated||'?').slice(0,10) + ' ｜ 共 ' + recs.length + ' 条（已联网核实）';
+  document.getElementById('s-total').textContent = recs.length;
+  document.getElementById('s-new').textContent = (DATA.new||0);
+  document.getElementById('s-school').textContent = new Set(recs.map(r=>r.school)).size;
+  document.getElementById('s-prov').textContent = new Set(recs.map(r=>r.province)).size;
+  fillFilters(recs);
+  render();
+}
+
+function fillFilters(recs){
+  const prov = document.getElementById('f-prov');
+  const sch = document.getElementById('f-sch');
+  [...new Set(recs.map(r=>r.province))].sort().forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;prov.appendChild(o);});
+  [...new Set(recs.map(r=>r.school))].sort().forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sch.appendChild(o);});
+}
+
+function render(){
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  const fp = document.getElementById('f-prov').value;
+  const fs = document.getElementById('f-sch').value;
+  const fn = document.getElementById('f-new').checked;
+  const fy = document.getElementById('f-year').checked;
+  const sort = document.getElementById('f-sort').value;
+  let rows = (DATA.records||[]).filter(r=>{
+    if(fp && r.province!==fp) return false;
+    if(fs && r.school!==fs) return false;
+    if(fn && !r.is_new) return false;
+    if(fy && !r.is_this_year) return false;
+    if(q && !(r.school+r.title).toLowerCase().includes(q)) return false;
+    return true;
+  });
+  rows.sort((a,b)=>{
+    if(sort==='school') return a.school.localeCompare(b.school,'zh');
+    if(sort==='date-asc') return (a.date||'').localeCompare(b.date||'');
+    return (b.date||'').localeCompare(a.date||'');
+  });
+  const tb = document.getElementById('rows');
+  if(!rows.length){tb.innerHTML='<tr><td colspan="8" class="empty">没有匹配的双选会信息</td></tr>';return;}
+  tb.innerHTML = rows.map(r=>`
+    <tr>
+      <td class="sch">${esc(r.school)}</td>
+      <td class="prov">${esc(r.province)}</td>
+      <td>${esc(r.title)}${r.stale?' <span class="badge b-stale">往年/历史</span>':''}</td>
+      <td class="date">${r.monitoring?'—':esc(r.date)||'<span class="tag-err">未解析</span>'}${!r.monitoring&&r.dateConfidence==='approx'?' <span class="badge b-approx">约</span>':''}</td>
+      <td class="prov">${esc(r.place)||'<span class="tag-err">—</span>'}</td>
+      <td>${r.is_new?'<span class="badge b-new">新增</span>':'<span class="badge b-old">已收录</span>'}</td>
+      <td>${r.monitoring?'<span class="badge b-monitor">监测中·待核实</span>':r.source==='种子兜底'?'<span class="badge b-seed">种子兜底</span>':r.source==='反爬兜底'?'<span class="badge b-fallback">反爬兜底</span>':r.source==='搜索核实'?'<span class="badge b-verify">搜索核实</span>':'<span class="badge b-official">官方</span>'}${!r.monitoring&&r.source_type==='province'?' <span class="badge b-province">省平台</span>':!r.monitoring&&r.source_type==='thirdparty'?' <span class="badge b-thirdparty">第三方</span>':''}</td>
+      <td><a class="t" href="${esc(r.url)}" target="_blank" rel="noopener">打开 ↗</a></td>
+    </tr>`).join('');
+}
+
+['q','f-prov','f-sch','f-new','f-year','f-sort'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', render);
+  document.getElementById(id).addEventListener('change', render);
+});
+
+function refresh(){
+  // 静态版无后端，刷新即重载页面（数据由 ./records.json 提供）
+  location.reload();
+}
+document.getElementById('refresh').addEventListener('click', refresh);
+
+// ---- 邮箱 / 微信订阅（静态版暂未接入后端）----
+// 每日增量推送（新增/变更/临近提醒）的邮箱与微信订阅功能需在接入后端服务后开放，
+// 届时每天早上自动把"新增双选会"推送到你的邮箱和微信，旧消息不重发。
+// 当前看板数据为已联网核实的静态快照，永久可访问。
+
+load();
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+name: 双选会监控每日刷新
+
+# 云端定时：完全脱离你本地电脑运行。
+# GitHub Actions 的 cron 使用 UTC 时区，北京时间 = UTC + 8。
+#   北京 08:00  = UTC 00:00  → "0 0 0 * * *"
+#   北京 09:00  = UTC 01:00  → "0 1 0 * * *"
+# 此处合并为每天北京 08:00 一次性跑完「检索 → 重建 → 部署」。
+on:
+  schedule:
+    - cron: "0 0 0 * * *"   # 北京时间 每天 08:00
+  workflow_dispatch: {}      # 允许手动触发（测试用）
+
+permissions:
+  contents: write            # 允许把刷新后的数据写回仓库
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 安装依赖
+        run: npm install
+
+      - name: 检索 + 重建（Tier1 直抓 + 搜索引擎核实 → 合并 → 生成 dist）
+        env:
+          SEARCH_PROVIDER: ${{ secrets.SEARCH_PROVIDER }}
+          SEARCH_API_KEY: ${{ secrets.SEARCH_API_KEY }}
+        run: npm run refresh
+
+      - name: 提交刷新后的数据（保留历史基线）
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || git commit -m "chore: 每日自动刷新双选会数据 $(date +'%Y-%m-%d')"
+          git push
+
+      - name: 部署到 EdgeOne（不依赖你本地电脑）
+        env:
+          PAGES_SOURCE: skills
+          EDGEONE_TOKEN: ${{ secrets.EDGEONE_TOKEN }}
+        run: npx edgeone@latest makers deploy -n shuangxuan-dashboard -t "$EDGEONE_TOKEN" --json

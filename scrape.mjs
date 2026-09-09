@@ -26,8 +26,10 @@ const PLACE_KW = /([\u4e00-\u9fa5]{1,12}(校区|楼|馆|中心|报告厅|会议�
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36";
 const UA_FULL = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
 const UA_FF = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0";
-const TIMEOUT = 12000;
-const MAX_FOLLOW = 3;
+const TIMEOUT = 8000;           // 单 URL 超时 8 秒（从 12 秒降低）
+const MAX_FOLLOW = 2;           // 每个根URL最多跟 2 个子链接（从 3 降低）
+const SCHOOL_TIMEOUT = 60000;   // 单校整体硬超时 60 秒（无论抓没抓完）
+const CONCURRENCY = 5;          // 5 校并发，避免顺序跑 3+ 小时
 const PROFILES = [
   { tag: "chrome", headers: { "User-Agent": UA, "Accept-Language": "zh-CN,zh;q=0.9" } },
   { tag: "full", headers: {
@@ -178,23 +180,40 @@ async function main() {
   const searchAdded = [];
   const seen = new Set();
 
-  console.log(`开始检索 ${SCHOOLS.length} 校（Tier1 直抓 + ${SEARCH_API_KEY ? SEARCH_PROVIDER + " 搜索兜底" : "无搜索key(仅直抓)"}）…`);
-  for (const s of SCHOOLS) {
-    const r = await scrapeRoots(s, seen);
-    if (r.recs.length) {
-      officialBySchool[s.name] = r.recs;
-      console.log(`  [${s.name}] 直抓成功 ${r.recs.length} 条`);
-    } else {
-      console.log(`  [${s.name}] 直抓 0 条 → 搜索引擎核实`);
-      const sr = await searchSchool(s);
-      if (sr.length) {
-        console.log(`    ↳ 搜索核实 ${sr.length} 条`);
-        searchAdded.push(...sr);
+  console.log(`开始检索 ${SCHOOLS.length} 校（Tier1 直抓 + ${SEARCH_API_KEY ? SEARCH_PROVIDER + " 搜索兜底" : "无搜索key(仅直抓)"}），并发 ${CONCURRENCY} 校/单校硬超时 ${SCHOOL_TIMEOUT/1000}s…`);
+
+  // 并发限流：CONCURRENCY 个 worker 同时跑，谁先空谁拿下一个学校
+  let nextIdx = 0;
+  const workers = Array.from({ length: CONCURRENCY }, async () => {
+    while (true) {
+      const idx = nextIdx++;
+      if (idx >= SCHOOLS.length) return;
+      const s = SCHOOLS[idx];
+      try {
+        const r = await Promise.race([
+          scrapeRoots(s, seen),
+          new Promise((_, reject) => setTimeout(() => reject(new Error("school-timeout")), SCHOOL_TIMEOUT)),
+        ]);
+        if (r.recs.length) {
+          officialBySchool[s.name] = r.recs;
+          console.log(`  [${s.name}] 直抓成功 ${r.recs.length} 条`);
+        } else {
+          console.log(`  [${s.name}] 直抓 0 条 → 搜索引擎核实`);
+          const sr = await searchSchool(s);
+          if (sr.length) {
+            console.log(`    ↳ 搜索核实 ${sr.length} 条`);
+            searchAdded.push(...sr);
+          }
+          await sleep(500);
+        }
+      } catch (e) {
+        // 任何超时/异常：跳过这校，继续下一所，绝不阻塞整体
+        console.log(`  [${s.name}] 跳过: ${e.message || e}`);
       }
-      await sleep(500);
+      await sleep(1000); // 礼貌限速
     }
-    await sleep(1500); // 礼貌限速
-  }
+  });
+  await Promise.all(workers);
 
   // 刷新 seed_payload：今天直抓到的校用新官方数据，否则保留上次官方数据
   const newPayloadRecs = [];

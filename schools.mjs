@@ -75,3 +75,11 @@ export const PROVINCIAL = {
 };
 
 export const EXPECTED_SCHOOLS = SCHOOLS.map((s) => s.name);
+
+// 第三方校招聚合平台（收录跨校/他站发布的 41 校相关双选会）
+// domains: 用于 allowed 判定与 source_type 标记
+// roots:   第三方平台双选会列表页（直抓；抓不到则降级，不影响主流程）
+export const THIRD_PARTY = [
+  { name: "国家大学生就业服务平台", domains: ["ncss.cn"], roots: ["https://www.ncss.cn/jobsfair"] },
+  { name: "应届生求职网", domains: ["yingjiesheng.com"], roots: ["https://www.yingjiesheng.com/campus/index.html"] },
+];

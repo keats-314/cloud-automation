@@ -9,7 +9,7 @@
 
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import * as cheerio from "cheerio";
-import { SCHOOLS } from "./schools.mjs";
+import { SCHOOLS, THIRD_PARTY } from "./schools.mjs";
 
 const SEARCH_PROVIDER = process.env.SEARCH_PROVIDER || "";
 const SEARCH_API_KEY = process.env.SEARCH_API_KEY || "";
@@ -166,6 +166,38 @@ async function searchSchool(school) {
   }
 }
 
+// ── 第三方聚合平台抓取（收录跨校/他站发布的 41 校双选会）──
+async function scrapeThirdParty() {
+  const out = [];
+  for (const tp of THIRD_PARTY) {
+    for (const root of tp.roots) {
+      const res = await fetchWithFallback(root, { domains: tp.domains, roots: [root] });
+      if (!res.html) { console.log(`  [第三方·${tp.name}] 直抓失败(降级)`); continue; }
+      const $ = cheerio.load(res.html);
+      $("a[href]").each((_, el) => {
+        const a = $(el); const text = a.text().trim(); const href = a.attr("href") || "";
+        if (!text || text.length < 4) return;
+        if (!MEET.some((k) => text.includes(k))) return;
+        const matched = SCHOOLS.find((s) => text.includes(s.name));
+        if (!matched) return; // 只保留能归属到 41 校的第三方场次
+        let url; try { url = new URL(href, root).href; } catch { return; }
+        const d = extractDate(text);
+        const staleKw = STALE_KW.some((k) => text.includes(k));
+        out.push({
+          school: matched.name, province: matched.province,
+          title: text.replace(/\s+/g, " ").trim(),
+          date: d.date, date_end: d.date_end, year: d.year,
+          is_this_year: d.is_this_year, stale: d.stale || staleKw,
+          place: extractPlace(text), url, domain: new URL(url).hostname,
+          from: root, source: "第三方·" + tp.name, verified: true, source_type: "thirdparty",
+        });
+      });
+      console.log(`  [第三方·${tp.name}] 提取 ${out.length} 条`);
+    }
+  }
+  return out;
+}
+
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function main() {
@@ -236,6 +268,23 @@ async function main() {
   oldSeed.updated = TODAY;
   writeFileSync(seedPath, JSON.stringify(oldSeed, null, 2));
   console.log(`✓ search_seed.json 新增搜索核实 ${added} 条，现共 ${(oldSeed.records || []).length} 条`);
+
+  // 第三方聚合平台抓取（Tier2：补充跨校/他站发布的 41 校双选会）
+  const thirdparty = await Promise.race([
+    scrapeThirdParty(),
+    new Promise((_, reject) => setTimeout(() => reject(new Error("thirdparty-timeout")), 90000)),
+  ]).catch((e) => { console.warn("  ⚠ 第三方抓取跳过:", e.message); return []; });
+  const tpPath = "data/thirdparty_payload.json";
+  let oldTp = [];
+  try { oldTp = JSON.parse(readFileSync(tpPath, "utf8")).records || []; } catch {}
+  const tpSeen = new Set(oldTp.map((r) => r.school + "|" + r.title + "|" + r.url));
+  let tpAdded = 0;
+  for (const r of thirdparty) {
+    const k = r.school + "|" + r.title + "|" + r.url;
+    if (!tpSeen.has(k)) { oldTp.push(r); tpSeen.add(k); tpAdded++; }
+  }
+  writeFileSync(tpPath, JSON.stringify({ records: oldTp, updated: TODAY }, null, 2));
+  console.log(`✓ thirdparty_payload.json 新增第三方场次 ${tpAdded} 条，现共 ${oldTp.length} 条`);
 }
 
 main().catch((e) => { console.error("scrape 失败:", e); process.exit(1); });

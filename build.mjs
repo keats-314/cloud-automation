@@ -56,6 +56,14 @@ function main() {
     for (const r of recs) payload.records.push(r);
   }
 
+  // ①-b 合并第三方聚合平台抓取结果（source_type=thirdparty）
+  let thirdparty = [];
+  try { thirdparty = JSON.parse(readFileSync("data/thirdparty_payload.json", "utf8")).records || []; } catch {}
+  if (thirdparty.length) {
+    for (const r of thirdparty) payload.records.push(r);
+    console.log(`合并第三方聚合场次: ${thirdparty.length} 条`);
+  }
+
   // ③ dateConfidence
   for (const r of payload.records) r.dateConfidence = inferConfidence(r);
 
@@ -73,13 +81,19 @@ function main() {
   }
   console.log(`Tier3 兜底注入: ${injected} 校`);
 
-  // 过滤过去/往年场次
-  const STALE_KW = ["圆满落幕", "圆满结束", "成功举办", "已举办", "已结束", "回顾", "总结", "往届", "2025届", "2026届毕业生", "2026届本科"];
+  // 过滤过去/往年场次（已完成报道）+ 第三方场次同样适用
+  // 强完成态直接判过期；弱完成态仅在无日期时判过期；未来态词保护，避免误杀预告
+  const STALE_STRONG = ["成功举办", "圆满结束", "圆满落幕", "圆满举办", "顺利举行", "顺利举办", "落下帷幕", "完美收官", "已举办", "已结束", "已圆满", "顺利召开", "召开", "已逾"];
+  const STALE_WEAK = ["回顾", "总结", "简报", "成果", "现场直击", "现场", "直击", "签约", "达成意向", "吸引", "参会企业", "提供岗位", "招聘成果", "侧记"];
+  const FUTURE_KW = ["即将", "拟于", "计划", "预告", "报名", "定于", "将于", "筹备", "预计", "邀请"];
   const isStale = (r) => {
     if (r.stale) return true;
     if (r.is_this_year === false) return true;
     const txt = (r.title || "") + " " + (r.place || "");
-    return STALE_KW.some((k) => txt.includes(k));
+    if (FUTURE_KW.some((k) => txt.includes(k))) return false; // 未来态保护
+    if (STALE_STRONG.some((k) => txt.includes(k))) return true;
+    if (!r.date && STALE_WEAK.some((k) => txt.includes(k))) return true; // 无日期+弱完成态(回顾/现场直击等)→ 保守判过期
+    return false;
   };
   const before = payload.records.length;
   payload.records = payload.records.filter((r) => {
@@ -110,6 +124,26 @@ function main() {
   if (EXPECTED_SCHOOLS.length) console.log(`覆盖完整性兜底注入「监测中」: ${monitorInjected} 校（应覆盖 ${EXPECTED_SCHOOLS.length} 校）`);
   payload.expectedTotal = EXPECTED_SCHOOLS.length;
   payload.monitorCount = monitorInjected;
+
+  // ⑥ 完整性对比校验报告（官方/搜索源 vs 第三方源 互校 + 可疑项识别）
+  const officialCovered = new Set(payload.records.filter((r) => !r.monitoring && r.source_type !== "thirdparty").map((r) => r.school));
+  const thirdpartyCovered = new Set(payload.records.filter((r) => r.source_type === "thirdparty").map((r) => r.school));
+  const srcCount = {};
+  for (const r of payload.records) srcCount[r.source_type] = (srcCount[r.source_type] || 0) + 1;
+  const audit = {
+    generatedAt: new Date().toISOString(),
+    today: TODAY,
+    expectedTotal: EXPECTED_SCHOOLS.length,
+    coveredOfficial: officialCovered.size,
+    coveredThirdparty: thirdpartyCovered.size,
+    monitorCount: monitorInjected,
+    missingSchools: EXPECTED_SCHOOLS.filter((s) => !officialCovered.has(s)),
+    thirdpartyFillingGaps: [...thirdpartyCovered].filter((s) => !officialCovered.has(s)), // 官方缺失但第三方补充的潜在遗漏
+    sourceBreakdown: srcCount,
+    suspicious: payload.records.filter((r) => !r.date && !r.monitoring).map((r) => ({ school: r.school, title: r.title, source_type: r.source_type })),
+  };
+  writeFileSync("data/audit_report.json", JSON.stringify(audit, null, 2));
+  console.log(`✓ 完整性校验: 官方覆盖 ${audit.coveredOfficial}/${audit.expectedTotal} 校, 第三方补充 ${audit.coveredThirdparty} 校, 监测中 ${audit.monitorCount} 校, 缺失 ${audit.missingSchools.length} 校`);
 
   payload.total = payload.records.length;
   const bySchoolCount = {};

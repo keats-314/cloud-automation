@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-10T20:09:41.244Z",
+  "generatedAt": "2026-09-10T20:28:33.009Z",
   "today": "2026-09-10",
   "expectedTotal": 41,
   "coveredOfficial": 40,
@@ -12,7 +12,7 @@
     "西安电子科技大学"
   ],
   "sourceBreakdown": {
-    "official": 178,
+    "official": 177,
     "province": 6,
     "thirdparty": 14
   },

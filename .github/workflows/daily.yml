@@ -19,6 +19,12 @@ jobs:
     timeout-minutes: 90
     env:
       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      MAILCHIMP_API_KEY: ${{ secrets.MAILCHIMP_API_KEY }}
+      MAILCHIMP_LIST_ID: ${{ secrets.MAILCHIMP_LIST_ID }}
+      SUBSCRIBE_ENDPOINT: ${{ secrets.SUBSCRIBE_ENDPOINT }}
+      ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+      TO_EMAIL: ${{ secrets.TO_EMAIL }}
+      DASHBOARD_URL: "https://keats-314.github.io/cloud-automation/"
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
@@ -56,39 +62,13 @@ jobs:
           user_email: github-actions[bot]@users.noreply.github.com
           commit_message: "deploy: 更新看板 $(date +'%Y-%m-%d')"
 
-      # —— 自动发邮件（仅当你在仓库 Secrets 里填了 SMTP 密钥才会运行）——
-      - name: 生成邮件正文
-        id: gen
+      # —— 自动发邮件（多订阅者广播；仅当你在仓库 Secrets 里填了 SMTP 密钥才会运行）——
+      # 收件人来源：优先读「中间站」订阅列表（SUBSCRIBE_ENDPOINT + ADMIN_KEY），
+      # 未配置中间站时回退到单一收件人 TO_EMAIL。两者都未配置则跳过。
+      - name: 广播邮件给所有订阅者
         if: ${{ env.SMTP_PASSWORD != '' }}
-        run: |
-          node -e '
-            const fs=require("fs");
-            const d=JSON.parse(fs.readFileSync("dist/records.json","utf8"));
-            const url="https://keats-314.github.io/cloud-automation/";
-            const today=new Date().toISOString().slice(0,10);
-            let body=`双选会监控 · 每日自动播报（${today}）\n\n`;
-            body+=`📊 当前总记录数：${d.total} 条\n`;
-            body+=`🆕 本轮新增：${d.new} 条\n`;
-            body+=`🕒 数据更新时间：${d.updated}\n\n`;
-            body+=`👉 完整看板（永久链接，点开即看）：\n${url}\n\n`;
-            body+=`—— 本邮件由 GitHub Actions 每日 08:00 自动抓取后发送，无需你开电脑。`;
-            fs.writeFileSync("email_body.txt", body);
-          '
-          {
-            echo "body<<EOF"
-            cat email_body.txt
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
-
-      - name: 发送邮件到邮箱
-        if: ${{ env.SMTP_PASSWORD != '' }}
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: ${{ secrets.SMTP_SERVER }}
-          server_port: ${{ secrets.SMTP_PORT }}
-          username: ${{ secrets.SMTP_USER }}
-          password: ${{ secrets.SMTP_PASSWORD }}
-          subject: "【双选会监控】每日播报 ${{ github.run_id }}"
-          to: ${{ secrets.TO_EMAIL }}
-          from: ${{ secrets.SMTP_USER }}
-          body: ${{ steps.gen.outputs.body }}
+        env:
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+        run: node broadcast.mjs

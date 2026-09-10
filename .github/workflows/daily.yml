@@ -17,6 +17,8 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    env:
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
@@ -57,7 +59,7 @@ jobs:
       # —— 自动发邮件（仅当你在仓库 Secrets 里填了 SMTP 密钥才会运行）——
       - name: 生成邮件正文
         id: gen
-        if: ${{ secrets.SMTP_PASSWORD != '' }}
+        if: ${{ env.SMTP_PASSWORD != '' }}
         run: |
           node -e '
             const fs=require("fs");
@@ -79,7 +81,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: 发送邮件到邮箱
-        if: ${{ secrets.SMTP_PASSWORD != '' }}
+        if: ${{ env.SMTP_PASSWORD != '' }}
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: ${{ secrets.SMTP_SERVER }}

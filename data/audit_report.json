@@ -1,20 +1,21 @@
 {
-  "generatedAt": "2026-09-10T20:28:33.009Z",
-  "today": "2026-09-10",
+  "generatedAt": "2026-09-11T00:18:59.319Z",
+  "today": "2026-09-11",
   "expectedTotal": 41,
-  "coveredOfficial": 40,
+  "coveredOfficial": 39,
   "coveredThirdparty": 6,
-  "monitorCount": 0,
+  "monitorCount": 1,
   "missingSchools": [
+    "北京理工大学",
     "西安电子科技大学"
   ],
   "thirdpartyFillingGaps": [
     "西安电子科技大学"
   ],
   "sourceBreakdown": {
-    "official": 177,
+    "official": 170,
     "province": 6,
-    "thirdparty": 14
+    "thirdparty": 11
   },
   "suspicious": []
 }

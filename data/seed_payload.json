@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-10T20:27:02.941Z",
+  "updated": "2026-09-11T00:17:29.206Z",
   "total": 79,
   "new": 0,
   "records": [
@@ -766,6 +766,54 @@
       "verified": true
     },
     {
+      "school": "东北大学",
+      "province": "辽宁",
+      "title": "双选会预订",
+      "date": "",
+      "date_end": "",
+      "year": "",
+      "is_this_year": false,
+      "stale": false,
+      "place": "",
+      "url": "http://job.neu.edu.cn/vip/largefairs/list",
+      "domain": "job.neu.edu.cn",
+      "from": "https://career.neu.edu.cn",
+      "source": "official",
+      "verified": true
+    },
+    {
+      "school": "东北大学",
+      "province": "辽宁",
+      "title": "专场招聘会预订",
+      "date": "",
+      "date_end": "",
+      "year": "",
+      "is_this_year": false,
+      "stale": false,
+      "place": "",
+      "url": "http://job.neu.edu.cn/news/view/tag/zpxz/tag/zpxz",
+      "domain": "job.neu.edu.cn",
+      "from": "https://career.neu.edu.cn",
+      "source": "official",
+      "verified": true
+    },
+    {
+      "school": "东北大学",
+      "province": "辽宁",
+      "title": "专场招聘",
+      "date": "",
+      "date_end": "",
+      "year": "",
+      "is_this_year": false,
+      "stale": false,
+      "place": "",
+      "url": "https://career.neu.edu.cn/teachin",
+      "domain": "career.neu.edu.cn",
+      "from": "https://career.neu.edu.cn",
+      "source": "official",
+      "verified": true
+    },
+    {
       "school": "吉林大学",
       "province": "吉林",
       "title": "[组团]中国船舶集团有限公司2027届高校毕业生专场招聘会",
@@ -1467,23 +1515,7 @@
       "domain": "job.xidian.edu.cn",
       "from": "https://job.xidian.edu.cn",
       "source": "official",
-      "is_new": false
-    },
-    {
-      "school": "西安电子科技大学",
-      "province": "陕西",
-      "title": "2026-02-28【邀请函】西安电子科技大学2026年春季大型双选会邀请函",
-      "date": "2026-02-28",
-      "date_end": "",
-      "year": 2026,
-      "is_this_year": true,
-      "stale": false,
-      "place": "",
-      "url": "http://job.xidian.edu.cn/news/view/aid/338384/tag/tzgg",
-      "domain": "job.xidian.edu.cn",
-      "from": "https://job.xidian.edu.cn",
-      "source": "official",
-      "is_new": false
+      "verified": true
     },
     {
       "school": "西安电子科技大学",
@@ -1493,13 +1525,13 @@
       "date_end": "",
       "year": "",
       "is_this_year": false,
-      "stale": true,
+      "stale": false,
       "place": "",
       "url": "http://job.xidian.edu.cn/news/view/aid/337353/tag/cyxz",
       "domain": "job.xidian.edu.cn",
       "from": "https://job.xidian.edu.cn",
       "source": "official",
-      "is_new": false
+      "verified": true
     },
     {
       "school": "西安电子科技大学",
@@ -1515,12 +1547,12 @@
       "domain": "job.xidian.edu.cn",
       "from": "https://job.xidian.edu.cn",
       "source": "official",
-      "is_new": false
+      "verified": true
     },
     {
       "school": "西安电子科技大学",
       "province": "陕西",
-      "title": "西安电子科技大学2026年春季大型双选会 职位: 1500个 已举办 地点：西安电子科技大学南校区 时间：2026-03-26 09:00-17:00 （周四）",
+      "title": "西安电子科技大学2026年春季大型双选会 职位: 1490个 已举办 地点：西安电子科技大学南校区 时间：2026-03-26 09:00-17:00 （周四）",
       "date": "2026-03-26",
       "date_end": "",
       "year": 2026,
@@ -1531,7 +1563,7 @@
       "domain": "job.xidian.edu.cn",
       "from": "https://job.xidian.edu.cn",
       "source": "official",
-      "is_new": false
+      "verified": true
     },
     {
       "school": "西安电子科技大学",
@@ -1547,7 +1579,7 @@
       "domain": "job.xidian.edu.cn",
       "from": "https://job.xidian.edu.cn",
       "source": "official",
-      "is_new": false
+      "verified": true
     },
     {
       "school": "西安电子科技大学",
@@ -1563,7 +1595,7 @@
       "domain": "job.xidian.edu.cn",
       "from": "https://job.xidian.edu.cn",
       "source": "official",
-      "is_new": false
+      "verified": true
     },
     {
       "school": "西安电子科技大学",
@@ -1579,7 +1611,7 @@
       "domain": "job.xidian.edu.cn",
       "from": "https://job.xidian.edu.cn",
       "source": "official",
-      "is_new": false
+      "verified": true
     },
     {
       "school": "西安电子科技大学",
@@ -1595,7 +1627,7 @@
       "domain": "job.xidian.edu.cn",
       "from": "https://job.xidian.edu.cn",
       "source": "official",
-      "is_new": false
+      "verified": true
     },
     {
       "school": "西安电子科技大学",
@@ -1611,7 +1643,7 @@
       "domain": "job.xidian.edu.cn",
       "from": "https://job.xidian.edu.cn",
       "source": "official",
-      "is_new": false
+      "verified": true
     }
   ],
   "schoolMeta": {

@@ -280,10 +280,27 @@ async function main() {
   all.push(...tp.verified);
   clues.push(...tp.unverified);
 
+  // 基线保护：读取上一次 candidates.json，保留其中未过期且本次未覆盖的人工核实条目。
+  // 这样每日自动抓取只会“追加”新核实场次，绝不会删除人工核实过的准确数据
+  //（根治“自动抓取失败/覆盖掉准确数据”的准确性 bug）。
+  let baseline = { records: [], clues: [] };
+  try { baseline = JSON.parse(readFileSync("data/candidates.json", "utf8")); } catch {}
+  const newKeys = new Set(all.map((r) => (r.school || "") + "|" + (r.title || "")));
+  let preserved = 0;
+  for (const b of baseline.records || []) {
+    if (!b || !b.verified) continue;
+    if (b.date && b.date < TODAY) continue; // 过期条目丢弃
+    const k = (b.school || "") + "|" + (b.title || "");
+    if (newKeys.has(k)) continue; // 本次已覆盖，用新值
+    all.push(b);
+    preserved++;
+  }
+  if (preserved) console.log(`✓ 基线保护：保留人工核实条目 ${preserved} 条（未被本次抓取覆盖）`);
+
   const payload = {
     updated: new Date().toISOString(),
     today: TODAY,
-    records: all,           // 已核实（点开详情页确认）
+    records: all,           // 已核实（点开详情页确认，含基线保留）
     clues,                  // 待核实线索（不冒充事实）
   };
   writeFileSync("data/candidates.json", JSON.stringify(payload, null, 2));

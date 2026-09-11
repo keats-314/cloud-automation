@@ -67,27 +67,6 @@ function main() {
     });
   }
 
-  // ③-b 人工核实基线保护：读取上一次生成的 records.json 基线，
-  // 把其中已核实(verified:true)且未过期(日期≥今天)的条目保留下来，
-  // 仅当本次 scrape 没有覆盖同一条时才追加。这样每日自动抓取只会“追加”新核实场次，
-  // 绝不会删除人工核实过的准确数据（根治“自动抓取覆盖掉准确数据”的准确性 bug）。
-  let baseline = { records: [] };
-  try { baseline = JSON.parse(readFileSync("records.json", "utf8")); } catch {}
-  if (Array.isArray(baseline.records)) {
-    let preserved = 0;
-    for (const b of baseline.records) {
-      if (!b || !b.verified || b.monitoring) continue;
-      const d = b.date || "";
-      if (d && d < TODAY) continue; // 过期条目丢弃
-      const k = (b.school || "") + "|" + (b.title || "") + "|" + (b.url || "");
-      if (seen.has(k)) continue;
-      seen.add(k);
-      dedup.push({ ...b, is_new: false, monitoring: false, verified: true });
-      preserved++;
-    }
-    if (preserved) console.log(`✓ 基线保护：保留上轮人工核实条目 ${preserved} 条（未被自动抓取覆盖）`);
-  }
-
   // ④ 覆盖完整性兜底：应覆盖校中既无已核实也无待核实 → 注入「监测中·待核实」
   const covered = new Set(dedup.filter((r) => !r.monitoring).map((r) => r.school));
   let monitorInjected = 0;

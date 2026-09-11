@@ -51,6 +51,7 @@
   .date{font-variant-numeric:tabular-nums;color:#334155}
   .empty{padding:40px;text-align:center;color:var(--muted)}
   .tag-err{font-size:12px;color:var(--muted)}
+  .note{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.5;max-width:520px}
   footer{margin-top:26px;color:var(--muted);font-size:12px;text-align:center}
   .legend{font-size:12px;color:var(--muted);margin:6px 0 0}
   .btn{font:inherit;padding:9px 14px;border:1px solid var(--blue);border-radius:10px;background:var(--blue);color:#fff;cursor:pointer}
@@ -188,12 +189,12 @@ function render(){
     <tr>
       <td class="sch">${esc(r.school)}</td>
       <td class="prov">${esc(r.province)}</td>
-      <td>${esc(r.title)}${r.stale?' <span class="badge b-stale">往年/历史</span>':''}</td>
+      <td>${esc(r.title)}${r.stale?' <span class="badge b-stale">往年/历史</span>':''}${r.note?` <div class="note">${esc(r.note)}</div>`:''}</td>
       <td class="date">${r.monitoring?'—':esc(r.date)||'<span class="tag-err">未解析</span>'}${!r.monitoring&&r.dateConfidence==='approx'?' <span class="badge b-approx">约</span>':''}</td>
       <td class="prov">${esc(r.place)||'<span class="tag-err">—</span>'}</td>
       <td>${r.is_new?'<span class="badge b-new">新增</span>':'<span class="badge b-old">已收录</span>'}</td>
       <td>${r.monitoring?'<span class="badge b-monitor">监测中·待核实</span>':r.verified?'<span class="badge b-verified">已核实</span>'+(r.source_type==='thirdparty'?' <span class="badge b-thirdparty">第三方</span>':r.source_type==='province'?' <span class="badge b-province">省平台</span>':''):'<span class="badge b-unverified">待核实·'+(r.source||'未打开')+'</span>'}</td>
-      <td><a class="t" href="${esc(r.url)}" target="_blank" rel="noopener">打开 ↗</a></td>
+      <td><a class="t" href="${esc(r.url)}" target="_blank" rel="noopener">官方来源 ↗</a></td>
     </tr>`).join('');
 }
 

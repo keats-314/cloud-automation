@@ -19,8 +19,8 @@ jobs:
     timeout-minutes: 90
     env:
       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-      MAILCHIMP_API_KEY: ${{ secrets.MAILCHIMP_API_KEY }}
-      MAILCHIMP_LIST_ID: ${{ secrets.MAILCHIMP_LIST_ID }}
+      KIT_API_KEY: ${{ secrets.KIT_API_KEY }}
+      KIT_FORM_ID: ${{ secrets.KIT_FORM_ID }}
       SUBSCRIBE_ENDPOINT: ${{ secrets.SUBSCRIBE_ENDPOINT }}
       ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
       TO_EMAIL: ${{ secrets.TO_EMAIL }}
@@ -63,8 +63,8 @@ jobs:
           commit_message: "deploy: 更新看板 $(date +'%Y-%m-%d')"
 
       # —— 自动发邮件（多订阅者广播；仅当你在仓库 Secrets 里填了 SMTP 密钥才会运行）——
-      # 收件人来源：优先读「中间站」订阅列表（SUBSCRIBE_ENDPOINT + ADMIN_KEY），
-      # 未配置中间站时回退到单一收件人 TO_EMAIL。两者都未配置则跳过。
+      # 收件人来源：优先读 Kit（ConvertKit）订阅列表（KIT_API_KEY），
+      # 未配置时回退到单一收件人 TO_EMAIL。两者都未配置则跳过。
       - name: 广播邮件给所有订阅者
         if: ${{ env.SMTP_PASSWORD != '' }}
         env:

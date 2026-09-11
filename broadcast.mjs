@@ -32,31 +32,29 @@ ${dashboardUrl}
 —— 本邮件由系统每日 08:00 自动抓取后群发。如需退订，回复「退订」或访问看板底部取消订阅。`;
 }
 
-// 获取收件人：优先从 Mailchimp 受众列表拉取，其次旧中间站接口，最后回退 TO_EMAIL
+// 获取收件人：优先从 Kit（ConvertKit）受众列表拉取，其次旧中间站接口，最后回退 TO_EMAIL
 async function getRecipients() {
-  const apiKey = process.env.MAILCHIMP_API_KEY;
-  const listId = process.env.MAILCHIMP_LIST_ID;
+  const apiKey = process.env.KIT_API_KEY;
+  const formId = process.env.KIT_FORM_ID;
   const ep = process.env.SUBSCRIBE_ENDPOINT;
   const key = process.env.ADMIN_KEY;
   const toEmail = process.env.TO_EMAIL;
   let list = [];
 
-  // 1) Mailchimp 受众（主来源）
-  if (apiKey && listId) {
+  // 1) Kit (ConvertKit) 受众（主来源）
+  if (apiKey) {
     try {
-      const dc = apiKey.split('-').pop(); // API key 形如 xxxx-usN，末尾即数据中心
-      const url = `https://${dc}.api.mailchimp.com/3.0/lists/${listId}/members?status=subscribed&count=1000`;
-      const auth = 'Basic ' + Buffer.from('bot:' + apiKey).toString('base64');
-      const r = await fetch(url, { headers: { Authorization: auth } });
+      const url = 'https://api.kit.com/v4/subscribers?per_page=1000';
+      const r = await fetch(url, { headers: { Authorization: 'Bearer ' + apiKey } });
       if (r.ok) {
         const j = await r.json();
-        if (Array.isArray(j.members)) list = j.members.map(m => m.email_address).filter(Boolean);
-        console.log('Mailchimp 返回订阅者:', list.length, '人');
+        if (Array.isArray(j.subscribers)) list = j.subscribers.map(s => s.email_address).filter(Boolean);
+        console.log('Kit 返回订阅者:', list.length, '人');
       } else {
-        console.log('Mailchimp 拉取返回非 200:', r.status, await r.text().catch(() => ''));
+        console.log('Kit 拉取返回非 200:', r.status, await r.text().catch(() => ''));
       }
     } catch (e) {
-      console.log('Mailchimp 拉取异常，回退:', e.message);
+      console.log('Kit 拉取异常，回退:', e.message);
     }
   }
 

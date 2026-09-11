@@ -1,0 +1,15 @@
+{
+  "name": "shuangxuan-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "双选会监控看板 - 云端全自动刷新（GitHub Actions + EdgeOne 部署）",
+  "scripts": {
+    "scrape": "node scrape.mjs",
+    "build": "node build.mjs",
+    "refresh": "node scrape.mjs && node build.mjs"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  }
+}

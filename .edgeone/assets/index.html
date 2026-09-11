@@ -42,8 +42,6 @@
   .b-province{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
   .b-thirdparty{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
   .b-monitor{background:#faf5ff;color:#7e22ce;border:1px solid #e9d5ff}
-  .b-verified{background:var(--green-bg);color:var(--green);border:1px solid #a7f3d0}
-  .b-unverified{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
   .sch{font-weight:600}
   .prov{color:var(--muted);font-size:12.5px}
   a.t{color:var(--blue);text-decoration:none}
@@ -94,18 +92,8 @@
 
   <div class="sub-card">
     <div class="sub-col">
-      <h3>📧 邮箱订阅</h3>
-      <p class="hint">输入邮箱即可订阅。每天早上系统自动把「新增 / 变更双选会」推送到你的邮箱，旧消息不重发。把本链接发给同学，大家都能订阅。</p>
-      <!-- 把下面的 REPLACE_KIT_FORM_ID 换成 Kit「Forms」里你创建的订阅表单 ID -->
-      <form class="sub-row" action="https://app.kit.com/forms/REPLACE_KIT_FORM_ID/subscriptions" method="post" target="_blank" rel="noopener">
-        <input type="email" name="email_address" placeholder="你的邮箱，如 name@example.com" required>
-        <button class="btn" type="submit">订阅</button>
-      </form>
-      <div class="sub-msg ok" style="margin-top:8px">订阅免费，随时可在邮件里退订。</div>
-    </div>
-    <div class="sub-col">
-      <h3>💡 怎么用</h3>
-      <p class="hint">① 填邮箱点「订阅」 → ② 每天 08:00 系统自动抓取各高校双选会 → ③ 09:00 前新双选会推到你邮箱。把本链接发给同学，大家都能订阅。</p>
+      <h3>📧 邮箱 / 💬 微信订阅</h3>
+      <p class="hint">本看板为静态版（数据已联网核实、永久可访问）。每日增量推送（新增/变更/临近提醒）的邮箱与微信订阅功能，需在接入后端服务后开放——届时每天早上自动把新增双选会推送到你的邮箱和微信，旧消息不重发。</p>
     </div>
   </div>
 
@@ -114,7 +102,6 @@
     <select id="f-prov"><option value="">全部省份</option></select>
     <select id="f-sch"><option value="">全部高校</option></select>
     <label class="chk"><input type="checkbox" id="f-new"> 只看新增</label>
-    <label class="chk"><input type="checkbox" id="f-verified" checked> 仅看已核实</label>
     <label class="chk"><input type="checkbox" id="f-year"> 只看今年（2026）</label>
     <button id="refresh" class="btn">立即刷新</button>
     <select id="f-sort">
@@ -123,7 +110,7 @@
       <option value="school">按高校</option>
     </select>
   </div>
-  <p class="legend">说明：<b>已核实</b>=已点开该校官网详情页确认确有未结束的双选会；<b>待核实</b>=发现线索但页面打不开/无相关内容，不保证准确，建议以已核实为准。链接均同域校验，点开即对应高校内容。</p>
+  <p class="legend">说明：链接均指向该校官方就业网（同域校验），点开即对应高校内容。标「新增」为相对于上一轮抓取新出现的条目。</p>
 
   <table>
     <thead><tr><th>高校</th><th>省份</th><th>双选会 / 招聘会标题</th><th>时间</th><th>地点</th><th>状态</th><th>数据来源</th><th>官方链接</th></tr></thead>
@@ -144,7 +131,7 @@ async function load(){
     if(r.ok){ const j = await r.json(); if(j && j.records && j.records.length) DATA = j; }
   }catch(e){}
   const recs = DATA.records||[];
-  document.getElementById('updated').textContent = '数据更新：' + (DATA.updated||'?').slice(0,10) + ' ｜ 已核实 ' + (DATA.verifiedCount||0) + ' 条 · 待核实 ' + (DATA.unverifiedCount||0) + ' 条（已核实项均点开官网详情页确认）';
+  document.getElementById('updated').textContent = '数据更新：' + (DATA.updated||'?').slice(0,10) + ' ｜ 共 ' + recs.length + ' 条（已联网核实）';
   document.getElementById('s-total').textContent = recs.length;
   document.getElementById('s-new').textContent = (DATA.new||0);
   document.getElementById('s-school').textContent = new Set(recs.map(r=>r.school)).size;
@@ -165,14 +152,12 @@ function render(){
   const fp = document.getElementById('f-prov').value;
   const fs = document.getElementById('f-sch').value;
   const fn = document.getElementById('f-new').checked;
-  const fv = document.getElementById('f-verified').checked;
   const fy = document.getElementById('f-year').checked;
   const sort = document.getElementById('f-sort').value;
   let rows = (DATA.records||[]).filter(r=>{
     if(fp && r.province!==fp) return false;
     if(fs && r.school!==fs) return false;
     if(fn && !r.is_new) return false;
-    if(fv && !r.verified && !r.monitoring) return false;
     if(fy && !r.is_this_year) return false;
     if(q && !(r.school+r.title).toLowerCase().includes(q)) return false;
     return true;
@@ -192,12 +177,12 @@ function render(){
       <td class="date">${r.monitoring?'—':esc(r.date)||'<span class="tag-err">未解析</span>'}${!r.monitoring&&r.dateConfidence==='approx'?' <span class="badge b-approx">约</span>':''}</td>
       <td class="prov">${esc(r.place)||'<span class="tag-err">—</span>'}</td>
       <td>${r.is_new?'<span class="badge b-new">新增</span>':'<span class="badge b-old">已收录</span>'}</td>
-      <td>${r.monitoring?'<span class="badge b-monitor">监测中·待核实</span>':r.verified?'<span class="badge b-verified">已核实</span>'+(r.source_type==='thirdparty'?' <span class="badge b-thirdparty">第三方</span>':r.source_type==='province'?' <span class="badge b-province">省平台</span>':''):'<span class="badge b-unverified">待核实·'+(r.source||'未打开')+'</span>'}</td>
+      <td>${r.monitoring?'<span class="badge b-monitor">监测中·待核实</span>':r.source==='种子兜底'?'<span class="badge b-seed">种子兜底</span>':r.source==='反爬兜底'?'<span class="badge b-fallback">反爬兜底</span>':r.source==='搜索核实'?'<span class="badge b-verify">搜索核实</span>':'<span class="badge b-official">官方</span>'}${!r.monitoring&&r.source_type==='province'?' <span class="badge b-province">省平台</span>':!r.monitoring&&r.source_type==='thirdparty'?' <span class="badge b-thirdparty">第三方</span>':''}</td>
       <td><a class="t" href="${esc(r.url)}" target="_blank" rel="noopener">打开 ↗</a></td>
     </tr>`).join('');
 }
 
-['q','f-prov','f-sch','f-new','f-verified','f-year','f-sort'].forEach(id=>{
+['q','f-prov','f-sch','f-new','f-year','f-sort'].forEach(id=>{
   document.getElementById(id).addEventListener('input', render);
   document.getElementById(id).addEventListener('change', render);
 });
@@ -208,9 +193,10 @@ function refresh(){
 }
 document.getElementById('refresh').addEventListener('click', refresh);
 
-// ---- 邮箱订阅 ----
-// 订阅表单直接 POST 到 Kit（ConvertKit）表单接收地址（提交即写入 Kit 受众列表，无需本页持有密钥，无 iframe 更稳）。
-// 每日 08:00 抓取后，GitHub Actions 从 Kit API 读取订阅者列表，经 SMTP 逐一推送到每个人邮箱。
+// ---- 邮箱 / 微信订阅（静态版暂未接入后端）----
+// 每日增量推送（新增/变更/临近提醒）的邮箱与微信订阅功能需在接入后端服务后开放，
+// 届时每天早上自动把"新增双选会"推送到你的邮箱和微信，旧消息不重发。
+// 当前看板数据为已联网核实的静态快照，永久可访问。
 
 load();
 </script>

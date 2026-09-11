@@ -1,12 +1,12 @@
 // build.mjs — 重建层（提炼自 planb_plus.mjs，脱离 WorkBuddy 运行时）
-// 合并 Tier1(seed_payload) + 方案B(search_seed) + Tier3(tier3_seed)
-//   → 过滤过去/往年场次 → dateConfidence → 来源分级 → 覆盖完整性兜底
-//   → 写 records.json + 内联 dist/index.html + dist/records.json
+// 输入：data/candidates.json（scrape.mjs 本次运行产出，已带 verified 闸门，不沿用历史）
+// 处理：已核实 → 主列表；待核实线索 → 单独标记（不冒充事实）；未覆盖校 → 监测中占位
+//       → 去重 → 来源分级 → 完整性校验报告 → 写 records.json + 内联 dist/index.html
 // 用法: node build.mjs            (TODAY 取系统当天)
 //       node build.mjs --today 2026-09-09
 
 import { readFileSync, writeFileSync, copyFileSync, mkdirSync } from "node:fs";
-import { SCHOOLS, PROVINCIAL, EXPECTED_SCHOOLS } from "./schools.mjs";
+import { SCHOOLS, EXPECTED_SCHOOLS, PROVINCIAL } from "./schools.mjs";
 
 const TODAY = process.argv.includes("--today")
   ? process.argv[process.argv.indexOf("--today") + 1]
@@ -27,91 +27,75 @@ function inferSourceType(r) {
   return "thirdparty";
 }
 
-function braceSafeReplaceData(html, jsonStr) {
-  const marker = "let DATA = ";
-  const i = html.indexOf(marker);
-  if (i < 0) { console.warn("⚠ 未找到 let DATA，跳过内联"); return html; }
-  let j = i + marker.length, depth = 0, started = false;
-  for (; j < html.length; j++) {
-    const c = html[j];
-    if (c === "{") { depth++; started = true; }
-    else if (c === "}") { depth--; if (started && depth === 0) { j++; break; } }
-  }
-  return html.slice(0, i) + marker + jsonStr + ";" + html.slice(j);
-}
-
 function main() {
-  const payload = JSON.parse(readFileSync("data/seed_payload.json", "utf8"));
-  let searchSeed = [];
-  try { searchSeed = JSON.parse(readFileSync("data/search_seed.json", "utf8")).records || []; } catch {}
-  let tier3 = [];
-  try { tier3 = JSON.parse(readFileSync("data/tier3_seed.json", "utf8")).seeds || []; } catch {}
-  console.log(`读取 Tier1: ${payload.records.length} | 方案B: ${searchSeed.length} | Tier3种子: ${tier3.length}`);
+  // 读 scrape 本次产出（覆盖式，无历史沿用）
+  let cand = { records: [], clues: [] };
+  try { cand = JSON.parse(readFileSync("data/candidates.json", "utf8")); } catch {}
+  const verified = cand.records || [];
+  const clues = cand.clues || [];
+  console.log(`读取 candidates：已核实 ${verified.length} 条 | 待核实线索 ${clues.length} 条`);
 
-  // ① 方案B 按校覆盖 Tier1
-  const bySchool = {};
-  for (const r of searchSeed) (bySchool[r.school] ||= []).push(r);
-  for (const [schoolName, recs] of Object.entries(bySchool)) {
-    payload.records = payload.records.filter((r) => r.school !== schoolName);
-    for (const r of recs) payload.records.push(r);
+  const records = [];
+
+  // ① 已核实（点开详情页确认过的真实场次）→ 主列表
+  for (const r of verified) {
+    const rec = { ...r, dateConfidence: inferConfidence(r), source_type: inferSourceType(r), monitoring: false, verified: true, is_new: false };
+    records.push(rec);
   }
 
-  // ①-b 合并第三方聚合平台抓取结果（source_type=thirdparty）
-  let thirdparty = [];
-  try { thirdparty = JSON.parse(readFileSync("data/thirdparty_payload.json", "utf8")).records || []; } catch {}
-  if (thirdparty.length) {
-    for (const r of thirdparty) payload.records.push(r);
-    console.log(`合并第三方聚合场次: ${thirdparty.length} 条`);
+  // ② 去重（同校+同标题+同URL 合并，保留已核实优先）
+  const seen = new Set();
+  const dedup = [];
+  // 先把已核实放进去
+  for (const r of records) {
+    const k = r.school + "|" + r.title + "|" + r.url;
+    if (seen.has(k)) continue; seen.add(k); dedup.push(r);
   }
 
-  // ③ dateConfidence
-  for (const r of payload.records) r.dateConfidence = inferConfidence(r);
+  // ③ 待核实线索 → 标 verified:false，附 reason，不冒充事实（排在已核实之后）
+  for (const c of clues) {
+    const k = c.school + "|" + (c.anchor || c.title) + "|" + c.url;
+    if (seen.has(k)) continue; seen.add(k);
+    dedup.push({
+      school: c.school, province: c.province,
+      title: c.anchor || c.title || "(未知标题)",
+      date: c.date || "", date_end: c.date_end || "", year: c.year || +TODAY.slice(0, 4),
+      is_this_year: c.is_this_year !== false, stale: false,
+      place: c.place || "", url: c.url || "", domain: c.domain || "",
+      from: c.url || "", source: "待核实·" + (c.reason || "未打开"), source_type: c.source_type || "official",
+      dateConfidence: "approx", monitoring: false, verified: false,
+    });
+  }
 
-  // ② 来源分级
-  for (const r of payload.records) r.source_type = inferSourceType(r);
-
-  // ④ Tier3 兜底
-  const covered = new Set(payload.records.map((r) => r.school));
-  let injected = 0;
-  for (const seed of tier3) {
-    if (!covered.has(seed.school)) {
-      payload.records.push(seed);
-      injected++;
+  // ③-b 人工核实基线保护：读取上一次生成的 records.json 基线，
+  // 把其中已核实(verified:true)且未过期(日期≥今天)的条目保留下来，
+  // 仅当本次 scrape 没有覆盖同一条时才追加。这样每日自动抓取只会“追加”新核实场次，
+  // 绝不会删除人工核实过的准确数据（根治“自动抓取覆盖掉准确数据”的准确性 bug）。
+  let baseline = { records: [] };
+  try { baseline = JSON.parse(readFileSync("records.json", "utf8")); } catch {}
+  if (Array.isArray(baseline.records)) {
+    let preserved = 0;
+    for (const b of baseline.records) {
+      if (!b || !b.verified || b.monitoring) continue;
+      const d = b.date || "";
+      if (d && d < TODAY) continue; // 过期条目丢弃
+      const k = (b.school || "") + "|" + (b.title || "") + "|" + (b.url || "");
+      if (seen.has(k)) continue;
+      seen.add(k);
+      dedup.push({ ...b, is_new: false, monitoring: false, verified: true });
+      preserved++;
     }
+    if (preserved) console.log(`✓ 基线保护：保留上轮人工核实条目 ${preserved} 条（未被自动抓取覆盖）`);
   }
-  console.log(`Tier3 兜底注入: ${injected} 校`);
 
-  // 过滤过去/往年场次（已完成报道）+ 第三方场次同样适用
-  // 强完成态直接判过期；弱完成态仅在无日期时判过期；未来态词保护，避免误杀预告
-  const STALE_STRONG = ["成功举办", "圆满结束", "圆满落幕", "圆满举办", "顺利举行", "顺利举办", "落下帷幕", "完美收官", "已举办", "已结束", "已圆满", "顺利召开", "召开", "已逾"];
-  const STALE_WEAK = ["回顾", "总结", "简报", "成果", "现场直击", "现场", "直击", "签约", "达成意向", "吸引", "参会企业", "提供岗位", "招聘成果", "侧记"];
-  const FUTURE_KW = ["即将", "拟于", "计划", "预告", "报名", "定于", "将于", "筹备", "预计", "邀请"];
-  const isStale = (r) => {
-    if (r.stale) return true;
-    if (r.is_this_year === false) return true;
-    const txt = (r.title || "") + " " + (r.place || "");
-    if (FUTURE_KW.some((k) => txt.includes(k))) return false; // 未来态保护
-    if (STALE_STRONG.some((k) => txt.includes(k))) return true;
-    if (!r.date && STALE_WEAK.some((k) => txt.includes(k))) return true; // 无日期+弱完成态(回顾/现场直击等)→ 保守判过期
-    return false;
-  };
-  const before = payload.records.length;
-  payload.records = payload.records.filter((r) => {
-    if (isStale(r)) return false;
-    const end = r.date_end || r.date;
-    if (end && end < TODAY) return false;
-    return true;
-  });
-  console.log(`过滤过去/往年场次: ${before} → ${payload.records.length}（移除 ${before - payload.records.length} 条）`);
-
-  // ⑤ 覆盖完整性兜底：应覆盖校中 0 活跃场次 → 注入「监测中·待核实」
-  const activeSchools = new Set(payload.records.map((r) => r.school));
+  // ④ 覆盖完整性兜底：应覆盖校中既无已核实也无待核实 → 注入「监测中·待核实」
+  const covered = new Set(dedup.filter((r) => !r.monitoring).map((r) => r.school));
   let monitorInjected = 0;
   for (const school of EXPECTED_SCHOOLS) {
-    if (!activeSchools.has(school)) {
-      payload.records.push({
+    if (!covered.has(school)) {
+      dedup.push({
         school,
-        title: "（监测中·待核实：暂无已确认的未来场次，等待每日检索档刷新）",
+        title: "（监测中·待核实：本次检索未在该校官网/第三方发现可确认的未结束场次）",
         date: "", date_end: "", year: +TODAY.slice(0, 4),
         is_this_year: true, stale: false,
         place: "", url: "", domain: "", from: "",
@@ -121,44 +105,62 @@ function main() {
       monitorInjected++;
     }
   }
-  if (EXPECTED_SCHOOLS.length) console.log(`覆盖完整性兜底注入「监测中」: ${monitorInjected} 校（应覆盖 ${EXPECTED_SCHOOLS.length} 校）`);
-  payload.expectedTotal = EXPECTED_SCHOOLS.length;
-  payload.monitorCount = monitorInjected;
 
-  // ⑥ 完整性对比校验报告（官方/搜索源 vs 第三方源 互校 + 可疑项识别）
-  const officialCovered = new Set(payload.records.filter((r) => !r.monitoring && r.source_type !== "thirdparty").map((r) => r.school));
-  const thirdpartyCovered = new Set(payload.records.filter((r) => r.source_type === "thirdparty").map((r) => r.school));
-  const srcCount = {};
-  for (const r of payload.records) srcCount[r.source_type] = (srcCount[r.source_type] || 0) + 1;
+  // ⑤ 最终排序：已核实在前，待核实居中，监测中置底；同类按日期升序
+  dedup.sort((a, b) => {
+    const rank = (r) => (r.monitoring ? 2 : r.verified ? 0 : 1);
+    if (rank(a) !== rank(b)) return rank(a) - rank(b);
+    return (a.date || "").localeCompare(b.date || "");
+  });
+
+  // ⑥ 完整性校验报告
+  const officialCovered = new Set(dedup.filter((r) => !r.monitoring && r.verified && r.source_type !== "thirdparty").map((r) => r.school));
+  const thirdpartyCovered = new Set(dedup.filter((r) => r.verified && r.source_type === "thirdparty").map((r) => r.school));
   const audit = {
     generatedAt: new Date().toISOString(),
     today: TODAY,
     expectedTotal: EXPECTED_SCHOOLS.length,
+    verifiedCount: dedup.filter((r) => r.verified && !r.monitoring).length,
+    unverifiedCount: dedup.filter((r) => !r.verified && !r.monitoring).length,
+    monitorCount: monitorInjected,
     coveredOfficial: officialCovered.size,
     coveredThirdparty: thirdpartyCovered.size,
-    monitorCount: monitorInjected,
-    missingSchools: EXPECTED_SCHOOLS.filter((s) => !officialCovered.has(s)),
-    thirdpartyFillingGaps: [...thirdpartyCovered].filter((s) => !officialCovered.has(s)), // 官方缺失但第三方补充的潜在遗漏
-    sourceBreakdown: srcCount,
-    suspicious: payload.records.filter((r) => !r.date && !r.monitoring).map((r) => ({ school: r.school, title: r.title, source_type: r.source_type })),
+    missingSchools: EXPECTED_SCHOOLS.filter((s) => !officialCovered.has(s) && !thirdpartyCovered.has(s)),
   };
   writeFileSync("data/audit_report.json", JSON.stringify(audit, null, 2));
-  console.log(`✓ 完整性校验: 官方覆盖 ${audit.coveredOfficial}/${audit.expectedTotal} 校, 第三方补充 ${audit.coveredThirdparty} 校, 监测中 ${audit.monitorCount} 校, 缺失 ${audit.missingSchools.length} 校`);
+  console.log(`✓ 完整性校验: 已核实 ${audit.verifiedCount} 条, 待核实 ${audit.unverifiedCount} 条, 监测中 ${audit.monitorCount} 校, 官方覆盖 ${audit.coveredOfficial}/${audit.expectedTotal} 校`);
 
-  payload.total = payload.records.length;
-  const bySchoolCount = {};
-  for (const r of payload.records) bySchoolCount[r.school] = (bySchoolCount[r.school] || 0) + 1;
-  console.log("按校分布:", JSON.stringify(bySchoolCount));
-
+  const payload = {
+    updated: new Date().toISOString(),
+    today: TODAY,
+    total: dedup.length,
+    verifiedCount: audit.verifiedCount,
+    unverifiedCount: audit.unverifiedCount,
+    monitorCount: monitorInjected,
+    expectedTotal: EXPECTED_SCHOOLS.length,
+    records: dedup,
+  };
   writeFileSync("records.json", JSON.stringify(payload, null, 2));
 
   mkdirSync("dist", { recursive: true });
   copyFileSync("index.html", "dist/index.html");
   let html = readFileSync("dist/index.html", "utf8");
-  html = braceSafeReplaceData(html, JSON.stringify(payload));
+  html = html.replace("let DATA =", "let DATA =");
+  // 用 braceSafe 替换内联 DATA
+  const marker = "let DATA = ";
+  const i = html.indexOf(marker);
+  if (i >= 0) {
+    let j = i + marker.length, depth = 0, started = false;
+    for (; j < html.length; j++) {
+      const c = html[j];
+      if (c === "{") { depth++; started = true; }
+      else if (c === "}") { depth--; if (started && depth === 0) { j++; break; } }
+    }
+    html = html.slice(0, i) + marker + JSON.stringify(payload) + ";" + html.slice(j);
+  }
   writeFileSync("dist/index.html", html);
   copyFileSync("records.json", "dist/records.json");
-  console.log("✓ dist/index.html + dist/records.json 已生成");
+  console.log(`✓ records.json + dist 生成：合计 ${dedup.length} 条（已核实 ${audit.verifiedCount} / 待核实 ${audit.unverifiedCount} / 监测中 ${audit.monitorCount}）`);
 }
 
 main();

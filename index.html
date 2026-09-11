@@ -94,11 +94,9 @@
     <div class="sub-col">
       <h3>📧 邮箱订阅</h3>
       <p class="hint">输入邮箱即可订阅。每天早上系统自动把「新增 / 变更双选会」推送到你的邮箱，旧消息不重发。把本链接发给同学，大家都能订阅。</p>
-      <!-- 把下面的 REPLACE_DC / REPLACE_U / REPLACE_ID 换成 Mailchimp「内嵌表单」里的真实值 -->
-      <form class="sub-row" action="https://REPLACE_DC.list-manage.com/subscribe/post?u=REPLACE_U&amp;id=REPLACE_ID" method="post" target="_blank" rel="noopener" novalidate>
-        <input type="email" name="EMAIL" placeholder="你的邮箱，如 name@example.com" required>
-        <input type="hidden" name="u" value="REPLACE_U">
-        <input type="hidden" name="id" value="REPLACE_ID">
+      <!-- 把下面的 REPLACE_KIT_FORM_ID 换成 Kit「Forms」里你创建的订阅表单 ID -->
+      <form class="sub-row" action="https://app.kit.com/forms/REPLACE_KIT_FORM_ID/subscriptions" method="post" target="_blank" rel="noopener">
+        <input type="email" name="email_address" placeholder="你的邮箱，如 name@example.com" required>
         <button class="btn" type="submit">订阅</button>
       </form>
       <div class="sub-msg ok" style="margin-top:8px">订阅免费，随时可在邮件里退订。</div>
@@ -206,8 +204,8 @@ function refresh(){
 document.getElementById('refresh').addEventListener('click', refresh);
 
 // ---- 邮箱订阅 ----
-// 订阅表单已直接对接 Mailchimp 内嵌表单（提交即写入 Mailchimp 受众列表，无需本页持有密钥）。
-// 每日 08:00 抓取后，GitHub Actions 从 Mailchimp API 读取订阅者列表，经 SMTP 逐一推送到每个人邮箱。
+// 订阅表单直接 POST 到 Kit（ConvertKit）表单接收地址（提交即写入 Kit 受众列表，无需本页持有密钥，无 iframe 更稳）。
+// 每日 08:00 抓取后，GitHub Actions 从 Kit API 读取订阅者列表，经 SMTP 逐一推送到每个人邮箱。
 
 load();
 </script>

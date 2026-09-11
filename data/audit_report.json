@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-11T07:11:52.059Z",
+  "generatedAt": "2026-09-11T09:59:31.289Z",
   "today": "2026-09-11",
   "expectedTotal": 9,
   "verifiedCount": 49,
   "unverifiedCount": 0,
   "monitorCount": 0,
-  "coveredOfficial": 8,
+  "coveredOfficial": 9,
   "coveredThirdparty": 4,
   "missingSchools": []
 }

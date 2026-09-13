@@ -1,11 +1,13 @@
 {
-  "generatedAt": "2026-09-11T09:59:31.289Z",
-  "today": "2026-09-11",
+  "generatedAt": "2026-09-13T19:20:31.600Z",
+  "today": "2026-09-13",
   "expectedTotal": 9,
-  "verifiedCount": 49,
-  "unverifiedCount": 0,
+  "verifiedCount": 35,
+  "unverifiedCount": 13,
   "monitorCount": 0,
-  "coveredOfficial": 9,
-  "coveredThirdparty": 4,
-  "missingSchools": []
+  "coveredOfficial": 8,
+  "coveredThirdparty": 3,
+  "missingSchools": [
+    "复旦大学"
+  ]
 }

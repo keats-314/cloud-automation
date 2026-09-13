@@ -134,6 +134,10 @@ async function verifyCandidate(cand, school, sourceLabel, sourceType) {
   if (!res.html) return { ...base, anchor: cand.anchor, verified: false, reason: res.blocked ? "页面反爬/拦截" : "无法打开页面" };
   const $ = cheerio.load(res.html);
   const bodyText = $("body").text();
+  // 强闸：SPA 空壳 / 正文过短（<150字）视为无法确认，直接判待核实，杜绝"首页/空壳"被误标已核实
+  if (bodyText.trim().length < 150) {
+    return { ...base, anchor: cand.anchor, verified: false, reason: "页面为SPA空壳/正文过短，无法确认双选会详情" };
+  }
   const heading = ($("h1").first().text() + " " + $("title").text()).trim();
   const headingMeet = MEET.some((k) => heading.includes(k));
   if (!headingMeet && !MEET.some((k) => bodyText.includes(k))) {
@@ -297,10 +301,32 @@ async function main() {
   }
   if (preserved) console.log(`✓ 基线保护：保留人工核实条目 ${preserved} 条（未被本次抓取覆盖）`);
 
+  // 人工冻结：baseline.clues 中的「待核实」条目，即使自动抓取判定通过也强制保持待核实，
+  // 并合并历史 clues，避免每日运行把人工降级内容重新误标为已核实。
+  const frozen = new Set((baseline.clues || []).map((c) => (c.school || "") + "|" + (c.title || "") + "|" + (c.url || "")));
+  const frozenTitles = new Set((baseline.clues || []).map((c) => (c.school || "") + "|" + (c.title || "")));
+  const recls = [];
+  for (const r of all) {
+    const key = (r.school || "") + "|" + (r.title || "") + "|" + (r.url || "");
+    const keyT = (r.school || "") + "|" + (r.title || "");
+    if (frozen.has(key) || frozenTitles.has(keyT)) {
+      r.verified = false;
+      r.reason = r.reason || "人工标记待核实：官网/SPA未能确认，已冻结为待核实";
+      clues.push(r);
+    } else {
+      recls.push(r);
+    }
+  }
+  // 合并历史 clues（去重，保留人工已标注的待核实）
+  for (const c of (baseline.clues || [])) {
+    const key = (c.school || "") + "|" + (c.title || "") + "|" + (c.url || "");
+    if (!clues.some((x) => (x.school || "") + "|" + (x.title || "") + "|" + (x.url || "") === key)) clues.push(c);
+  }
+
   const payload = {
     updated: new Date().toISOString(),
     today: TODAY,
-    records: all,           // 已核实（点开详情页确认，含基线保留）
+    records: recls,         // 已核实（点开详情页确认，含基线保留）
     clues,                  // 待核实线索（不冒充事实）
   };
   writeFileSync("data/candidates.json", JSON.stringify(payload, null, 2));

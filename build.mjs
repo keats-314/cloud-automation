@@ -14,6 +14,26 @@ const TODAY = process.argv.includes("--today")
 
 const PROVINCIAL_DOMAINS = new Set(Object.values(PROVINCIAL).flat());
 
+// 判断某 URL 是否指向"首页/栏目大杂烩页"（点开仍需自己找），用于自检报告
+// 注意：详情页常带条目标识（xwid=/fair_id=/bilateralchosefairId=/news_detail/数字/长哈希），不可误判为大网页
+function isBigWebpage(url) {
+  try {
+    const u = new URL(url);
+    const full = (u.pathname + u.search + u.hash).toLowerCase();
+    const hasDetailId =
+      /(xwid|fair_?id|bilateralchosefairid|item_?id|news_?id|article_?id|doc_?id|info_?id|aid|sid|mid)=[^\s&]+/i.test(full)
+      || /\/news_detail\/\d+/i.test(full)
+      || /\/detail\/\w+/i.test(full)
+      || /\/newsinfo\/id\/\d+/i.test(full)
+      || /[0-9a-f]{10,}/i.test(full);
+    if (hasDetailId) return false;
+    const p = u.pathname.toLowerCase();
+    if (p === "/" || p === "") return true;
+    const listing = /(zphxx|zhaopin|xiaozhao|list|news|tzgg|column|\/zph|\/news|webindex|notification|activitylist|fair|index)/;
+    return listing.test(p) && !/\d{4,}/.test(p);
+  } catch { return false; }
+}
+
 function inferConfidence(r) {
   if (r.dateConfidence) return r.dateConfidence;
   if (!r.date) return "approx";
@@ -39,7 +59,11 @@ function main() {
 
   // ① 已核实（点开详情页确认过的真实场次）→ 主列表
   for (const r of verified) {
-    const rec = { ...r, dateConfidence: inferConfidence(r), source_type: inferSourceType(r), monitoring: false, verified: true, is_new: false };
+    const status = r.date && r.date < TODAY ? "已结束" : (r.date ? "进行中/即将开始" : "日期待确认");
+    const rec = { ...r, dateConfidence: inferConfidence(r), source_type: inferSourceType(r), monitoring: false, verified: true, is_new: false,
+      status,
+      confidence: r.confidence || "medium", verified_by: r.verified_by || "auto", evidence: r.evidence || "",
+      last_checked: r.last_checked || "", drift: !!r.drift, driftReason: r.driftReason || "" };
     records.push(rec);
   }
 
@@ -52,10 +76,11 @@ function main() {
     if (seen.has(k)) continue; seen.add(k); dedup.push(r);
   }
 
-  // ③ 待核实线索 → 标 verified:false，附 reason，不冒充事实（排在已核实之后）
+  // ③ 待核实线索 → 标 verified:false，附 reason + 异常标记，不冒充事实（排在已核实之后）
   for (const c of clues) {
     const k = c.school + "|" + (c.anchor || c.title) + "|" + c.url;
     if (seen.has(k)) continue; seen.add(k);
+    const status = c.date && c.date < TODAY ? "已结束" : (c.date ? "进行中/即将开始" : "日期待确认");
     dedup.push({
       school: c.school, province: c.province,
       title: c.anchor || c.title || "(未知标题)",
@@ -63,7 +88,10 @@ function main() {
       is_this_year: c.is_this_year !== false, stale: false,
       place: c.place || "", url: c.url || "", domain: c.domain || "",
       from: c.url || "", source: "待核实·" + (c.reason || "未打开"), source_type: c.source_type || "official",
-      dateConfidence: "approx", monitoring: false, verified: false,
+      dateConfidence: c.dateConfidence || "approx", status, monitoring: false, verified: false,
+      confidence: c.confidence || "unverified", verified_by: c.verified_by || "auto",
+      evidence: c.evidence || "", last_checked: c.last_checked || "", drift: !!c.drift, driftReason: c.driftReason || "",
+      flags: c.flags || [], missing: c.missing || [], bot_status: c.bot_status || "", reason_detail: c.reason || "",
     });
   }
 
@@ -92,9 +120,29 @@ function main() {
     return (a.date || "").localeCompare(b.date || "");
   });
 
-  // ⑥ 完整性校验报告
+  // ⑥ 完整性校验报告（含自我审查自检数据）
   const officialCovered = new Set(dedup.filter((r) => !r.monitoring && r.verified && r.source_type !== "thirdparty").map((r) => r.school));
   const thirdpartyCovered = new Set(dedup.filter((r) => r.verified && r.source_type === "thirdparty").map((r) => r.school));
+  const candAudit = cand.audit || {};
+  const bySchool = {};
+  for (const r of dedup) {
+    const s = r.school; bySchool[s] = bySchool[s] || { high: 0, medium: 0, low: 0, unverified: 0, human: 0, total: 0 };
+    bySchool[s].total++;
+    if (r.verified_by === "human") bySchool[s].human++;
+    const c = r.confidence || (r.verified ? "medium" : "unverified");
+    bySchool[s][c] = (bySchool[s][c] || 0) + 1;
+  }
+  const needsConfirm = dedup
+    .filter((r) => (r.confidence || "unverified") !== "high" && r.verified_by !== "human" && !r.monitoring)
+    .map((r) => ({ school: r.school, title: r.title, date: r.date, url: r.url, confidence: r.confidence || "unverified", reason: r.note || r.source || "" }));
+  const bigWebpage = dedup
+    .filter((r) => !r.monitoring && r.url && isBigWebpage(r.url))
+    .map((r) => ({ school: r.school, title: r.title, url: r.url }));
+  // 模块三·链接异常清单：被标记 redirect_homepage / content_inconsistent / spa_or_empty / homepage 的记录
+  const ANOMALY_FLAGS = ["redirect_homepage", "content_inconsistent", "spa_or_empty", "homepage"];
+  const linkAnomalies = dedup
+    .filter((r) => !r.monitoring && (r.flags || []).some((f) => ANOMALY_FLAGS.includes(f)))
+    .map((r) => ({ school: r.school, title: r.title, url: r.url, flags: r.flags || [], reason: r.reason_detail || r.source || "" }));
   const audit = {
     generatedAt: new Date().toISOString(),
     today: TODAY,
@@ -105,9 +153,16 @@ function main() {
     coveredOfficial: officialCovered.size,
     coveredThirdparty: thirdpartyCovered.size,
     missingSchools: EXPECTED_SCHOOLS.filter((s) => !officialCovered.has(s) && !thirdpartyCovered.has(s)),
+    bySchool,
+    needsConfirm,
+    bigWebpage,
+    linkAnomalies,
+    drift: candAudit.drift || [],
+    humanApplied: candAudit.humanApplied || 0,
   };
   writeFileSync("data/audit_report.json", JSON.stringify(audit, null, 2));
   console.log(`✓ 完整性校验: 已核实 ${audit.verifiedCount} 条, 待核实 ${audit.unverifiedCount} 条, 监测中 ${audit.monitorCount} 校, 官方覆盖 ${audit.coveredOfficial}/${audit.expectedTotal} 校`);
+  console.log(`✓ 自检: 待人工确认 ${needsConfirm.length} 条 | 大网页链接 ${bigWebpage.length} 条 | 复验漂移 ${audit.drift.length} 条 | 人工冻结 ${audit.humanApplied} 条`);
 
   const payload = {
     updated: new Date().toISOString(),
@@ -117,6 +172,7 @@ function main() {
     unverifiedCount: audit.unverifiedCount,
     monitorCount: monitorInjected,
     expectedTotal: EXPECTED_SCHOOLS.length,
+    audit,
     records: dedup,
   };
   writeFileSync("records.json", JSON.stringify(payload, null, 2));

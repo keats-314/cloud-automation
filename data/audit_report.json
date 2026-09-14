@@ -1,13 +1,279 @@
 {
-  "generatedAt": "2026-09-13T19:20:31.600Z",
-  "today": "2026-09-13",
+  "generatedAt": "2026-09-14T02:37:42.540Z",
+  "today": "2026-09-14",
   "expectedTotal": 9,
   "verifiedCount": 35,
-  "unverifiedCount": 13,
+  "unverifiedCount": 15,
   "monitorCount": 0,
   "coveredOfficial": 8,
   "coveredThirdparty": 3,
   "missingSchools": [
     "复旦大学"
-  ]
+  ],
+  "bySchool": {
+    "清华大学": {
+      "high": 2,
+      "medium": 0,
+      "low": 0,
+      "unverified": 6,
+      "human": 2,
+      "total": 8
+    },
+    "哈尔滨工业大学": {
+      "high": 4,
+      "medium": 0,
+      "low": 0,
+      "unverified": 0,
+      "human": 4,
+      "total": 4
+    },
+    "中国科学技术大学": {
+      "high": 2,
+      "medium": 0,
+      "low": 0,
+      "unverified": 2,
+      "human": 2,
+      "total": 4
+    },
+    "南京大学": {
+      "high": 8,
+      "medium": 0,
+      "low": 0,
+      "unverified": 0,
+      "human": 8,
+      "total": 8
+    },
+    "上海交通大学": {
+      "high": 4,
+      "medium": 0,
+      "low": 0,
+      "unverified": 3,
+      "human": 4,
+      "total": 7
+    },
+    "西安交通大学": {
+      "high": 2,
+      "medium": 0,
+      "low": 0,
+      "unverified": 0,
+      "human": 2,
+      "total": 2
+    },
+    "北京大学": {
+      "high": 3,
+      "medium": 0,
+      "low": 0,
+      "unverified": 0,
+      "human": 3,
+      "total": 3
+    },
+    "浙江大学": {
+      "high": 10,
+      "medium": 0,
+      "low": 0,
+      "unverified": 0,
+      "human": 10,
+      "total": 10
+    },
+    "复旦大学": {
+      "high": 0,
+      "medium": 0,
+      "low": 0,
+      "unverified": 4,
+      "human": 0,
+      "total": 4
+    }
+  },
+  "needsConfirm": [
+    {
+      "school": "中国科学技术大学",
+      "title": "中国科学技术大学就业信息网",
+      "date": "2026-01-06",
+      "url": "https://www.job.ustc.edu.cn/Specialrecruitment/list.aspx",
+      "confidence": "unverified",
+      "reason": "待核实·自动爬取候选，待人工确认"
+    },
+    {
+      "school": "中国科学技术大学",
+      "title": "中国科学技术大学就业信息网",
+      "date": "2026-01-06",
+      "url": "https://www.job.ustc.edu.cn/Campusdouble/list.aspx",
+      "confidence": "unverified",
+      "reason": "待核实·自动爬取候选，待人工确认"
+    },
+    {
+      "school": "复旦大学",
+      "title": "复旦大学2027届毕业生秋季招聘会·江湾校区场（9月下旬）",
+      "date": "2026-09",
+      "url": "http://www.zph58.com/shanghai/59812.html",
+      "confidence": "unverified",
+      "reason": "待核实·未能在复旦官网核实：复旦官网为 SPA 详情读不到，官方来源链接指向首页/第三方代发（点开是大网页）。本场是否举办、日期地点以官网最终发布为准。"
+    },
+    {
+      "school": "复旦大学",
+      "title": "全国重点高校2027届毕业生秋季巡回招聘会·复旦大学专场",
+      "date": "2026-09-16",
+      "url": "https://www.bolexiaozhao.com/index.php/Wap/Wap/newsinfo/id/500.html",
+      "confidence": "unverified",
+      "reason": "待核实·未能在复旦官网核实：复旦官网为 SPA 详情读不到，官方来源链接指向首页/第三方代发（点开是大网页）。本场是否举办、日期地点以官网最终发布为准。"
+    },
+    {
+      "school": "清华大学",
+      "title": "清华大学集成电路学院2027届毕业生校园招聘会（双选会）",
+      "date": "2026-09-19",
+      "url": "https://career.tsinghua.edu.cn/",
+      "confidence": "unverified",
+      "reason": "待核实·未能在清华官网核实：career.tsinghua.edu.cn 静态内容未发布这6场院系双选会排期，信息源自第三方秋招汇总。日期地点仅供参考，非官方确认，待官网发布或贴链接后确认。"
+    },
+    {
+      "school": "清华大学",
+      "title": "清华大学机械-工业工程-材料-化学-化工五院联合秋季专场招聘会（双选会）",
+      "date": "2026-09-20",
+      "url": "https://career.tsinghua.edu.cn/",
+      "confidence": "unverified",
+      "reason": "待核实·未能在清华官网核实：career.tsinghua.edu.cn 静态内容未发布这6场院系双选会排期，信息源自第三方秋招汇总。日期地点仅供参考，非官方确认，待官网发布或贴链接后确认。"
+    },
+    {
+      "school": "复旦大学",
+      "title": "上海博士、博士后高层次人才巡回校园招聘会·复旦大学站",
+      "date": "2026-09-23",
+      "url": "https://student.career.fudan.edu.cn/",
+      "confidence": "unverified",
+      "reason": "待核实·未能在复旦官网核实：复旦官网为 SPA 详情读不到，官方来源链接指向首页/第三方代发（点开是大网页）。本场是否举办、日期地点以官网最终发布为准。"
+    },
+    {
+      "school": "清华大学",
+      "title": "清华大学自动化系2027届毕业生校园招聘会（双选会）",
+      "date": "2026-09-24",
+      "url": "https://career.tsinghua.edu.cn/",
+      "confidence": "unverified",
+      "reason": "待核实·未能在清华官网核实：career.tsinghua.edu.cn 静态内容未发布这6场院系双选会排期，信息源自第三方秋招汇总。日期地点仅供参考，非官方确认，待官网发布或贴链接后确认。"
+    },
+    {
+      "school": "清华大学",
+      "title": "清华大学精密仪器系2027届毕业生校园招聘会（双选会）",
+      "date": "2026-10-10",
+      "url": "https://career.tsinghua.edu.cn/",
+      "confidence": "unverified",
+      "reason": "待核实·未能在清华官网核实：career.tsinghua.edu.cn 静态内容未发布这6场院系双选会排期，信息源自第三方秋招汇总。日期地点仅供参考，非官方确认，待官网发布或贴链接后确认。"
+    },
+    {
+      "school": "上海交通大学",
+      "title": "上海交通大学2027届毕业生秋季招聘会·重点区域专场",
+      "date": "2026-10-13",
+      "url": "https://www.job.sjtu.edu.cn/career/zphxx",
+      "confidence": "unverified",
+      "reason": "待核实·未能在上交官网核实：上交就业网暂未为这3场秋季招聘会发布独立详情页（仅4场国家重点行业专场有 view 页），日期地点来自第三方秋招汇总，非官网确认，发布后自动抓取。"
+    },
+    {
+      "school": "上海交通大学",
+      "title": "上海交通大学2027届毕业生秋季招聘会·综合场",
+      "date": "2026-10-14",
+      "url": "https://www.job.sjtu.edu.cn/career/zphxx",
+      "confidence": "unverified",
+      "reason": "待核实·未能在上交官网核实：上交就业网暂未为这3场秋季招聘会发布独立详情页（仅4场国家重点行业专场有 view 页），日期地点来自第三方秋招汇总，非官网确认，发布后自动抓取。"
+    },
+    {
+      "school": "复旦大学",
+      "title": "复旦大学2027届毕业生秋季招聘会·综合场",
+      "date": "2026-10-21",
+      "url": "https://student.career.fudan.edu.cn/",
+      "confidence": "unverified",
+      "reason": "待核实·未能在复旦官网核实：复旦官网为 SPA 详情读不到，官方来源链接指向首页/第三方代发（点开是大网页）。本场是否举办、日期地点以官网最终发布为准。"
+    },
+    {
+      "school": "上海交通大学",
+      "title": "上海交通大学2027届毕业生秋季招聘会·综合场（第二场）",
+      "date": "2026-10-21",
+      "url": "https://www.job.sjtu.edu.cn/career/zphxx",
+      "confidence": "unverified",
+      "reason": "待核实·未能在上交官网核实：上交就业网暂未为这3场秋季招聘会发布独立详情页（仅4场国家重点行业专场有 view 页），日期地点来自第三方秋招汇总，非官网确认，发布后自动抓取。"
+    },
+    {
+      "school": "清华大学",
+      "title": "清华大学美术学院2027届毕业生校园招聘会（双选会）",
+      "date": "2026-10-22",
+      "url": "https://career.tsinghua.edu.cn/",
+      "confidence": "unverified",
+      "reason": "待核实·未能在清华官网核实：career.tsinghua.edu.cn 静态内容未发布这6场院系双选会排期，信息源自第三方秋招汇总。日期地点仅供参考，非官方确认，待官网发布或贴链接后确认。"
+    },
+    {
+      "school": "清华大学",
+      "title": "清华大学生物医药大健康（医学院）2027届毕业生校园招聘会（双选会）",
+      "date": "2026-10-23",
+      "url": "https://career.tsinghua.edu.cn/",
+      "confidence": "unverified",
+      "reason": "待核实·未能在清华官网核实：career.tsinghua.edu.cn 静态内容未发布这6场院系双选会排期，信息源自第三方秋招汇总。日期地点仅供参考，非官方确认，待官网发布或贴链接后确认。"
+    }
+  ],
+  "bigWebpage": [
+    {
+      "school": "中国科学技术大学",
+      "title": "中国科学技术大学就业信息网",
+      "url": "https://www.job.ustc.edu.cn/Specialrecruitment/list.aspx"
+    },
+    {
+      "school": "中国科学技术大学",
+      "title": "中国科学技术大学就业信息网",
+      "url": "https://www.job.ustc.edu.cn/Campusdouble/list.aspx"
+    },
+    {
+      "school": "清华大学",
+      "title": "清华大学集成电路学院2027届毕业生校园招聘会（双选会）",
+      "url": "https://career.tsinghua.edu.cn/"
+    },
+    {
+      "school": "清华大学",
+      "title": "清华大学机械-工业工程-材料-化学-化工五院联合秋季专场招聘会（双选会）",
+      "url": "https://career.tsinghua.edu.cn/"
+    },
+    {
+      "school": "复旦大学",
+      "title": "上海博士、博士后高层次人才巡回校园招聘会·复旦大学站",
+      "url": "https://student.career.fudan.edu.cn/"
+    },
+    {
+      "school": "清华大学",
+      "title": "清华大学自动化系2027届毕业生校园招聘会（双选会）",
+      "url": "https://career.tsinghua.edu.cn/"
+    },
+    {
+      "school": "清华大学",
+      "title": "清华大学精密仪器系2027届毕业生校园招聘会（双选会）",
+      "url": "https://career.tsinghua.edu.cn/"
+    },
+    {
+      "school": "上海交通大学",
+      "title": "上海交通大学2027届毕业生秋季招聘会·重点区域专场",
+      "url": "https://www.job.sjtu.edu.cn/career/zphxx"
+    },
+    {
+      "school": "上海交通大学",
+      "title": "上海交通大学2027届毕业生秋季招聘会·综合场",
+      "url": "https://www.job.sjtu.edu.cn/career/zphxx"
+    },
+    {
+      "school": "复旦大学",
+      "title": "复旦大学2027届毕业生秋季招聘会·综合场",
+      "url": "https://student.career.fudan.edu.cn/"
+    },
+    {
+      "school": "上海交通大学",
+      "title": "上海交通大学2027届毕业生秋季招聘会·综合场（第二场）",
+      "url": "https://www.job.sjtu.edu.cn/career/zphxx"
+    },
+    {
+      "school": "清华大学",
+      "title": "清华大学美术学院2027届毕业生校园招聘会（双选会）",
+      "url": "https://career.tsinghua.edu.cn/"
+    },
+    {
+      "school": "清华大学",
+      "title": "清华大学生物医药大健康（医学院）2027届毕业生校园招聘会（双选会）",
+      "url": "https://career.tsinghua.edu.cn/"
+    }
+  ],
+  "linkAnomalies": [],
+  "drift": [],
+  "humanApplied": 0
 }

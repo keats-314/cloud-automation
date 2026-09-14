@@ -9,6 +9,7 @@
 //   TODAY             可选，YYYY-MM-DD（用于本地调试）
 
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { createHash } from "node:crypto";
 import * as cheerio from "cheerio";
 import { SCHOOLS, THIRD_PARTY } from "./schools.mjs";
 
@@ -48,6 +49,57 @@ const PROFILES = [
 ];
 const ANTI_MARKS = ["验证码", "captcha", "access denied", "waf", "verify you are human", "人机验证", "安全验证", "防爬", "反爬", "访问过于频繁", "请求被拦截"];
 
+// ===== 自我审查机制：内容比对 + 分级置信度 + 人工冻结 + 复验 =====
+const SPA_SCHOOLS = new Set(["浙江大学", "复旦大学", "哈尔滨工业大学"]); // 已知 SPA/JS渲染校（自动读取不到正文）
+
+function safeHost(u) { try { return new URL(u).hostname.toLowerCase(); } catch { return ""; } }
+function isListingPath(url) {
+  try {
+    const p = new URL(url).pathname.toLowerCase();
+    if (p === "/" || p === "") return true;
+    const listing = /(zphxx|zhaopin|xiaozhao|list|news|tzgg|column|\/zph|\/news|webindex|notification|activitylist|fair)/;
+    const hasId = /\d{4,}/.test(p);
+    if (listing.test(p) && !hasId) return true;
+    return false;
+  } catch { return false; }
+}
+function pageHasDate(text, date) {
+  if (!date) return true;
+  const [y, mo, d] = String(date).split("-");
+  const forms = [`${+mo}月${+d}日`, `${mo}-${d}`, `${mo}/${d}`, `${y}-${mo}-${d}`, `${mo}月${+d}`, `${+mo}-${+d}`, `${+mo}月${+d}日`];
+  return forms.some((f) => text.includes(f));
+}
+const TITLE_STOP = new Set(["2027届毕业生", "2026届毕业生", "2027届", "2026届", "届毕业生", "毕业生", "秋季", "春季", "双选会", "招聘会", "校园招聘会", "联合招聘", "供需见面", "空中双选", "专场招聘", "就业双选", "高校", "大学", "学院", "校区", "邀请函", "工作安排", "通知", "关于", "举办", "关于举办", "的", "年", "月", "日", "综合场", "综合性专场", "专场", "·", "—", "-"]);
+function distinctiveTokens(title, schoolName) {
+  let t = (title || "").replace(schoolName || "", "").replace(/\s+/g, "");
+  t = t.replace(/((\d{4})[.\-/年])?((?:1[0-2]|0?[1-9]))[.\-/月]((?:[12]\d|3[01]|0?[1-9]))日?/g, "");
+  const parts = t.split(/[·•—\-–（）()：:，,、]+/).map((s) => s.trim()).filter(Boolean);
+  const toks = [];
+  for (const p of parts) { if (TITLE_STOP.has(p)) continue; if (p.length < 2) continue; toks.push(p); }
+  return toks;
+}
+function makeId(r) { return createHash("sha1").update(`${r.school || ""}|${r.title || ""}|${r.url || ""}`).digest("hex").slice(0, 16); }
+let HUMAN_OVERRIDES = {};
+try { HUMAN_OVERRIDES = JSON.parse(readFileSync("data/human_overrides.json", "utf8")); } catch {}
+
+// 复验：对上次已核实(非人工)记录再抓一次，仅当页面明确 404/已删除才标记 drift（不盲目降级，避免网络抖动误伤）
+async function reverifyBaseline(baseRecs) {
+  const drift = [];
+  for (const r of (baseRecs || [])) {
+    if (!r.url || r.verified_by === "human" || !r.verified) continue;
+    const school = SCHOOLS.find((s) => s.name === r.school) || { domains: [], name: r.school };
+    const res = await fetchWithFallback(r.url, school);
+    if (!res.html) continue; // 网络/反爬不稳定，不盲目降级
+    const $ = cheerio.load(res.html);
+    const txt = ($("body").text() + " " + $("title").text()).toLowerCase();
+    if (res.status === 404 || /\b404\b|not found|页面不存在|已删除|找不到该|访问的页面不存在|page not found/.test(txt)) {
+      r.drift = true; r.driftReason = "复验发现 404/页面不存在";
+      drift.push({ school: r.school, title: r.title, url: r.url, reason: r.driftReason });
+    }
+  }
+  return drift;
+}
+
 function allowed(url, school) {
   try { const h = new URL(url).hostname.toLowerCase(); return school.domains.some((d) => h === d || h.endsWith("." + d)); }
   catch { return false; }
@@ -77,16 +129,27 @@ function extractPlace(t) {
   m = t.match(PLACE_KW); if (m) return m[1].trim().slice(0, 30);
   return "";
 }
+// 模块一·请求节奏：全局限流，每请求间隔 1~2 秒，模拟正常浏览器，降低被封与误伤
+const RATE_MS = 1200;
+let _lastFetchTs = 0;
+async function throttle() {
+  const now = Date.now();
+  const wait = RATE_MS - (now - _lastFetchTs);
+  if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+  _lastFetchTs = Date.now();
+}
 async function fetchOne(url, profile) {
   for (let attempt = 0; attempt < 2; attempt++) {
+    await throttle();
     const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), TIMEOUT);
     try {
       const r = await fetch(url, { headers: profile.headers, signal: ctrl.signal, redirect: "follow" });
-      if (r.status !== 200) return { html: null, status: r.status };
+      const finalUrl = r.url; // 重定向后的最终 URL（用于模块三·跳转检测）
+      if (r.status !== 200) return { html: null, status: r.status, finalUrl };
       const ct = r.headers.get("content-type") || "";
-      if (!ct.includes("html")) return { html: null, status: r.status };
+      if (!ct.includes("html")) return { html: null, status: r.status, finalUrl };
       const buf = await r.arrayBuffer();
-      return { html: new TextDecoder("utf-8").decode(buf), status: 200 };
+      return { html: new TextDecoder("utf-8").decode(buf), status: 200, finalUrl };
     } catch { /* timeout or network err */ }
     finally { clearTimeout(t); }
     await new Promise((r) => setTimeout(r, 600));
@@ -96,9 +159,9 @@ async function fetchOne(url, profile) {
 async function fetchWithFallback(url, school) {
   for (const p of PROFILES) {
     const res = await fetchOne(url, p);
-    if (res.html == null) { if ([412, 403, 429].includes(res.status)) return { html: null, status: res.status, blocked: true }; continue; }
-    if (isAntiCrawl(res.status, res.html)) return { html: null, status: res.status, blocked: true };
-    return { html: res.html, status: 200, blocked: false };
+    if (res.html == null) { if ([412, 403, 429].includes(res.status)) return { html: null, status: res.status, blocked: true, finalUrl: res.finalUrl }; continue; }
+    if (isAntiCrawl(res.status, res.html)) return { html: null, status: res.status, blocked: true, finalUrl: res.finalUrl };
+    return { html: res.html, status: 200, blocked: false, finalUrl: res.finalUrl };
   }
   return { html: null, status: 0, blocked: false, err: "err" };
 }
@@ -118,7 +181,7 @@ function collectCandidates(html, baseUrl, school, seen, out) {
     out.push({ url, anchor: text.replace(/\s+/g, " ").trim() });
   });
 }
-// 收集"可深入"的子栏目链接
+// 收集"可深入"的子栏目链接（招聘会/双选会/宣讲会/通知公告/招聘信息 等栏目）
 function collectFollow(html, baseUrl, school, out) {
   const $ = cheerio.load(html);
   $("a[href]").each((_, el) => {
@@ -126,52 +189,85 @@ function collectFollow(html, baseUrl, school, out) {
     if (t && FOLLOW.some((k) => t.includes(k)) && allowed(u, school) && !isRoot(u)) out.push(u);
   });
 }
+// 模块一·翻页：收集分页链接（下一页 / 第N页 / next），翻页才不漏抓
+const PAGE_KW = ["下一页", "下页", "下一頁", "more", "next", "尾页", "后页"];
+function collectPagination(html, baseUrl, school, out) {
+  const $ = cheerio.load(html);
+  $("a[href]").each((_, el) => {
+    const a = $(el); const t = a.text().trim().toLowerCase(); let u; try { u = new URL(a.attr("href"), baseUrl).href; } catch { return; }
+    const looksPage = PAGE_KW.some((k) => t.includes(k)) || /^\s*\d+\s*$/.test(t) || (/\d+/.test(t) && /页|page/.test(t));
+    if (looksPage && allowed(u, school) && !isRoot(u) && !out.includes(u)) out.push(u);
+  });
+}
 
-// 核实闸门：点开候选页，确认【页面标题/H1 明确是双选会详情】+ 未结束
+// 核实闸门（升级版）：不仅看"页面含双选会"，更要确认【该页面确实就是这一场】
+//  → 首页/栏目根、SPA空壳、第三方页、合并通知 都不再被误标为已核实。
 async function verifyCandidate(cand, school, sourceLabel, sourceType) {
-  const base = { school: school.name, province: school.province, url: cand.url, domain: new URL(cand.url).hostname, from: cand.url, source: sourceLabel, source_type: sourceType };
+  const base = { school: school.name, province: school.province, url: cand.url, domain: safeHost(cand.url), from: cand.url, source: sourceLabel, source_type: sourceType };
   const res = await fetchWithFallback(cand.url, school);
-  if (!res.html) return { ...base, anchor: cand.anchor, verified: false, reason: res.blocked ? "页面反爬/拦截" : "无法打开页面" };
+  const finalUrl = res.finalUrl || cand.url;
+  const common0 = { ...base, anchor: cand.anchor, verified_by: "auto", verified_at: TODAY, last_checked: TODAY };
+  if (!res.html) return { ...common0, flags: ["unreachable"], verified: false, confidence: "unverified", reason: res.blocked ? "页面反爬/拦截" : "无法打开页面", evidence: "" };
   const $ = cheerio.load(res.html);
   const bodyText = $("body").text();
-  // 强闸：SPA 空壳 / 正文过短（<150字）视为无法确认，直接判待核实，杜绝"首页/空壳"被误标已核实
-  if (bodyText.trim().length < 150) {
-    return { ...base, anchor: cand.anchor, verified: false, reason: "页面为SPA空壳/正文过短，无法确认双选会详情" };
-  }
   const heading = ($("h1").first().text() + " " + $("title").text()).trim();
-  const headingMeet = MEET.some((k) => heading.includes(k));
-  if (!headingMeet && !MEET.some((k) => bodyText.includes(k))) {
-    return { ...base, anchor: cand.anchor, verified: false, reason: "页面标题/正文未确认为双选会详情" };
+  const fullText = bodyText + " " + heading;
+  // 模块三·跳转检测：最终 URL 跳回首页/栏目根（非详情页）→ 链接异常
+  if (finalUrl !== cand.url && (isRoot(finalUrl) || isListingPath(finalUrl))) {
+    return { ...common0, flags: ["redirect_homepage"], verified: false, confidence: "low", reason: "链接异常：打开后跳转至首页/栏目页（非详情页）", evidence: `finalUrl=${finalUrl}` };
   }
-  const stale = STALE_STRONG.some((k) => bodyText.includes(k) || heading.includes(k));
-  const d = extractDate(bodyText + " " + heading);
-  if (stale && d.date && d.date < TODAY) {
-    return { ...base, anchor: cand.anchor, verified: false, reason: "页面显示为已结束/往届场次" };
+  // 强闸：SPA 空壳 / 正文过短 —— 直接判"需人工确认/待核实"，杜绝"首页/空壳"被误标已核实
+  if (bodyText.trim().length < 150) {
+    if (isRoot(cand.url)) return { ...common0, flags: ["spa_or_empty"], verified: false, confidence: "unverified", reason: "首页/栏目，无法确认", evidence: "" };
+    const official = school.domains.some((d) => base.domain === d || base.domain.endsWith("." + d));
+    if (official) return { ...common0, flags: ["spa_or_empty"], verified: false, confidence: "medium", reason: "官网SPA页面，自动抓取无法读取正文，需人工确认", evidence: "官网(SPA)URL已确认，但正文为JS渲染无法自动核对" };
+    return { ...common0, flags: ["spa_or_empty"], verified: false, confidence: "low", reason: "第三方SPA，需人工确认", evidence: "" };
   }
-  // 标题优先用列表锚文本（更贴近事件名），否则取页面 h1
+  if (isRoot(cand.url)) return { ...common0, flags: ["homepage"], verified: false, confidence: "unverified", reason: "链接为官网首页，非详情页", evidence: "" };
+  const thirdParty = !school.domains.some((d) => base.domain === d || base.domain.endsWith("." + d));
+  const toks = distinctiveTokens(cand.anchor || cand.title, school.name);
+  const matched = toks.length ? toks.some((t) => fullText.includes(t)) : false;
+  const dateOk = pageHasDate(fullText, cand.date);
   let title = cand.anchor;
   if (title.length < 6) { const h1 = $("h1").first().text().trim(); title = (h1 || $("title").text().trim() || cand.anchor).replace(/\s+/g, " ").trim(); }
   const place = extractPlace(bodyText);
-  return {
-    ...base,
-    title, date: d.date, date_end: d.date_end, year: d.year,
-    is_this_year: d.is_this_year, stale: d.stale || stale,
-    place, verified: true, reason: "",
-  };
+  const d = extractDate(fullText);
+  const common = { ...base, title, place, year: d.year, is_this_year: d.is_this_year, stale: d.stale, date: d.date, date_end: d.date_end, verified_by: "auto", verified_at: TODAY, last_checked: TODAY };
+  if (isListingPath(cand.url) && !matched) {
+    return { ...common, flags: ["content_inconsistent"], verified: false, confidence: thirdParty ? "low" : "medium", reason: "链接异常（打开为列表/归档页，未精确匹配此场次）", evidence: "" };
+  }
+  if (matched && dateOk && !thirdParty) {
+    return { ...common, flags: ["content_ok"], verified: true, confidence: "high", reason: "", evidence: `官网详情页正文含「${toks.find((t) => fullText.includes(t))}」及日期 ${d.date}` };
+  }
+  if (matched && dateOk && thirdParty) {
+    return { ...common, flags: ["thirdparty_only"], verified: false, confidence: "low", reason: "第三方页含该场次，需人工确认官网", evidence: "" };
+  }
+  if (matched && !dateOk) {
+    // 模块二·日期缺失：页面含标题但不含该日期，绝不编造，标记缺失待人工补
+    return { ...common, date: "", date_end: "", dateConfidence: "missing", flags: ["date_unconfirmed"], verified: false, confidence: "medium", reason: "页面含该场次标题，但自动未提取到对应日期（已标记缺失，不编造）", evidence: "" };
+  }
+  return { ...common, flags: ["title_unmatched"], verified: true, confidence: "medium", reason: "官网来源，但未精确匹配标题（疑似合并通知/栏目），需人工确认", evidence: "" };
 }
 
 async function scrapeSchool(school) {
   const seen = new Set();
   const candidates = [];
-  for (const root of school.roots) {
-    const rootRes = await fetchWithFallback(root, school);
-    if (!rootRes.html) continue;
-    collectCandidates(rootRes.html, root, school, seen, candidates);
-    const follow = []; collectFollow(rootRes.html, root, school, follow);
-    for (const fu of [...new Set(follow)].slice(0, MAX_FOLLOW)) {
-      const f = await fetchWithFallback(fu, school); if (!f.html) continue;
-      collectCandidates(f.html, fu, school, seen, candidates);
+  // 模块一·多栏目 + 翻页：BFS 遍历（栏目页 + 分页页），单校硬上限 MAX_PAGES 防无限抓取/超时
+  const queue = [...school.roots];
+  let visited = 0;
+  const MAX_PAGES = 8;
+  while (queue.length && visited < MAX_PAGES) {
+    const u = queue.shift();
+    if (seen.has(u)) continue; seen.add(u);
+    const res = await fetchWithFallback(u, school);
+    if (!res.html) continue;
+    collectCandidates(res.html, u, school, seen, candidates);
+    const follow = []; collectFollow(res.html, u, school, follow);
+    const pagi = []; collectPagination(res.html, u, school, pagi);
+    for (const fu of [...new Set([...follow, ...pagi])]) {
+      if (!seen.has(fu) && queue.length < MAX_PAGES * 2) queue.push(fu);
     }
+    visited++;
   }
   // 直抓 0 条 → 回退搜索引擎（结果也走核实闸门）
   if (!candidates.length && SEARCH_API_KEY) {
@@ -247,6 +343,9 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function main() {
   mkdirSync("data", { recursive: true });
+  // 模块·防挂死：整个抓取硬上限，超时强制退出（避免反爬/网络抖动导致无限挂起，危及每日定时任务）
+  const HARD_TOTAL_MS = 300000; // 5 分钟
+  const hardTimer = setTimeout(() => { console.error("⛔ 抓取超过硬上限 5 分钟，强制退出（保留已有结果）"); process.exit(2); }, HARD_TOTAL_MS);
   const all = [];           // 所有核实通过的记录
   const clues = [];         // 待核实（点不开/页面无内容）线索
   const perSchool = {};
@@ -265,8 +364,7 @@ async function main() {
           new Promise((_, reject) => setTimeout(() => reject(new Error("school-timeout")), SCHOOL_TIMEOUT)),
         ]);
         perSchool[s.name] = { verified: r.verified.length, unverified: r.unverified.length };
-        all.push(...r.verified);
-        clues.push(...r.unverified);
+        all.push(...r.verified, ...r.unverified);
         console.log(`  [${s.name}] 核实通过 ${r.verified.length} 条 | 待核实 ${r.unverified.length} 条`);
       } catch (e) {
         console.log(`  [${s.name}] 跳过: ${e.message || e}`);
@@ -281,56 +379,108 @@ async function main() {
     scrapeThirdParty(),
     new Promise((_, reject) => setTimeout(() => reject(new Error("thirdparty-timeout")), 90000)),
   ]).catch((e) => { console.warn("  ⚠ 第三方抓取跳过:", e.message); return { verified: [], unverified: [] }; });
-  all.push(...tp.verified);
-  clues.push(...tp.unverified);
+  all.push(...tp.verified, ...tp.unverified);
 
-  // 基线保护：读取上一次 candidates.json，保留其中未过期且本次未覆盖的人工核实条目。
-  // 这样每日自动抓取只会“追加”新核实场次，绝不会删除人工核实过的准确数据
-  //（根治“自动抓取失败/覆盖掉准确数据”的准确性 bug）。
+  // ===== 自我审查机制核心（安全版）：基线=已核实事实，永不被自动篡改 =====
+  // bot 只做两件事：
+  //   ① 存活复验：对每条既有记录点开 URL，【仅】判断「是否还活着」(alive/dead/unreachable)，
+  //      绝不改写标题/日期/地点/已核实状态——curl 读不到 SPA 正文 ≠ 记录错误，不能据此降级。
+  //   ② 新增发现：自动爬到的新候选【只作待核实线索】加入，永不自动升格为主列表（不冒充事实）。
   let baseline = { records: [], clues: [] };
   try { baseline = JSON.parse(readFileSync("data/candidates.json", "utf8")); } catch {}
-  const newKeys = new Set(all.map((r) => (r.school || "") + "|" + (r.title || "")));
-  let preserved = 0;
-  for (const b of baseline.records || []) {
-    if (!b || !b.verified) continue;
-    if (b.date && b.date < TODAY) continue; // 过期条目丢弃
-    const k = (b.school || "") + "|" + (b.title || "");
-    if (newKeys.has(k)) continue; // 本次已覆盖，用新值
-    all.push(b);
-    preserved++;
-  }
-  if (preserved) console.log(`✓ 基线保护：保留人工核实条目 ${preserved} 条（未被本次抓取覆盖）`);
+  const baseAll = [...(baseline.records || []), ...(baseline.clues || [])];
 
-  // 人工冻结：baseline.clues 中的「待核实」条目，即使自动抓取判定通过也强制保持待核实，
-  // 并合并历史 clues，避免每日运行把人工降级内容重新误标为已核实。
-  const frozen = new Set((baseline.clues || []).map((c) => (c.school || "") + "|" + (c.title || "") + "|" + (c.url || "")));
-  const frozenTitles = new Set((baseline.clues || []).map((c) => (c.school || "") + "|" + (c.title || "")));
-  const recls = [];
-  for (const r of all) {
-    const key = (r.school || "") + "|" + (r.title || "") + "|" + (r.url || "");
-    const keyT = (r.school || "") + "|" + (r.title || "");
-    if (frozen.has(key) || frozenTitles.has(keyT)) {
-      r.verified = false;
-      r.reason = r.reason || "人工标记待核实：官网/SPA未能确认，已冻结为待核实";
-      clues.push(r);
-    } else {
-      recls.push(r);
+  // 存活检查（轻量）：只取 HTTP 状态 + 是否明确 404/不存在，不解析正文，绝不重抽标题/日期
+  async function livenessCheck(b) {
+    const rec = { ...b };
+    rec.last_checked = TODAY;
+    rec.bot_status = "unreachable";
+    if (!b.url) { rec.bot_status = "no_url"; return rec; }
+    const school = SCHOOLS.find((s) => s.name === b.school) || { name: b.school, domains: b.domain ? [b.domain] : [], roots: [] };
+    const r = await fetchWithFallback(b.url, school);
+    if (r.status === 404 || r.status === 410 ||
+        (r.html && /\b404\b|not found|页面不存在|已删除|找不到该|访问的页面不存在|page not found|页面找不到了/.test(r.html.toLowerCase()))) {
+      rec.bot_status = "dead";
+      rec.dead_reason = "复验发现 404/页面不存在";
+      return rec;
+    }
+    if (!r.html) { rec.bot_status = r.blocked ? "blocked" : "unreachable"; return rec; }
+    rec.bot_status = "alive";
+    return rec;
+  }
+
+  console.log(`开始存活复验基线 ${baseAll.length} 条（仅判存活，不改写已核实字段）…`);
+  const records = [];   // 注意：clues 已在 main() 顶部声明，此处复用
+  const auditDead = [];
+  const CH = 5; // 5 条并发复验
+  for (let i = 0; i < baseAll.length; i += CH) {
+    const chunk = baseAll.slice(i, i + CH);
+    const res = await Promise.all(chunk.map(livenessCheck));
+    for (const rec of res) {
+      const wasVerified = !!rec.verified;
+      if (wasVerified && rec.bot_status !== "dead") {
+        // 基线已核实记录：默认冻结为 human/high，绝不因 curl 读不到正文而降级
+        rec.verified_by = "human";
+        rec.confidence = rec.confidence || "high";
+        records.push(rec);
+      } else if (wasVerified && rec.bot_status === "dead") {
+        // 已核实但链接确已失效：降级为待核实（保留原信息 + 失效标记，供人工复核，不丢数据）
+        rec.verified = false;
+        rec.confidence = "low";
+        rec.reason = "链接已失效(404)，原信息保留待人工复核";
+        auditDead.push({ school: rec.school, title: rec.title, url: rec.url });
+        clues.push(rec);
+      } else {
+        // 原本就是待核实线索：保留，仅补充存活状态
+        clues.push(rec);
+      }
     }
   }
-  // 合并历史 clues（去重，保留人工已标注的待核实）
-  for (const c of (baseline.clues || [])) {
-    const key = (c.school || "") + "|" + (c.title || "") + "|" + (c.url || "");
-    if (!clues.some((x) => (x.school || "") + "|" + (x.title || "") + "|" + (x.url || "") === key)) clues.push(c);
+
+  // ② 自动新增发现：爬到的新候选【只作待核实线索】，且与基线去重，避免无限累积
+  const baseUrls = new Set(baseAll.map((b) => b.url).filter(Boolean));
+  let newClues = 0;
+  for (const r of all) {
+    if (!r.url || baseUrls.has(r.url)) continue;
+    baseUrls.add(r.url);
+    // 模块二·缺失标记：页面无法明确提取的字段留空并标记「缺失」，绝不编造/补全
+    const missing = [];
+    if (!r.date) missing.push("date");
+    if (!r.place) missing.push("place");
+    if (!r.title) missing.push("title");
+    clues.push({
+      ...r, verified: false, confidence: "unverified",
+      reason: r.reason || "自动爬取候选，待人工确认", last_checked: TODAY, bot_status: "auto_discovered",
+      flags: r.flags || [], missing,
+    });
+    newClues++;
+  }
+
+  // ③ 人工冻结：human_overrides.json 永久生效，自动抓取绝不改写
+  let humanApplied = 0;
+  for (const r of [...records, ...clues]) {
+    const ov = HUMAN_OVERRIDES[makeId(r)];
+    if (ov) {
+      r.verified = ov.verified !== undefined ? ov.verified : r.verified;
+      r.confidence = ov.confidence || r.confidence;
+      r.verified_by = "human";
+      r.evidence = ov.evidence || r.evidence;
+      r.note = ov.note || r.note;
+      r.verified_at = TODAY;
+      humanApplied++;
+    }
   }
 
   const payload = {
     updated: new Date().toISOString(),
     today: TODAY,
-    records: recls,         // 已核实（点开详情页确认，含基线保留）
-    clues,                  // 待核实线索（不冒充事实）
+    records,
+    clues,
+    audit: { generatedAt: new Date().toISOString(), drift: auditDead, humanApplied, deadCount: auditDead.length, newClues },
   };
+  clearTimeout(hardTimer);
   writeFileSync("data/candidates.json", JSON.stringify(payload, null, 2));
-  console.log(`✓ candidates.json 写入：已核实 ${all.length} 条，待核实线索 ${clues.length} 条`);
+  console.log(`✓ candidates.json 写入：展示 ${records.length} 条（已核实·人工冻结）| 待核实 ${clues.length} 条 | 失效降级 ${auditDead.length} 条 | 新增线索 ${newClues} 条 | 人工冻结 ${humanApplied} 条`);
 }
 
 main().catch((e) => { console.error("scrape 失败:", e); process.exit(1); });

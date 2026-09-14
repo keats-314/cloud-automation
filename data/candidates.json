@@ -1,7 +1,6 @@
 {
-  "updated": "2026-09-13T10:40:00.000Z",
+  "updated": "2026-09-13T19:37:23.227Z",
   "today": "2026-09-13",
-  "note": "C9 双选会数据基线。2026-09-13 重新核查：records=官网核实过的真实场次；clues=未能在官网核实、来自第三方汇总或 SPA 读不到的场次（看板标「待核实」，不冒充已确认）。每日自动抓取只追加已核实新场次，不删人工条目。",
   "records": [
     {
       "school": "北京大学",
@@ -20,7 +19,11 @@
       "source_type": "official",
       "dateConfidence": "exact",
       "monitoring": false,
-      "verified": true
+      "verified": true,
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "北京大学",
@@ -39,7 +42,11 @@
       "source_type": "official",
       "dateConfidence": "exact",
       "monitoring": false,
-      "verified": true
+      "verified": true,
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "北京大学",
@@ -59,7 +66,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": ""
+      "note": "",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "清华大学",
@@ -79,7 +90,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": ""
+      "note": "",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "清华大学",
@@ -98,7 +113,11 @@
       "source_type": "thirdparty",
       "dateConfidence": "exact",
       "monitoring": false,
-      "verified": true
+      "verified": true,
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "上海交通大学",
@@ -117,7 +136,11 @@
       "source_type": "official",
       "dateConfidence": "exact",
       "monitoring": false,
-      "verified": true
+      "verified": true,
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "上海交通大学",
@@ -136,7 +159,11 @@
       "source_type": "official",
       "dateConfidence": "exact",
       "monitoring": false,
-      "verified": true
+      "verified": true,
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "上海交通大学",
@@ -155,7 +182,11 @@
       "source_type": "official",
       "dateConfidence": "exact",
       "monitoring": false,
-      "verified": true
+      "verified": true,
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "上海交通大学",
@@ -174,7 +205,11 @@
       "source_type": "official",
       "dateConfidence": "exact",
       "monitoring": false,
-      "verified": true
+      "verified": true,
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "浙江大学",
@@ -194,7 +229,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "浙江大学",
@@ -214,7 +253,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "浙江大学",
@@ -234,7 +277,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "浙江大学",
@@ -254,7 +301,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "浙江大学",
@@ -274,7 +325,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "浙江大学",
@@ -294,7 +349,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "浙江大学",
@@ -314,7 +373,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "浙江大学",
@@ -334,7 +397,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "浙江大学",
@@ -354,7 +421,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "浙江大学",
@@ -374,7 +445,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+      "note": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "南京大学",
@@ -394,7 +469,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": ""
+      "note": "",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "南京大学",
@@ -414,7 +493,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "落于《2027届毕业生秋季校园招聘活动安排》官方通知（覆盖本场及 11-14 文/理科专场、11-15 综合第四场）。"
+      "note": "落于《2027届毕业生秋季校园招聘活动安排》官方通知（覆盖本场及 11-14 文/理科专场、11-15 综合第四场）。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "南京大学",
@@ -434,7 +517,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "落于《2026年毕业生秋季大型双选会邀请函》官方通知（覆盖本场及 10-17 鼓楼、10-18 仙林第三场、11-15 综合第四场）。"
+      "note": "落于《2026年毕业生秋季大型双选会邀请函》官方通知（覆盖本场及 10-17 鼓楼、10-18 仙林第三场、11-15 综合第四场）。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "南京大学",
@@ -454,7 +541,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "落于《2026年毕业生秋季大型双选会邀请函》官方通知（覆盖本场及 10-11 苏州、10-18 仙林第三场、11-15 综合第四场）。"
+      "note": "落于《2026年毕业生秋季大型双选会邀请函》官方通知（覆盖本场及 10-11 苏州、10-18 仙林第三场、11-15 综合第四场）。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "南京大学",
@@ -474,7 +565,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "落于《2026年毕业生秋季大型双选会邀请函》官方通知（覆盖本场及 10-11 苏州、10-17 鼓楼、11-15 综合第四场）。"
+      "note": "落于《2026年毕业生秋季大型双选会邀请函》官方通知（覆盖本场及 10-11 苏州、10-17 鼓楼、11-15 综合第四场）。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "南京大学",
@@ -494,7 +589,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "落于《2027届毕业生秋季校园招聘活动安排》官方通知（覆盖本场及 11-14 理科专场、9-19 综合第二场、11-15 综合第四场）。"
+      "note": "落于《2027届毕业生秋季校园招聘活动安排》官方通知（覆盖本场及 11-14 理科专场、9-19 综合第二场、11-15 综合第四场）。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "南京大学",
@@ -514,7 +613,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "落于《2027届毕业生秋季校园招聘活动安排》官方通知（覆盖本场及 11-14 文科专场、9-19 综合第二场、11-15 综合第四场）。"
+      "note": "落于《2027届毕业生秋季校园招聘活动安排》官方通知（覆盖本场及 11-14 文科专场、9-19 综合第二场、11-15 综合第四场）。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "南京大学",
@@ -534,7 +637,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "落于《2026年毕业生秋季大型双选会邀请函》官方通知（覆盖本场及 10-11 苏州、10-17 鼓楼、10-18 仙林第三场）。"
+      "note": "落于《2026年毕业生秋季大型双选会邀请函》官方通知（覆盖本场及 10-11 苏州、10-17 鼓楼、10-18 仙林第三场）。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "中国科学技术大学",
@@ -554,7 +661,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "中科大官网未为本场单开详情页，以下为伯乐校招代发详情页（第三方）。"
+      "note": "中科大官网未为本场单开详情页，以下为伯乐校招代发详情页（第三方）。",
+      "last_checked": "2026-09-13",
+      "bot_status": "blocked",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "中国科学技术大学",
@@ -574,7 +685,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "该官方详情页同时覆盖 9-19 与 10-24 两场中科大站巡回双选会。"
+      "note": "该官方详情页同时覆盖 9-19 与 10-24 两场中科大站巡回双选会。",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "哈尔滨工业大学",
@@ -594,7 +709,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": ""
+      "note": "",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "哈尔滨工业大学",
@@ -614,7 +733,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": ""
+      "note": "",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "哈尔滨工业大学",
@@ -634,7 +757,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": ""
+      "note": "",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "哈尔滨工业大学",
@@ -653,7 +780,11 @@
       "source_type": "thirdparty",
       "dateConfidence": "exact",
       "monitoring": false,
-      "verified": true
+      "verified": true,
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "西安交通大学",
@@ -673,7 +804,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": ""
+      "note": "",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     },
     {
       "school": "西安交通大学",
@@ -693,7 +828,11 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": ""
+      "note": "",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive",
+      "verified_by": "human",
+      "confidence": "high"
     }
   ],
   "clues": [
@@ -709,7 +848,9 @@
       "url": "https://career.tsinghua.edu.cn/",
       "domain": "career.tsinghua.edu.cn",
       "reason": "未能在清华官网核实：career.tsinghua.edu.cn 静态内容未发布这6场院系双选会排期，信息源自第三方秋招汇总。日期地点仅供参考，非官方确认，待官网发布或贴链接后确认。",
-      "source_type": "official"
+      "source_type": "official",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive"
     },
     {
       "school": "清华大学",
@@ -723,7 +864,9 @@
       "url": "https://career.tsinghua.edu.cn/",
       "domain": "career.tsinghua.edu.cn",
       "reason": "未能在清华官网核实：career.tsinghua.edu.cn 静态内容未发布这6场院系双选会排期，信息源自第三方秋招汇总。日期地点仅供参考，非官方确认，待官网发布或贴链接后确认。",
-      "source_type": "official"
+      "source_type": "official",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive"
     },
     {
       "school": "清华大学",
@@ -737,7 +880,9 @@
       "url": "https://career.tsinghua.edu.cn/",
       "domain": "career.tsinghua.edu.cn",
       "reason": "未能在清华官网核实：career.tsinghua.edu.cn 静态内容未发布这6场院系双选会排期，信息源自第三方秋招汇总。日期地点仅供参考，非官方确认，待官网发布或贴链接后确认。",
-      "source_type": "official"
+      "source_type": "official",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive"
     },
     {
       "school": "清华大学",
@@ -751,7 +896,9 @@
       "url": "https://career.tsinghua.edu.cn/",
       "domain": "career.tsinghua.edu.cn",
       "reason": "未能在清华官网核实：career.tsinghua.edu.cn 静态内容未发布这6场院系双选会排期，信息源自第三方秋招汇总。日期地点仅供参考，非官方确认，待官网发布或贴链接后确认。",
-      "source_type": "official"
+      "source_type": "official",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive"
     },
     {
       "school": "清华大学",
@@ -765,7 +912,9 @@
       "url": "https://career.tsinghua.edu.cn/",
       "domain": "career.tsinghua.edu.cn",
       "reason": "未能在清华官网核实：career.tsinghua.edu.cn 静态内容未发布这6场院系双选会排期，信息源自第三方秋招汇总。日期地点仅供参考，非官方确认，待官网发布或贴链接后确认。",
-      "source_type": "official"
+      "source_type": "official",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive"
     },
     {
       "school": "清华大学",
@@ -779,7 +928,9 @@
       "url": "https://career.tsinghua.edu.cn/",
       "domain": "career.tsinghua.edu.cn",
       "reason": "未能在清华官网核实：career.tsinghua.edu.cn 静态内容未发布这6场院系双选会排期，信息源自第三方秋招汇总。日期地点仅供参考，非官方确认，待官网发布或贴链接后确认。",
-      "source_type": "official"
+      "source_type": "official",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive"
     },
     {
       "school": "复旦大学",
@@ -793,7 +944,9 @@
       "url": "https://student.career.fudan.edu.cn/",
       "domain": "student.career.fudan.edu.cn",
       "reason": "未能在复旦官网核实：复旦官网为 SPA 详情读不到，官方来源链接指向首页/第三方代发（点开是大网页）。本场是否举办、日期地点以官网最终发布为准。",
-      "source_type": "official"
+      "source_type": "official",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive"
     },
     {
       "school": "复旦大学",
@@ -807,7 +960,9 @@
       "url": "http://www.zph58.com/shanghai/59812.html",
       "domain": "zph58.com",
       "reason": "未能在复旦官网核实：复旦官网为 SPA 详情读不到，官方来源链接指向首页/第三方代发（点开是大网页）。本场是否举办、日期地点以官网最终发布为准。",
-      "source_type": "thirdparty"
+      "source_type": "thirdparty",
+      "last_checked": "2026-09-13",
+      "bot_status": "blocked"
     },
     {
       "school": "复旦大学",
@@ -821,7 +976,9 @@
       "url": "https://www.bolexiaozhao.com/index.php/Wap/Wap/newsinfo/id/500.html",
       "domain": "bolexiaozhao.com",
       "reason": "未能在复旦官网核实：复旦官网为 SPA 详情读不到，官方来源链接指向首页/第三方代发（点开是大网页）。本场是否举办、日期地点以官网最终发布为准。",
-      "source_type": "thirdparty"
+      "source_type": "thirdparty",
+      "last_checked": "2026-09-13",
+      "bot_status": "blocked"
     },
     {
       "school": "复旦大学",
@@ -835,7 +992,9 @@
       "url": "https://student.career.fudan.edu.cn/",
       "domain": "student.career.fudan.edu.cn",
       "reason": "未能在复旦官网核实：复旦官网为 SPA 详情读不到，官方来源链接指向首页/第三方代发（点开是大网页）。本场是否举办、日期地点以官网最终发布为准。",
-      "source_type": "official"
+      "source_type": "official",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive"
     },
     {
       "school": "上海交通大学",
@@ -849,7 +1008,9 @@
       "url": "https://www.job.sjtu.edu.cn/career/zphxx",
       "domain": "job.sjtu.edu.cn",
       "reason": "未能在上交官网核实：上交就业网暂未为这3场秋季招聘会发布独立详情页（仅4场国家重点行业专场有 view 页），日期地点来自第三方秋招汇总，非官网确认，发布后自动抓取。",
-      "source_type": "official"
+      "source_type": "official",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive"
     },
     {
       "school": "上海交通大学",
@@ -863,7 +1024,9 @@
       "url": "https://www.job.sjtu.edu.cn/career/zphxx",
       "domain": "job.sjtu.edu.cn",
       "reason": "未能在上交官网核实：上交就业网暂未为这3场秋季招聘会发布独立详情页（仅4场国家重点行业专场有 view 页），日期地点来自第三方秋招汇总，非官网确认，发布后自动抓取。",
-      "source_type": "official"
+      "source_type": "official",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive"
     },
     {
       "school": "上海交通大学",
@@ -877,7 +1040,64 @@
       "url": "https://www.job.sjtu.edu.cn/career/zphxx",
       "domain": "job.sjtu.edu.cn",
       "reason": "未能在上交官网核实：上交就业网暂未为这3场秋季招聘会发布独立详情页（仅4场国家重点行业专场有 view 页），日期地点来自第三方秋招汇总，非官网确认，发布后自动抓取。",
-      "source_type": "official"
+      "source_type": "official",
+      "last_checked": "2026-09-13",
+      "bot_status": "alive"
+    },
+    {
+      "school": "中国科学技术大学",
+      "province": "安徽",
+      "url": "https://www.job.ustc.edu.cn/Specialrecruitment/list.aspx",
+      "domain": "www.job.ustc.edu.cn",
+      "from": "https://www.job.ustc.edu.cn/Specialrecruitment/list.aspx",
+      "source": "官方",
+      "source_type": "official",
+      "title": "中国科学技术大学就业信息网",
+      "place": "点：{{item.VenuesName}}</p>",
+      "year": 2026,
+      "is_this_year": true,
+      "stale": false,
+      "date": "2026-01-06",
+      "date_end": "2026-01-06",
+      "verified_by": "auto",
+      "verified_at": "2026-09-13",
+      "last_checked": "2026-09-13",
+      "verified": false,
+      "confidence": "unverified",
+      "reason": "自动爬取候选，待人工确认",
+      "evidence": "官网详情页正文含「专场招聘会」及日期 2026-01-06",
+      "bot_status": "auto_discovered"
+    },
+    {
+      "school": "中国科学技术大学",
+      "province": "安徽",
+      "url": "https://www.job.ustc.edu.cn/Campusdouble/list.aspx",
+      "domain": "www.job.ustc.edu.cn",
+      "from": "https://www.job.ustc.edu.cn/Campusdouble/list.aspx",
+      "source": "官方",
+      "source_type": "official",
+      "title": "中国科学技术大学就业信息网",
+      "place": "点：{{item.VenuesName}}</div></d",
+      "year": 2026,
+      "is_this_year": true,
+      "stale": false,
+      "date": "2026-01-06",
+      "date_end": "2026-01-06",
+      "verified_by": "auto",
+      "verified_at": "2026-09-13",
+      "last_checked": "2026-09-13",
+      "verified": false,
+      "confidence": "unverified",
+      "reason": "自动爬取候选，待人工确认",
+      "evidence": "官网详情页正文含「校园双选会」及日期 2026-01-06",
+      "bot_status": "auto_discovered"
     }
-  ]
+  ],
+  "audit": {
+    "generatedAt": "2026-09-13T19:37:23.227Z",
+    "drift": [],
+    "humanApplied": 0,
+    "deadCount": 0,
+    "newClues": 2
+  }
 }

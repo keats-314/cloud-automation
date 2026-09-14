@@ -119,7 +119,7 @@
     <select id="f-prov"><option value="">全部省份</option></select>
     <select id="f-sch"><option value="">全部高校</option></select>
     <label class="chk"><input type="checkbox" id="f-new"> 只看新增</label>
-    <label class="chk"><input type="checkbox" id="f-verified" checked> 仅看已确认（高置信+人工核实）</label>
+    <label class="chk"><input type="checkbox" id="f-verified" checked> 仅看已确认与计划中</label>
     <label class="chk"><input type="checkbox" id="f-year"> 只看今年（2026）</label>
     <button id="refresh" class="btn">立即刷新</button>
     <select id="f-sort">
@@ -128,7 +128,7 @@
       <option value="school">按高校</option>
     </select>
   </div>
-  <p class="legend">置信度说明：<b style="color:var(--green)">高置信</b>=自动点开该校官网详情页、正文精确匹配此场次标题与日期；<b style="color:#c2410c">需确认</b>=官网来源但自动读取不到正文（SPA）或未精确匹配（合并通知/栏目），需你点开核对；<b style="color:var(--red)">低/待核实</b>=第三方页或首页，未官网确认。<b>人工确认</b>=你/我手动核对并冻结的条目。带「<b style="color:#4338ca">合并通知·多场</b>」徽章的链接点开是多场汇总页，该场次的官方日期已在本行「📌官方证据」中直接给出，无需点开即可核对。带「<b style="color:#0f766e">主办</b>」徽章用于区分同名异主办场次（如清华两场博士博士后巡回会）。默认只显示「高置信+人工确认」，其余见下方🔍自检报告。</p>
+  <p class="legend">置信度说明：<b style="color:var(--green)">高置信</b>=自动点开该校官网详情页、正文精确匹配此场次标题与日期；<b style="color:#c2410c">需确认</b>=官网来源但自动读取不到正文（SPA）或未精确匹配（合并通知/栏目），需你点开核对；<b style="color:var(--red)">低/待核实</b>=第三方页或首页，未官网确认。<b>人工确认</b>=你/我手动核对并冻结的条目。<b>计划中</b>=来源为《活动安排/工作计划》等计划表，非单场既定事实，仅作参考。带「<b style="color:#c2410c">约</b>」=日期仅到月/旬，时间不明确。带「<b style="color:#4338ca">合并通知·多场</b>」徽章的链接点开是多场汇总页，该场次的官方日期已在本行「📌官方证据」中直接给出，无需点开即可核对。带「<b style="color:#0f766e">主办</b>」徽章用于区分同名异主办场次。默认显示「已确认+计划中」。</p>
 
   <table>
     <thead><tr><th>高校</th><th>省份</th><th>双选会 / 招聘会标题</th><th>时间</th><th>地点</th><th>状态</th><th>数据来源</th><th>官方链接</th></tr></thead>
@@ -151,6 +151,7 @@ function esc(s){return (s||"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>
 function statusBadge(r){
   if(r.monitoring) return '<span class="badge b-monitor">监测中</span>';
   const s = r.status;
+  if(s==='计划中') return '<span class="badge b-warn">计划中</span>';
   if(s==='已结束') return '<span class="badge b-stale">已结束</span>';
   if(s==='进行中/即将开始') return '<span class="badge b-verified">进行中/即将开始</span>';
   return '<span class="badge b-approx">日期待确认</span>';
@@ -192,7 +193,7 @@ function render(){
     if(fp && r.province!==fp) return false;
     if(fs && r.school!==fs) return false;
     if(fn && !r.is_new) return false;
-    if(fv && !(r.confidence==='high' || r.verified_by==='human')) return false;
+    if(fv && !(r.verified || r.status==='计划中' || r.confidence==='high' || r.verified_by==='human')) return false;
     if(fy && !r.is_this_year) return false;
     if(q && !(r.school+r.title).toLowerCase().includes(q)) return false;
     return true;
@@ -211,7 +212,7 @@ function render(){
       <td class="sch">${esc(r.school)}</td>
       <td class="prov">${esc(r.province)}</td>
       <td>${esc(r.title)}${r.mergedNotice?' <span class="badge b-merged">合并通知·多场</span>':''}${org?` <span class="badge b-org">主办：${esc(org)}</span>`:''}${r.is_new?' <span class="badge b-new">新增</span>':''}${r.stale?' <span class="badge b-stale">往年/历史</span>':''}${r.evidence?` <div class="evidence">📌 官方证据：${esc(r.evidence)}</div>`:''}${r.note?` <div class="note">${esc(r.note)}</div>`:''}</td>
-      <td class="date">${r.monitoring?'—':esc(r.date)||'<span class="tag-err">未解析</span>'}${!r.monitoring&&r.dateConfidence==='approx'?' <span class="badge b-approx">约</span>':''}</td>
+      <td class="date">${r.monitoring?'—':r.dateConfidence==='approx'&&r.dateNote?esc(r.dateNote)+' <span class="badge b-approx">约</span>':esc(r.date)||'<span class="tag-err">未解析</span>'}${!r.monitoring&&r.dateConfidence==='approx'&&!r.dateNote?' <span class="badge b-approx">约</span>':''}</td>
       <td class="prov">${esc(r.place)||'<span class="tag-err">—</span>'}</td>
       <td>${statusBadge(r)}</td>
       <td>${r.monitoring?'<span class="badge b-monitor">监测中·待核实</span>':r.verified?(r.confidence==='high'?'<span class="badge b-verified">已核实·高置信</span>':r.confidence==='medium'?'<span class="badge b-approx">已核实·需确认</span>':'<span class="badge b-verified">已核实</span>')+(r.verified_by==='human'?' <span class="badge b-seed">人工确认</span>':'')+(r.source_type==='thirdparty'?' <span class="badge b-thirdparty">第三方</span>':r.source_type==='province'?' <span class="badge b-province">省平台</span>':''):'<span class="badge b-unverified">待核实·'+(r.source||'未打开')+'</span>'}${r.drift?' <span class="badge b-stale">复验漂移</span>':''}</td>

@@ -18,15 +18,23 @@ const SEARCH_API_KEY = process.env.SEARCH_API_KEY || "";
 const TODAY = process.env.TODAY || new Date().toISOString().slice(0, 10);
 const THIS_YEAR = +TODAY.slice(0, 4);
 
-// 命中即视为"确实在讲双选会/招聘会"的核心词
-const MEET = ["双选会", "招聘会", "供需见面", "空中双选", "联合招聘", "专场招聘", "就业双选", "校园招聘会"];
+// 命中即视为"确实在讲双选会/招聘会"的核心词（宣讲暨双选会、推介会暨双选会已含"双选会"）
+const MEET = ["双选会", "招聘会", "供需见面", "空中双选", "联合招聘", "专场招聘", "就业双选", "校园招聘会", "推介会"];
 // 锚文本命中的明显非活动页（证明/须知/指南等），直接不收录，避免噪声
 const EXCLUDE_ANCHOR = ["证明", "须知", "指南", "模板", "公示", "声明", "办法", "下载", "表格", "攻略", "系统入口", "登录"];
+// 标题/正文出现这些词，说明是「计划表/活动安排/拟举办」，不是单场既定事实
+const PLAN_MARKS = ["活动安排", "工作安排", "工作计划", "拟举办", "暂定", "预计", "安排表", "双选会安排", "招聘会安排"];
+function isPlanSource(title, text="") {
+  const s = (title + " " + text).toLowerCase();
+  return PLAN_MARKS.some((k) => s.includes(k));
+}
 const FOLLOW = ["招聘", "双选", "宣讲", "通知", "公告", "就业", "招聘会", "双选会"];
 // 强完成态：出现这些词且日期已过的，判定为往届/已结束，不收录
 const STALE_STRONG = ["成功举办", "圆满结束", "圆满落幕", "圆满举办", "顺利举行", "顺利举办", "落下帷幕", "完美收官", "已举办", "已结束", "顺利召开", "回顾展", "已逾"];
 // 内容提日期正则（兼容 2026年9月15日 / 9月15日 / 2026-09-15）
 const DATE_RE = /((\d{4})[.\-/年])?((?:1[0-2]|0?[1-9]))[.\-/月]((?:[12]\d|3[01]|0?[1-9]))日?/g;
+// 模糊日期：2026年9月 / 9月 / 9月下旬 / 10月中旬 / 11月上旬 / 9月底
+const DATE_APPROX_RE = /((\d{4})[年])?((?:1[0-2]|0?[1-9]))月\s*([上下中]旬|[上中下]半月|初|底|末)?/g;
 const PLACE_RE = /(地点|场馆|地址|举办地|地点[:： ]*)[：: ]*([^\s,，。；;]{2,30})/;
 const PLACE_KW = /([\u4e00-\u9fa5]{1,12}(校区|楼|馆|中心|报告厅|会议室|大厅|体育馆|学院))/;
 
@@ -34,9 +42,9 @@ const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 const UA_FULL = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
 const UA_FF = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0";
 const TIMEOUT = 8000;           // 单 URL 超时 8 秒
-const MAX_FOLLOW = 3;           // 每个根URL最多跟 3 个子链接
-const MAX_VERIFY = 10;          // 每校最多核实 10 条候选（覆盖即可，避免无限抓取）
-const SCHOOL_TIMEOUT = 75000;   // 单校整体硬超时 75 秒
+const MAX_FOLLOW = 12;          // 每个根URL最多跟 12 个子链接（招聘日历条目多，需要更多栏目页）
+const MAX_VERIFY = 60;          // 每校最多核实 60 条候选（招聘日历条目多，必须提高上限）
+const SCHOOL_TIMEOUT = 120000;  // 单校整体硬超时 120 秒（栏目多，适当放宽）
 const CONCURRENCY = 5;          // 5 校并发
 const PROFILES = [
   { headers: { "User-Agent": UA, "Accept-Language": "zh-CN,zh;q=0.9" } },
@@ -50,7 +58,9 @@ const PROFILES = [
 const ANTI_MARKS = ["验证码", "captcha", "access denied", "waf", "verify you are human", "人机验证", "安全验证", "防爬", "反爬", "访问过于频繁", "请求被拦截"];
 
 // ===== 自我审查机制：内容比对 + 分级置信度 + 人工冻结 + 复验 =====
-const SPA_SCHOOLS = new Set(["浙江大学", "复旦大学", "哈尔滨工业大学"]); // 已知 SPA/JS渲染校（自动读取不到正文）
+// 已知 SPA/JS渲染校（自动读取不到正文）：哈工大实测为服务端渲染，已从列表移除
+const SPA_SCHOOLS = new Set(["浙江大学", "复旦大学"]);
+
 
 function safeHost(u) { try { return new URL(u).hostname.toLowerCase(); } catch { return ""; } }
 function isListingPath(url) {
@@ -114,14 +124,26 @@ function isAntiCrawl(status, body) {
   return false;
 }
 function extractDate(t) {
-  if (!t) return { date: "", date_end: "", year: "", is_this_year: false, stale: false };
+  if (!t) return { date: "", date_end: "", year: "", is_this_year: false, stale: false, dateConfidence: "missing" };
   const yr = THIS_YEAR;
   const parsed = [...t.matchAll(DATE_RE)]
     .map((m) => { const y = m[2] ? +m[2] : yr; const mo = +m[3], d = +m[4]; return `${y}-${String(mo).padStart(2, "0")}-${String(d).padStart(2, "0")}`; })
     .filter((s) => s >= `${yr - 1}-01-01` && s <= `${yr + 1}-12-31`);
-  if (!parsed.length) return { date: "", date_end: "", year: "", is_this_year: false, stale: false };
-  const date = parsed[0]; const year = +date.slice(0, 4);
-  return { date, date_end: parsed.length > 1 ? parsed[parsed.length - 1] : "", year, is_this_year: year === yr, stale: year < yr };
+  if (parsed.length) {
+    const date = parsed[0]; const year = +date.slice(0, 4);
+    return { date, date_end: parsed.length > 1 ? parsed[parsed.length - 1] : "", year, is_this_year: year === yr, stale: year < yr, dateConfidence: "exact" };
+  }
+  // 模糊日期：仅月到旬，保留不丢弃
+  const approx = [...t.matchAll(DATE_APPROX_RE)]
+    .map((m) => { const y = m[2] ? +m[2] : yr; const mo = +m[3]; const suffix = (m[4] || "").replace(/\s/g, ""); return { y, mo, suffix, raw: `${y}-${String(mo).padStart(2, "0")}` }; })
+    .filter((s) => s.y >= yr - 1 && s.y <= yr + 1);
+  if (approx.length) {
+    const a = approx[0]; const year = a.y;
+    // 用该月1日占位，真实含义是“X月/上中下旬”，前端/构建层按 dateConfidence=approx 显示
+    const date = `${a.raw}-01`;
+    return { date, date_end: "", year, is_this_year: year === yr, stale: year < yr, dateConfidence: "approx", dateNote: `${a.mo}月${a.suffix || ""}` };
+  }
+  return { date: "", date_end: "", year: "", is_this_year: false, stale: false, dateConfidence: "missing" };
 }
 function extractPlace(t) {
   if (!t) return "";
@@ -232,9 +254,13 @@ async function verifyCandidate(cand, school, sourceLabel, sourceType) {
   if (title.length < 6) { const h1 = $("h1").first().text().trim(); title = (h1 || $("title").text().trim() || cand.anchor).replace(/\s+/g, " ").trim(); }
   const place = extractPlace(bodyText);
   const d = extractDate(fullText);
-  const common = { ...base, title, place, year: d.year, is_this_year: d.is_this_year, stale: d.stale, date: d.date, date_end: d.date_end, verified_by: "auto", verified_at: TODAY, last_checked: TODAY };
+  const common = { ...base, title, place, year: d.year, is_this_year: d.is_this_year, stale: d.stale, date: d.date, date_end: d.date_end, dateConfidence: d.dateConfidence, verified_by: "auto", verified_at: TODAY, last_checked: TODAY };
   if (isListingPath(cand.url) && !matched) {
     return { ...common, flags: ["content_inconsistent"], verified: false, confidence: thirdParty ? "low" : "medium", reason: "链接异常（打开为列表/归档页，未精确匹配此场次）", evidence: "" };
+  }
+  // 计划表/活动安排类来源：即使含标题日期，也不算已核实事实，标为 plan 待确认
+  if (isPlanSource(title, fullText)) {
+    return { ...common, flags: ["plan_source"], verified: false, confidence: "medium", reason: "来源为「活动安排/工作计划/拟举办」类计划表，非单场既定事实，仅作计划参考", evidence: "" };
   }
   if (matched && dateOk && !thirdParty) {
     return { ...common, flags: ["content_ok"], verified: true, confidence: "high", reason: "", evidence: `官网详情页正文含「${toks.find((t) => fullText.includes(t))}」及日期 ${d.date}` };
@@ -243,7 +269,10 @@ async function verifyCandidate(cand, school, sourceLabel, sourceType) {
     return { ...common, flags: ["thirdparty_only"], verified: false, confidence: "low", reason: "第三方页含该场次，需人工确认官网", evidence: "" };
   }
   if (matched && !dateOk) {
-    // 模块二·日期缺失：页面含标题但不含该日期，绝不编造，标记缺失待人工补
+    // 模块二·日期缺失/模糊：页面含标题但不含该日期，绝不编造；若有模糊日期则保留为 approx
+    if (d.dateConfidence === "approx") {
+      return { ...common, flags: ["date_approx"], verified: false, confidence: "medium", reason: `页面含该场次标题，仅提取到模糊日期「${d.dateNote || d.date}」，待确认`, evidence: "" };
+    }
     return { ...common, date: "", date_end: "", dateConfidence: "missing", flags: ["date_unconfirmed"], verified: false, confidence: "medium", reason: "页面含该场次标题，但自动未提取到对应日期（已标记缺失，不编造）", evidence: "" };
   }
   return { ...common, flags: ["title_unmatched"], verified: true, confidence: "medium", reason: "官网来源，但未精确匹配标题（疑似合并通知/栏目），需人工确认", evidence: "" };

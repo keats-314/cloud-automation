@@ -47,6 +47,26 @@ function inferSourceType(r) {
   return "thirdparty";
 }
 
+// 状态推断：修正「模糊日期占位日=当月1号」导致往届/过期场次被误判为「日期待确认」的问题。
+// 规则：计划表→计划中；无日期→日期待确认；exact 按真实日判已结束/进行中；
+//       approx 不能用"日"判断，改用"年月"粗判季节——往届年或同一年已过月份→已结束，
+//       当月/未来月→保留「约」徽章，状态置日期待确认（真实日未知，不谎报进行中）。
+function inferStatus({ isPlan, date, dateConfidence }, TODAY) {
+  if (isPlan) return "计划中";
+  if (!date) return "日期待确认";
+  const t = new Date(TODAY + "T00:00:00");
+  const d = new Date(date + "T00:00:00");
+  if (isNaN(d.getTime())) return "日期待确认";
+  if (dateConfidence === "approx") {
+    const ty = t.getFullYear(), tm = t.getMonth() + 1;
+    const y = d.getFullYear(), m = d.getMonth() + 1;
+    if (y < ty) return "已结束";
+    if (y === ty && m < tm) return "已结束";
+    return "日期待确认";
+  }
+  return d < t ? "已结束" : "进行中/即将开始";
+}
+
 function main() {
   // 读 scrape 本次产出（覆盖式，无历史沿用）
   let cand = { records: [], clues: [] };
@@ -59,8 +79,11 @@ function main() {
 
   // ① 已核实（点开详情页确认过的真实场次）→ 主列表
   for (const r of verified) {
-    const status = r.date && r.date < TODAY ? "已结束" : (r.date ? "进行中/即将开始" : "日期待确认");
-    const rec = { ...r, dateConfidence: inferConfidence(r), source_type: inferSourceType(r), monitoring: false, verified: true, is_new: false,
+    // 计划表/活动安排/拟举办：不是既定事实，统一标为「计划中」
+    const isPlan = r.status === "plan" || (r.flags || []).some((f) => f === "plan_source") || /活动安排|工作计划|拟举办|暂定|预计/.test(r.source || r.title || "");
+    const dateConfidence = inferConfidence(r);
+    const status = inferStatus({ isPlan, date: r.date, dateConfidence }, TODAY);
+    const rec = { ...r, dateConfidence, source_type: inferSourceType(r), monitoring: false, verified: true, is_new: false,
       status,
       confidence: r.confidence || "medium", verified_by: r.verified_by || "auto", evidence: r.evidence || "",
       last_checked: r.last_checked || "", drift: !!r.drift, driftReason: r.driftReason || "" };
@@ -86,7 +109,9 @@ function main() {
   for (const c of clues) {
     const k = c.school + "|" + (c.anchor || c.title) + "|" + c.url;
     if (seen.has(k)) continue; seen.add(k);
-    const status = c.date && c.date < TODAY ? "已结束" : (c.date ? "进行中/即将开始" : "日期待确认");
+    const isPlan = c.status === "plan" || (c.flags || []).some((f) => f === "plan_source") || /活动安排|工作计划|拟举办|暂定|预计/.test(c.source || c.title || c.reason || "");
+    const dateConfidence = c.dateConfidence || "approx";
+    const status = inferStatus({ isPlan, date: c.date, dateConfidence }, TODAY);
     dedup.push({
       school: c.school, province: c.province,
       title: c.anchor || c.title || "(未知标题)",
@@ -94,7 +119,7 @@ function main() {
       is_this_year: c.is_this_year !== false, stale: false,
       place: c.place || "", url: c.url || "", domain: c.domain || "",
       from: c.url || "", source: "待核实·" + (c.reason || "未打开"), source_type: c.source_type || "official",
-      dateConfidence: c.dateConfidence || "approx", status, monitoring: false, verified: false,
+      dateConfidence, status, monitoring: false, verified: false,
       confidence: c.confidence || "unverified", verified_by: c.verified_by || "auto",
       evidence: c.evidence || "", last_checked: c.last_checked || "", drift: !!c.drift, driftReason: c.driftReason || "",
       flags: c.flags || [], missing: c.missing || [], bot_status: c.bot_status || "", reason_detail: c.reason || "",

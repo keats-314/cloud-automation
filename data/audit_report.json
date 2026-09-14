@@ -1,14 +1,22 @@
 {
-  "generatedAt": "2026-09-14T04:42:12.493Z",
+  "generatedAt": "2026-09-14T07:09:57.102Z",
   "today": "2026-09-14",
   "expectedTotal": 9,
-  "verifiedCount": 47,
-  "unverifiedCount": 9,
+  "verifiedCount": 66,
+  "unverifiedCount": 10,
   "monitorCount": 0,
   "coveredOfficial": 9,
   "coveredThirdparty": 4,
   "missingSchools": [],
   "bySchool": {
+    "哈尔滨工业大学": {
+      "high": 9,
+      "medium": 0,
+      "low": 0,
+      "unverified": 0,
+      "human": 9,
+      "total": 9
+    },
     "清华大学": {
       "high": 3,
       "medium": 0,
@@ -17,36 +25,44 @@
       "human": 3,
       "total": 9
     },
-    "哈尔滨工业大学": {
-      "high": 4,
+    "中国科学技术大学": {
+      "high": 3,
       "medium": 0,
       "low": 0,
+      "unverified": 3,
+      "human": 3,
+      "total": 6
+    },
+    "浙江大学": {
+      "high": 0,
+      "medium": 15,
+      "low": 0,
       "unverified": 0,
-      "human": 4,
-      "total": 4
+      "human": 0,
+      "total": 15
     },
     "复旦大学": {
-      "high": 4,
+      "high": 5,
       "medium": 0,
       "low": 0,
       "unverified": 1,
-      "human": 4,
-      "total": 5
+      "human": 5,
+      "total": 6
     },
-    "中国科学技术大学": {
-      "high": 2,
-      "medium": 0,
-      "low": 0,
-      "unverified": 2,
-      "human": 2,
-      "total": 4
-    },
-    "南京大学": {
-      "high": 8,
+    "北京大学": {
+      "high": 10,
       "medium": 0,
       "low": 0,
       "unverified": 0,
-      "human": 8,
+      "human": 10,
+      "total": 10
+    },
+    "南京大学": {
+      "high": 5,
+      "medium": 3,
+      "low": 0,
+      "unverified": 0,
+      "human": 5,
       "total": 8
     },
     "上海交通大学": {
@@ -64,25 +80,161 @@
       "unverified": 0,
       "human": 2,
       "total": 2
-    },
-    "北京大学": {
-      "high": 3,
-      "medium": 0,
-      "low": 0,
-      "unverified": 0,
-      "human": 3,
-      "total": 3
-    },
-    "浙江大学": {
-      "high": 10,
-      "medium": 0,
-      "low": 0,
-      "unverified": 0,
-      "human": 10,
-      "total": 10
     }
   },
   "needsConfirm": [
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生招聘启动系列活动（定向邀约）",
+      "date": "2026-09-15",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification",
+      "confidence": "medium",
+      "reason": "浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘活动安排》"
+    },
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生重点单位招聘活动周（定向邀约）",
+      "date": "2026-09-15",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification",
+      "confidence": "medium",
+      "reason": "浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘活动安排》"
+    },
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生空中宣讲会（线上）",
+      "date": "2026-09-15",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification",
+      "confidence": "medium",
+      "reason": "浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘活动安排》"
+    },
+    {
+      "school": "南京大学",
+      "title": "南京大学2027届毕业生秋季双选会·综合性专场（第二场）",
+      "date": "2026-09-19",
+      "url": "https://job.nju.edu.cn/#!/more/news_detail/420",
+      "confidence": "medium",
+      "reason": "落于《2027届毕业生秋季校园招聘活动安排》官方通知（覆盖本场及 11-14 文/理科专场、11-15 综合第四场）。"
+    },
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生重点国企央企/世界500强企业宣讲会（定向邀约）",
+      "date": "2026-09-21",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification",
+      "confidence": "medium",
+      "reason": "浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘活动安排》"
+    },
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生网上预约专场宣讲会",
+      "date": "2026-09-28",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification",
+      "confidence": "medium",
+      "reason": "浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘活动安排》"
+    },
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生综合双选会（秋冬第一场）",
+      "date": "2026-10-11",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification/detail?xwid=58A9F918CA9CDA6BE0653A68DD0E9B18",
+      "confidence": "medium",
+      "reason": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+    },
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生重点行业专场双选会·信息类专场",
+      "date": "2026-10-16",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification/detail?xwid=58A9F918CA9CDA6BE0653A68DD0E9B18",
+      "confidence": "medium",
+      "reason": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+    },
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生重点地域专场双选会·中西部地区",
+      "date": "2026-10-21",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification/detail?xwid=58A9F918CA9CDA6BE0653A68DD0E9B18",
+      "confidence": "medium",
+      "reason": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+    },
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生重点行业专场双选会·大健康领域专场",
+      "date": "2026-10-24",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification/detail?xwid=58A9F918CA9CDA6BE0653A68DD0E9B18",
+      "confidence": "medium",
+      "reason": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+    },
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生重点地域专场双选会·粤港澳地区",
+      "date": "2026-10-27",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification/detail?xwid=58A9F918CA9CDA6BE0653A68DD0E9B18",
+      "confidence": "medium",
+      "reason": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+    },
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生综合双选会（秋冬第二场）",
+      "date": "2026-10-28",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification/detail?xwid=58A9F918CA9CDA6BE0653A68DD0E9B18",
+      "confidence": "medium",
+      "reason": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+    },
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生综合双选会（秋冬第三场）",
+      "date": "2026-11-11",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification/detail?xwid=58A9F918CA9CDA6BE0653A68DD0E9B18",
+      "confidence": "medium",
+      "reason": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+    },
+    {
+      "school": "南京大学",
+      "title": "南京大学2027届毕业生秋季双选会·文科专场",
+      "date": "2026-11-14",
+      "url": "https://job.nju.edu.cn/#!/more/news_detail/420",
+      "confidence": "medium",
+      "reason": "落于《2027届毕业生秋季校园招聘活动安排》官方通知（覆盖本场及 11-14 理科专场、9-19 综合第二场、11-15 综合第四场）。"
+    },
+    {
+      "school": "南京大学",
+      "title": "南京大学2027届毕业生秋季双选会·理科专场",
+      "date": "2026-11-14",
+      "url": "https://job.nju.edu.cn/#!/more/news_detail/420",
+      "confidence": "medium",
+      "reason": "落于《2027届毕业生秋季校园招聘活动安排》官方通知（覆盖本场及 11-14 文科专场、9-19 综合第二场、11-15 综合第四场）。"
+    },
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生重点行业专场双选会·高校科研院所专场",
+      "date": "2026-11-18",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification/detail?xwid=58A9F918CA9CDA6BE0653A68DD0E9B18",
+      "confidence": "medium",
+      "reason": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+    },
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生综合双选会（秋冬第四场）",
+      "date": "2026-12-09",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification/detail?xwid=58A9F918CA9CDA6BE0653A68DD0E9B18",
+      "confidence": "medium",
+      "reason": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+    },
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生冬季空中双选会（线上）",
+      "date": "2026-12-16",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification/detail?xwid=58A9F918CA9CDA6BE0653A68DD0E9B18",
+      "confidence": "medium",
+      "reason": "浙大将本场与另外 9 场秋冬双选会汇总发布于《2027届毕业生秋冬校园招聘工作安排》一条官方通知（2026-08-10）。下方为该通知的官方详情页，点开即见完整排期与本校 10 场双选会安排。"
+    },
+    {
+      "school": "中国科学技术大学",
+      "title": "“海量职位，乘风而来”Job One 网络招聘会前程无忧线上双选会 中国科学技术大学专属求职活动 2025-09-12",
+      "date": "2025-09-12",
+      "url": "https://www.job.ustc.edu.cn/famousRecommand/info.aspx?itemid=11259",
+      "confidence": "unverified",
+      "reason": "待核实·自动爬取候选，待人工确认"
+    },
     {
       "school": "中国科学技术大学",
       "title": "中国科学技术大学就业信息网",
@@ -158,9 +310,64 @@
   ],
   "bigWebpage": [
     {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生招聘启动系列活动（定向邀约）",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification"
+    },
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生重点单位招聘活动周（定向邀约）",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification"
+    },
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生空中宣讲会（线上）",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification"
+    },
+    {
+      "school": "北京大学",
+      "title": "百万英才汇南粤 2026年N城联动秋季招聘活动（北京大学专场）",
+      "url": "https://scc.pku.edu.cn/frontpage/pku/html/recruitmentFairListAll.html?date=2026-09"
+    },
+    {
+      "school": "北京大学",
+      "title": "中国航天科技集团有限公司2027届校园招聘会",
+      "url": "https://scc.pku.edu.cn/frontpage/pku/html/recruitmentFairListAll.html?date=2026-09"
+    },
+    {
+      "school": "北京大学",
+      "title": "经开区2026年“才耀亦城”秋季校园招聘会——北京大学站",
+      "url": "https://scc.pku.edu.cn/frontpage/pku/html/recruitmentFairListAll.html?date=2026-09"
+    },
+    {
+      "school": "北京大学",
+      "title": "网络空间部队2026年直招定向军官招录宣讲暨双选会",
+      "url": "https://scc.pku.edu.cn/frontpage/pku/html/recruitmentFairListAll.html?date=2026-09"
+    },
+    {
+      "school": "北京大学",
+      "title": "中核集团2027届专场招聘会",
+      "url": "https://scc.pku.edu.cn/frontpage/pku/html/recruitmentFairListAll.html?date=2026-09"
+    },
+    {
+      "school": "北京大学",
+      "title": "中国兵器工业集团2026年秋季校园招聘会",
+      "url": "https://scc.pku.edu.cn/frontpage/pku/html/recruitmentFairListAll.html?date=2026-09"
+    },
+    {
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生重点国企央企/世界500强企业宣讲会（定向邀约）",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification"
+    },
+    {
       "school": "复旦大学",
       "title": "上海博士、博士后高层次人才巡回校园招聘会·复旦大学站",
       "url": "https://student.career.fudan.edu.cn/"
+    },
+    {
+      "school": "北京大学",
+      "title": "中国人民保险集团2027届校园招聘宣讲&双选会",
+      "url": "https://scc.pku.edu.cn/frontpage/pku/html/recruitmentFairListAll.html?date=2026-09"
     },
     {
       "school": "复旦大学",
@@ -168,19 +375,9 @@
       "url": "https://career.fudan.edu.cn/#/fair/2027-jiangan"
     },
     {
-      "school": "上海交通大学",
-      "title": "上海交通大学2027届毕业生秋季招聘会·生物医药专场",
-      "url": "https://www.job.sjtu.edu.cn/career/zphxx"
-    },
-    {
-      "school": "上海交通大学",
-      "title": "上海交通大学2027届毕业生秋季招聘会·集成电路专场",
-      "url": "https://www.job.sjtu.edu.cn/career/zphxx"
-    },
-    {
-      "school": "上海交通大学",
-      "title": "上海交通大学2027届毕业生秋季招聘会·文科专场",
-      "url": "https://www.job.sjtu.edu.cn/career/zphxx"
+      "school": "浙江大学",
+      "title": "浙江大学2027届毕业生网上预约专场宣讲会",
+      "url": "https://www.career.zju.edu.cn/jyweb/notification"
     },
     {
       "school": "上海交通大学",
@@ -198,6 +395,11 @@
       "url": "https://www.job.sjtu.edu.cn/career/zphxx"
     },
     {
+      "school": "上海交通大学",
+      "title": "上海交通大学2027届毕业生秋季招聘会·生物医药专场",
+      "url": "https://www.job.sjtu.edu.cn/career/zphxx"
+    },
+    {
       "school": "复旦大学",
       "title": "复旦大学2027届毕业生秋季招聘会·综合场（邯郸路校区）",
       "url": "https://career.fudan.edu.cn/#/fair/2027-autumn-hedalu"
@@ -206,6 +408,21 @@
       "school": "上海交通大学",
       "title": "上海交通大学2027届毕业生秋季招聘会·综合场（第二场）",
       "url": "https://www.job.sjtu.edu.cn/career/zphxx"
+    },
+    {
+      "school": "上海交通大学",
+      "title": "上海交通大学2027届毕业生秋季招聘会·集成电路专场",
+      "url": "https://www.job.sjtu.edu.cn/career/zphxx"
+    },
+    {
+      "school": "上海交通大学",
+      "title": "上海交通大学2027届毕业生秋季招聘会·文科专场",
+      "url": "https://www.job.sjtu.edu.cn/career/zphxx"
+    },
+    {
+      "school": "复旦大学",
+      "title": "百万英才汇南粤 2026年N城联动秋季招聘活动（复旦大学专场）",
+      "url": "https://career.fudan.edu.cn"
     },
     {
       "school": "中国科学技术大学",

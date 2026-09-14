@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-14T04:37:12.119Z",
+  "generatedAt": "2026-09-14T04:42:12.493Z",
   "today": "2026-09-14",
   "expectedTotal": 9,
-  "verifiedCount": 39,
-  "unverifiedCount": 17,
+  "verifiedCount": 47,
+  "unverifiedCount": 9,
   "monitorCount": 0,
   "coveredOfficial": 9,
   "coveredThirdparty": 4,
@@ -159,43 +159,13 @@
   "bigWebpage": [
     {
       "school": "复旦大学",
-      "title": "复旦大学2027届毕业生秋季综合招聘会（江湾校区专场）",
-      "url": "https://career.fudan.edu.cn/#/fair/2027-jiangan"
-    },
-    {
-      "school": "复旦大学",
-      "title": "复旦大学2027届毕业生秋季招聘会·综合场（邯郸路校区）",
-      "url": "https://career.fudan.edu.cn/#/fair/2027-autumn-hedalu"
-    },
-    {
-      "school": "中国科学技术大学",
-      "title": "中国科学技术大学就业信息网",
-      "url": "https://www.job.ustc.edu.cn/Specialrecruitment/list.aspx"
-    },
-    {
-      "school": "中国科学技术大学",
-      "title": "中国科学技术大学就业信息网",
-      "url": "https://www.job.ustc.edu.cn/Campusdouble/list.aspx"
-    },
-    {
-      "school": "清华大学",
-      "title": "清华大学集成电路学院2027届毕业生校园招聘会（双选会）",
-      "url": "https://career.tsinghua.edu.cn/"
-    },
-    {
-      "school": "清华大学",
-      "title": "清华大学机械-工业工程-材料-化学-化工五院联合秋季专场招聘会（双选会）",
-      "url": "https://career.tsinghua.edu.cn/"
-    },
-    {
-      "school": "复旦大学",
       "title": "上海博士、博士后高层次人才巡回校园招聘会·复旦大学站",
       "url": "https://student.career.fudan.edu.cn/"
     },
     {
-      "school": "清华大学",
-      "title": "清华大学自动化系2027届毕业生校园招聘会（双选会）",
-      "url": "https://career.tsinghua.edu.cn/"
+      "school": "复旦大学",
+      "title": "复旦大学2027届毕业生秋季综合招聘会（江湾校区专场）",
+      "url": "https://career.fudan.edu.cn/#/fair/2027-jiangan"
     },
     {
       "school": "上海交通大学",
@@ -218,11 +188,6 @@
       "url": "https://www.job.sjtu.edu.cn/career/zphxx"
     },
     {
-      "school": "清华大学",
-      "title": "清华大学精密仪器系2027届毕业生校园招聘会（双选会）",
-      "url": "https://career.tsinghua.edu.cn/"
-    },
-    {
       "school": "上海交通大学",
       "title": "上海交通大学2027届毕业生秋季招聘会·重点区域专场",
       "url": "https://www.job.sjtu.edu.cn/career/zphxx"
@@ -233,9 +198,44 @@
       "url": "https://www.job.sjtu.edu.cn/career/zphxx"
     },
     {
+      "school": "复旦大学",
+      "title": "复旦大学2027届毕业生秋季招聘会·综合场（邯郸路校区）",
+      "url": "https://career.fudan.edu.cn/#/fair/2027-autumn-hedalu"
+    },
+    {
       "school": "上海交通大学",
       "title": "上海交通大学2027届毕业生秋季招聘会·综合场（第二场）",
       "url": "https://www.job.sjtu.edu.cn/career/zphxx"
+    },
+    {
+      "school": "中国科学技术大学",
+      "title": "中国科学技术大学就业信息网",
+      "url": "https://www.job.ustc.edu.cn/Specialrecruitment/list.aspx"
+    },
+    {
+      "school": "中国科学技术大学",
+      "title": "中国科学技术大学就业信息网",
+      "url": "https://www.job.ustc.edu.cn/Campusdouble/list.aspx"
+    },
+    {
+      "school": "清华大学",
+      "title": "清华大学集成电路学院2027届毕业生校园招聘会（双选会）",
+      "url": "https://career.tsinghua.edu.cn/"
+    },
+    {
+      "school": "清华大学",
+      "title": "清华大学机械-工业工程-材料-化学-化工五院联合秋季专场招聘会（双选会）",
+      "url": "https://career.tsinghua.edu.cn/"
+    },
+    {
+      "school": "清华大学",
+      "title": "清华大学自动化系2027届毕业生校园招聘会（双选会）",
+      "url": "https://career.tsinghua.edu.cn/"
+    },
+    {
+      "school": "清华大学",
+      "title": "清华大学精密仪器系2027届毕业生校园招聘会（双选会）",
+      "url": "https://career.tsinghua.edu.cn/"
     },
     {
       "school": "清华大学",

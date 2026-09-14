@@ -258,9 +258,10 @@ async function verifyCandidate(cand, school, sourceLabel, sourceType) {
   if (isListingPath(cand.url) && !matched) {
     return { ...common, flags: ["content_inconsistent"], verified: false, confidence: thirdParty ? "low" : "medium", reason: "链接异常（打开为列表/归档页，未精确匹配此场次）", evidence: "" };
   }
-  // 计划表/活动安排类来源：即使含标题日期，也不算已核实事实，标为 plan 待确认
+  // 排期表/工作安排类来源（如《2026年秋季学期校园招聘工作安排》《活动安排》）：
+  // 非官宣"某企业几号"、不是正式确定的事 → 移出抓取范围，不纳入看板（既往下传递也不落库）
   if (isPlanSource(title, fullText)) {
-    return { ...common, flags: ["plan_source"], verified: false, confidence: "medium", reason: "来源为「活动安排/工作计划/拟举办」类计划表，非单场既定事实，仅作计划参考", evidence: "" };
+    return { ...common, flags: ["plan_source"], verified: false, confidence: "medium", reason: "来源为「活动安排/工作计划/拟举办」类排期表，非官宣具体企业、非正式确定事实，已移出抓取范围", evidence: "" };
   }
   if (matched && dateOk && !thirdParty) {
     return { ...common, flags: ["content_ok"], verified: true, confidence: "high", reason: "", evidence: `官网详情页正文含「${toks.find((t) => fullText.includes(t))}」及日期 ${d.date}` };
@@ -446,6 +447,7 @@ async function main() {
     const chunk = baseAll.slice(i, i + CH);
     const res = await Promise.all(chunk.map(livenessCheck));
     for (const rec of res) {
+      if ((rec.flags || []).includes("plan_source")) continue; // 排期表/工作安排类：移出范围，不纳入看板（也不进线索）
       const wasVerified = !!rec.verified;
       if (wasVerified && rec.bot_status !== "dead") {
         // 基线已核实记录：默认冻结为 human/high，绝不因 curl 读不到正文而降级
@@ -471,6 +473,7 @@ async function main() {
   let newClues = 0;
   for (const r of all) {
     if (!r.url || baseUrls.has(r.url)) continue;
+    if ((r.flags || []).includes("plan_source")) continue; // 排期表/工作安排类：移出抓取范围，不落库
     baseUrls.add(r.url);
     // 模块二·缺失标记：页面无法明确提取的字段留空并标记「缺失」，绝不编造/补全
     const missing = [];

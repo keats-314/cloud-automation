@@ -98,7 +98,7 @@ function main() {
 
   // ② 去重（同校+同标题+同URL 合并，保留已核实优先）
   const seen = new Set();
-  const dedup = [];
+  let dedup = [];
   // 先把已核实放进去
   for (const r of records) {
     const k = r.school + "|" + r.title + "|" + r.url;
@@ -124,6 +124,14 @@ function main() {
       evidence: c.evidence || "", last_checked: c.last_checked || "", drift: !!c.drift, driftReason: c.driftReason || "",
       flags: c.flags || [], missing: c.missing || [], bot_status: c.bot_status || "", reason_detail: c.reason || "",
     });
+  }
+
+  // ③-b 排期表/工作安排类来源移出抓取范围（非官宣具体企业、非正式确定事实，不纳入看板）。
+  //     放在去重之后、完整性兜底之前：移出后这些校若无其他确认场次则回退为「监测中」，而非假装有计划。
+  {
+    const _before = dedup.length;
+    dedup = dedup.filter((r) => !((r.flags || []).includes("plan_source")));
+    if (dedup.length !== _before) console.log(`  ※ 已移出范围（排期表/工作安排类来源）${_before - dedup.length} 条，不纳入看板`);
   }
 
   // ④ 覆盖完整性兜底：应覆盖校中既无已核实也无待核实 → 注入「监测中·待核实」

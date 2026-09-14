@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-14T04:25:29.102Z",
+  "generatedAt": "2026-09-14T04:37:12.119Z",
   "today": "2026-09-14",
   "expectedTotal": 9,
   "verifiedCount": 39,
-  "unverifiedCount": 16,
+  "unverifiedCount": 17,
   "monitorCount": 0,
   "coveredOfficial": 9,
   "coveredThirdparty": 4,
@@ -26,12 +26,12 @@
       "total": 4
     },
     "复旦大学": {
-      "high": 3,
+      "high": 4,
       "medium": 0,
       "low": 0,
-      "unverified": 5,
-      "human": 3,
-      "total": 8
+      "unverified": 1,
+      "human": 4,
+      "total": 5
     },
     "中国科学技术大学": {
       "high": 2,
@@ -50,12 +50,12 @@
       "total": 8
     },
     "上海交通大学": {
-      "high": 4,
+      "high": 11,
       "medium": 0,
       "low": 0,
-      "unverified": 3,
-      "human": 4,
-      "total": 7
+      "unverified": 0,
+      "human": 11,
+      "total": 11
     },
     "西安交通大学": {
       "high": 2,
@@ -108,22 +108,6 @@
       "reason": "待核实·自动爬取候选，待人工确认"
     },
     {
-      "school": "复旦大学",
-      "title": "复旦大学2027届毕业生秋季招聘会·江湾校区场（9月下旬）",
-      "date": "2026-09",
-      "url": "http://www.zph58.com/shanghai/59812.html",
-      "confidence": "unverified",
-      "reason": "待核实·未能在复旦官网核实：复旦官网为 SPA 详情读不到，官方来源链接指向首页/第三方代发（点开是大网页）。本场是否举办、日期地点以官网最终发布为准。"
-    },
-    {
-      "school": "复旦大学",
-      "title": "全国重点高校2027届毕业生秋季巡回招聘会·复旦大学专场",
-      "date": "2026-09-16",
-      "url": "https://www.bolexiaozhao.com/index.php/Wap/Wap/newsinfo/id/500.html",
-      "confidence": "unverified",
-      "reason": "待核实·未能在复旦官网核实：复旦官网为 SPA 详情读不到，官方来源链接指向首页/第三方代发（点开是大网页）。本场是否举办、日期地点以官网最终发布为准。"
-    },
-    {
       "school": "清华大学",
       "title": "清华大学集成电路学院2027届毕业生校园招聘会（双选会）",
       "date": "2026-09-19",
@@ -140,14 +124,6 @@
       "reason": "待核实·未能在清华官网核实：career.tsinghua.edu.cn 静态内容未发布这6场院系双选会排期，信息源自第三方秋招汇总。日期地点仅供参考，非官方确认，待官网发布或贴链接后确认。"
     },
     {
-      "school": "复旦大学",
-      "title": "上海博士、博士后高层次人才巡回校园招聘会·复旦大学站",
-      "date": "2026-09-23",
-      "url": "https://student.career.fudan.edu.cn/",
-      "confidence": "unverified",
-      "reason": "待核实·未能在复旦官网核实：复旦官网为 SPA 详情读不到，官方来源链接指向首页/第三方代发（点开是大网页）。本场是否举办、日期地点以官网最终发布为准。"
-    },
-    {
       "school": "清华大学",
       "title": "清华大学自动化系2027届毕业生校园招聘会（双选会）",
       "date": "2026-09-24",
@@ -162,38 +138,6 @@
       "url": "https://career.tsinghua.edu.cn/",
       "confidence": "unverified",
       "reason": "待核实·未能在清华官网核实：career.tsinghua.edu.cn 静态内容未发布这6场院系双选会排期，信息源自第三方秋招汇总。日期地点仅供参考，非官方确认，待官网发布或贴链接后确认。"
-    },
-    {
-      "school": "上海交通大学",
-      "title": "上海交通大学2027届毕业生秋季招聘会·重点区域专场",
-      "date": "2026-10-13",
-      "url": "https://www.job.sjtu.edu.cn/career/zphxx",
-      "confidence": "unverified",
-      "reason": "待核实·未能在上交官网核实：上交就业网暂未为这3场秋季招聘会发布独立详情页（仅4场国家重点行业专场有 view 页），日期地点来自第三方秋招汇总，非官网确认，发布后自动抓取。"
-    },
-    {
-      "school": "上海交通大学",
-      "title": "上海交通大学2027届毕业生秋季招聘会·综合场",
-      "date": "2026-10-14",
-      "url": "https://www.job.sjtu.edu.cn/career/zphxx",
-      "confidence": "unverified",
-      "reason": "待核实·未能在上交官网核实：上交就业网暂未为这3场秋季招聘会发布独立详情页（仅4场国家重点行业专场有 view 页），日期地点来自第三方秋招汇总，非官网确认，发布后自动抓取。"
-    },
-    {
-      "school": "复旦大学",
-      "title": "复旦大学2027届毕业生秋季招聘会·综合场",
-      "date": "2026-10-21",
-      "url": "https://student.career.fudan.edu.cn/",
-      "confidence": "unverified",
-      "reason": "待核实·未能在复旦官网核实：复旦官网为 SPA 详情读不到，官方来源链接指向首页/第三方代发（点开是大网页）。本场是否举办、日期地点以官网最终发布为准。"
-    },
-    {
-      "school": "上海交通大学",
-      "title": "上海交通大学2027届毕业生秋季招聘会·综合场（第二场）",
-      "date": "2026-10-21",
-      "url": "https://www.job.sjtu.edu.cn/career/zphxx",
-      "confidence": "unverified",
-      "reason": "待核实·未能在上交官网核实：上交就业网暂未为这3场秋季招聘会发布独立详情页（仅4场国家重点行业专场有 view 页），日期地点来自第三方秋招汇总，非官网确认，发布后自动抓取。"
     },
     {
       "school": "清华大学",
@@ -254,6 +198,26 @@
       "url": "https://career.tsinghua.edu.cn/"
     },
     {
+      "school": "上海交通大学",
+      "title": "上海交通大学2027届毕业生秋季招聘会·生物医药专场",
+      "url": "https://www.job.sjtu.edu.cn/career/zphxx"
+    },
+    {
+      "school": "上海交通大学",
+      "title": "上海交通大学2027届毕业生秋季招聘会·集成电路专场",
+      "url": "https://www.job.sjtu.edu.cn/career/zphxx"
+    },
+    {
+      "school": "上海交通大学",
+      "title": "上海交通大学2027届毕业生秋季招聘会·文科专场",
+      "url": "https://www.job.sjtu.edu.cn/career/zphxx"
+    },
+    {
+      "school": "上海交通大学",
+      "title": "上海交通大学2027届毕业生硕博专场招聘会（新质生产力·新工科）",
+      "url": "https://www.job.sjtu.edu.cn/career/zphxx"
+    },
+    {
       "school": "清华大学",
       "title": "清华大学精密仪器系2027届毕业生校园招聘会（双选会）",
       "url": "https://career.tsinghua.edu.cn/"
@@ -267,11 +231,6 @@
       "school": "上海交通大学",
       "title": "上海交通大学2027届毕业生秋季招聘会·综合场",
       "url": "https://www.job.sjtu.edu.cn/career/zphxx"
-    },
-    {
-      "school": "复旦大学",
-      "title": "复旦大学2027届毕业生秋季招聘会·综合场",
-      "url": "https://student.career.fudan.edu.cn/"
     },
     {
       "school": "上海交通大学",

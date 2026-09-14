@@ -134,6 +134,14 @@ function main() {
     if (dedup.length !== _before) console.log(`  ※ 已移出范围（排期表/工作安排类来源）${_before - dedup.length} 条，不纳入看板`);
   }
 
+  // ③-c 无确定时间信息不呈现：dateConfidence 不是 exact 的记录（含模糊日期、缺日期）移出看板。
+  //     「监测中」占位不是真实场次，保留。旧规则「时间不明确要标出来、不能删」已作废。
+  {
+    const _before = dedup.length;
+    dedup = dedup.filter((r) => r.monitoring || r.dateConfidence === "exact");
+    if (dedup.length !== _before) console.log(`  ※ 已移出范围（无确定时间信息）${_before - dedup.length} 条，不呈现`);
+  }
+
   // ④ 覆盖完整性兜底：应覆盖校中既无已核实也无待核实 → 注入「监测中·待核实」
   const covered = new Set(dedup.filter((r) => !r.monitoring).map((r) => r.school));
   let monitorInjected = 0;

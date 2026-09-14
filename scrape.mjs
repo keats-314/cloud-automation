@@ -503,6 +503,15 @@ async function main() {
     }
   }
 
+  // 无确定时间信息不呈现：dateConfidence !== "exact" 的记录/线索直接丢弃（含模糊日期、缺日期）
+  {
+    const beforeRec = records.length, beforeClue = clues.length;
+    records = records.filter((r) => r.dateConfidence === "exact");
+    clues = clues.filter((c) => c.dateConfidence === "exact");
+    const dropped = (beforeRec - records.length) + (beforeClue - clues.length);
+    if (dropped) console.log(`  ※ 无确定时间信息，移出 ${beforeRec - records.length} 条记录 + ${beforeClue - clues.length} 条线索`);
+  }
+
   const payload = {
     updated: new Date().toISOString(),
     today: TODAY,

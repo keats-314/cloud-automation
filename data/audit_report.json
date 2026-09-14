@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-14T02:37:42.540Z",
+  "generatedAt": "2026-09-14T03:29:07.573Z",
   "today": "2026-09-14",
   "expectedTotal": 9,
   "verifiedCount": 35,
-  "unverifiedCount": 15,
+  "unverifiedCount": 16,
   "monitorCount": 0,
   "coveredOfficial": 8,
   "coveredThirdparty": 3,
@@ -79,9 +79,9 @@
       "high": 0,
       "medium": 0,
       "low": 0,
-      "unverified": 4,
+      "unverified": 5,
       "human": 0,
-      "total": 4
+      "total": 5
     }
   },
   "needsConfirm": [
@@ -98,6 +98,14 @@
       "title": "中国科学技术大学就业信息网",
       "date": "2026-01-06",
       "url": "https://www.job.ustc.edu.cn/Campusdouble/list.aspx",
+      "confidence": "unverified",
+      "reason": "待核实·自动爬取候选，待人工确认"
+    },
+    {
+      "school": "复旦大学",
+      "title": "复旦大学2026届毕业生春季综合招聘会即将举行",
+      "date": "2026-03-17",
+      "url": "https://news.fudan.edu.cn/2026/0317/c45a148427/page.htm",
       "confidence": "unverified",
       "reason": "待核实·自动爬取候选，待人工确认"
     },

@@ -99,7 +99,7 @@
     {
       "school": "清华大学",
       "province": "北京",
-      "title": "2026年秋季全国博士、博士后高层次人才巡回签约洽谈会·清华大学站",
+      "title": "2026年秋季全国博士、博士后高层次人才巡回签约洽谈会·清华大学站（中研博硕）",
       "date": "2026-09-12",
       "date_end": "",
       "year": 2026,
@@ -117,7 +117,9 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "organizer": "中研博硕英才网",
+      "evidence": "大会时间：2026年9月12日(星期六 14:00-17:00)｜来源：清华学生职业发展指导中心官方页（中研博硕英才网）"
     },
     {
       "school": "上海交通大学",
@@ -233,7 +235,8 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜综合双选会（秋冬第一场）：2026年10月11日下午"
     },
     {
       "school": "浙江大学",
@@ -257,7 +260,8 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜重点行业专场双选会（信息类专场）：2026年10月16日下午"
     },
     {
       "school": "浙江大学",
@@ -281,7 +285,8 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜重点地域专场双选会（中西部地区）：2026年10月21日下午"
     },
     {
       "school": "浙江大学",
@@ -305,7 +310,8 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜重点行业专场双选会（大健康领域专场）：2026年10月24日下午"
     },
     {
       "school": "浙江大学",
@@ -329,7 +335,8 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜重点地域专场双选会（粤港澳地区）：2026年10月27日下午"
     },
     {
       "school": "浙江大学",
@@ -353,7 +360,8 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜综合双选会（秋冬第二场）：2026年10月28日下午"
     },
     {
       "school": "浙江大学",
@@ -377,7 +385,8 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜综合双选会（秋冬第三场）：2026年11月11日下午"
     },
     {
       "school": "浙江大学",
@@ -401,7 +410,8 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜重点行业专场双选会（高校科研院所专场）：2026年11月18日下午"
     },
     {
       "school": "浙江大学",
@@ -425,7 +435,8 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜综合双选会（秋冬第四场）：2026年12月09日下午"
     },
     {
       "school": "浙江大学",
@@ -449,7 +460,8 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜冬季空中双选会（线上）：2026年12月16日-30日"
     },
     {
       "school": "南京大学",
@@ -473,7 +485,9 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "南京大学2026年科教报国·高校院所双选会：9月18日(周五)，仙林校区（来源：南大官方双选会邀请函）",
+      "organizer": "南京大学学生就业指导中心"
     },
     {
       "school": "南京大学",
@@ -497,7 +511,9 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "来源：南京大学学生就业指导中心《2027届毕业生秋季校园招聘活动安排》通知（2026-08-20）｜大型双选会（第二场·综合性专场）：9月19日(周六)，仙林校区",
+      "organizer": "南京大学学生就业指导中心"
     },
     {
       "school": "南京大学",
@@ -521,7 +537,9 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "来源：南京大学学生就业指导中心《2026年毕业生秋季大型双选会邀请函》（news_detail/488）｜10月份第一场（大型综合性专场·苏州校区）：10月11日(周日)",
+      "organizer": "南京大学学生就业指导中心"
     },
     {
       "school": "南京大学",
@@ -545,7 +563,9 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "来源：南京大学学生就业指导中心《2026年毕业生秋季大型双选会邀请函》（news_detail/488）｜10月份第二场（鼓楼校区）：10月17日(周六)",
+      "organizer": "南京大学学生就业指导中心"
     },
     {
       "school": "南京大学",
@@ -569,7 +589,9 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "来源：南京大学学生就业指导中心《2026年毕业生秋季大型双选会邀请函》（news_detail/488）｜10月份第三场（仙林校区）：10月18日(周日)",
+      "organizer": "南京大学学生就业指导中心"
     },
     {
       "school": "南京大学",
@@ -593,7 +615,9 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "来源：南京大学学生就业指导中心《2027届毕业生秋季校园招聘活动安排》通知（2026-08-20）｜11月第二、三场（文科专场、理科专场）：11月14日(周六)，仙林校区",
+      "organizer": "南京大学学生就业指导中心"
     },
     {
       "school": "南京大学",
@@ -617,7 +641,9 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "来源：南京大学学生就业指导中心《2027届毕业生秋季校园招聘活动安排》通知（2026-08-20）｜11月第二、三场（文科专场、理科专场）：11月14日(周六)，仙林校区",
+      "organizer": "南京大学学生就业指导中心"
     },
     {
       "school": "南京大学",
@@ -641,7 +667,9 @@
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
-      "confidence": "high"
+      "confidence": "high",
+      "evidence": "来源：南京大学学生就业指导中心《2027届毕业生秋季校园招聘活动安排》通知（2026-08-20）｜11月第四场（综合性专场）：11月15日(周日)，仙林校区",
+      "organizer": "南京大学学生就业指导中心"
     },
     {
       "school": "中国科学技术大学",
@@ -833,6 +861,31 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high"
+    },
+    {
+      "school": "清华大学",
+      "title": "2026年秋季全国博士、博士后高层次人才巡回签约洽谈会·清华大学站（高博·新质引擎）",
+      "date": "2026-10-14",
+      "dateConfidence": "exact",
+      "year": 2027,
+      "is_this_year": true,
+      "stale": false,
+      "place": "清华大学",
+      "url": "https://career.cic.tsinghua.edu.cn/xsglxt/f/jyxt/anony/showZwxx?zpxxid=558338298",
+      "domain": "career.cic.tsinghua.edu.cn",
+      "from": "https://career.cic.tsinghua.edu.cn/xsglxt/f/jyxt/anony/showZwxx?zpxxid=558338298",
+      "source": "清华大学学生职业发展指导中心 官方页（高博人才·新质引擎）",
+      "source_type": "official",
+      "verified": true,
+      "verified_by": "human",
+      "confidence": "high",
+      "bot_status": "alive",
+      "last_checked": "2026-09-14",
+      "organizer": "高博人才科技(湖北)有限公司",
+      "evidence": "招聘会时间：2026年10月14日(星期三 14:00-17:00)｜来源：清华学生职业发展指导中心官方页（高博人才·新质引擎）",
+      "note": "与「中研博硕」9-12 清华站为不同主办方的两场同名巡回会，注意区分",
+      "flags": [],
+      "missing": []
     }
   ],
   "clues": [

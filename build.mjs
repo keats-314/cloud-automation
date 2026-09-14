@@ -67,6 +67,12 @@ function main() {
     records.push(rec);
   }
 
+  // ①-b 合并通知检测：同一 URL 被多条已核实记录共用 → 说明该链接是多场汇总页（点开看到全部），
+  //     需在看板显式标注"合并通知·多场"，避免用户以为点开是单场。
+  const _urlCount = {};
+  for (const r of records) if (r.url) _urlCount[r.url] = (_urlCount[r.url] || 0) + 1;
+  for (const r of records) if (r.url && _urlCount[r.url] > 1) r.mergedNotice = true;
+
   // ② 去重（同校+同标题+同URL 合并，保留已核实优先）
   const seen = new Set();
   const dedup = [];

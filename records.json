@@ -1,31 +1,29 @@
 {
-  "updated": "2026-09-14T03:29:07.574Z",
+  "updated": "2026-09-14T04:25:29.103Z",
   "today": "2026-09-14",
-  "total": 51,
-  "verifiedCount": 35,
+  "total": 55,
+  "verifiedCount": 39,
   "unverifiedCount": 16,
   "monitorCount": 0,
   "expectedTotal": 9,
   "audit": {
-    "generatedAt": "2026-09-14T03:29:07.573Z",
+    "generatedAt": "2026-09-14T04:25:29.102Z",
     "today": "2026-09-14",
     "expectedTotal": 9,
-    "verifiedCount": 35,
+    "verifiedCount": 39,
     "unverifiedCount": 16,
     "monitorCount": 0,
-    "coveredOfficial": 8,
-    "coveredThirdparty": 3,
-    "missingSchools": [
-      "复旦大学"
-    ],
+    "coveredOfficial": 9,
+    "coveredThirdparty": 4,
+    "missingSchools": [],
     "bySchool": {
       "清华大学": {
-        "high": 2,
+        "high": 3,
         "medium": 0,
         "low": 0,
         "unverified": 6,
-        "human": 2,
-        "total": 8
+        "human": 3,
+        "total": 9
       },
       "哈尔滨工业大学": {
         "high": 4,
@@ -34,6 +32,14 @@
         "unverified": 0,
         "human": 4,
         "total": 4
+      },
+      "复旦大学": {
+        "high": 3,
+        "medium": 0,
+        "low": 0,
+        "unverified": 5,
+        "human": 3,
+        "total": 8
       },
       "中国科学技术大学": {
         "high": 2,
@@ -82,14 +88,6 @@
         "unverified": 0,
         "human": 10,
         "total": 10
-      },
-      "复旦大学": {
-        "high": 0,
-        "medium": 0,
-        "low": 0,
-        "unverified": 5,
-        "human": 0,
-        "total": 5
       }
     },
     "needsConfirm": [
@@ -224,6 +222,16 @@
     ],
     "bigWebpage": [
       {
+        "school": "复旦大学",
+        "title": "复旦大学2027届毕业生秋季综合招聘会（江湾校区专场）",
+        "url": "https://career.fudan.edu.cn/#/fair/2027-jiangan"
+      },
+      {
+        "school": "复旦大学",
+        "title": "复旦大学2027届毕业生秋季招聘会·综合场（邯郸路校区）",
+        "url": "https://career.fudan.edu.cn/#/fair/2027-autumn-hedalu"
+      },
+      {
         "school": "中国科学技术大学",
         "title": "中国科学技术大学就业信息网",
         "url": "https://www.job.ustc.edu.cn/Specialrecruitment/list.aspx"
@@ -297,7 +305,7 @@
     {
       "school": "清华大学",
       "province": "北京",
-      "title": "2026年秋季全国博士、博士后高层次人才巡回签约洽谈会·清华大学站",
+      "title": "2026年秋季全国博士、博士后高层次人才巡回签约洽谈会·清华大学站（中研博硕）",
       "date": "2026-09-12",
       "date_end": "",
       "year": 2026,
@@ -316,9 +324,10 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "organizer": "中研博硕英才网",
+      "evidence": "大会时间：2026年9月12日(星期六 14:00-17:00)｜来源：清华学生职业发展指导中心官方页（中研博硕英才网）",
       "is_new": false,
       "status": "已结束",
-      "evidence": "",
       "drift": false,
       "driftReason": ""
     },
@@ -345,9 +354,40 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：哈尔滨工业大学就业网 官方详情页（career.hit.edu.cn）｜中国能源建设集团2027全球校园招聘宣讲会&双选会：宣讲会时间 2026-09-15 14:00-16:00，地点 活动中心101",
+      "organizer": "中国能源建设股份有限公司",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
+      "drift": false,
+      "driftReason": ""
+    },
+    {
+      "school": "复旦大学",
+      "title": "伯乐校招·全国重点高校2027届毕业生秋季巡回招聘会·复旦大学专场",
+      "date": "2026-09-16",
+      "dateConfidence": "exact",
+      "year": 2027,
+      "is_this_year": true,
+      "stale": false,
+      "place": "光华楼学生广场",
+      "url": "https://www.bolexiaozhao.com/index.php/Wap/Wap/newsinfo/id/500.html",
+      "domain": "bolexiaozhao.com",
+      "from": "https://www.bolexiaozhao.com/",
+      "source": "伯乐校招 官方页（bolexiaozhao.com）",
+      "source_type": "thirdparty",
+      "verified": true,
+      "verified_by": "human",
+      "confidence": "high",
+      "bot_status": "alive",
+      "last_checked": "2026-09-14",
+      "organizer": "伯乐校招（承办）",
+      "evidence": "来源：伯乐校招 官方页（bolexiaozhao.com）｜复旦大学专场：会议时间 2026年09月16日(周三) 09:00-12:00，地点 光华楼学生广场",
+      "note": "第三方（伯乐校招）巡回会，非复旦官方主办；日期取自伯乐官方页",
+      "flags": [],
+      "missing": [],
+      "monitoring": false,
+      "is_new": false,
+      "status": "进行中/即将开始",
       "drift": false,
       "driftReason": ""
     },
@@ -374,9 +414,10 @@
       "bot_status": "blocked",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：伯乐校招 第三方代发详情页（bolexiaozhao.com）｜全国重点高校2027届毕业生秋季巡回招聘会·中国科学技术大学专场：会议时间 2026-09-17 09:30-13:30，地点 中国科学技术大学；主办 中科大就业指导服务中心，承办 伯乐校招",
+      "organizer": "中国科学技术大学就业指导服务中心（主办）·伯乐校招（承办）",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
       "driftReason": ""
     },
@@ -403,9 +444,10 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "南京大学2026年科教报国·高校院所双选会：9月18日(周五)，仙林校区（来源：南大官方双选会邀请函）",
+      "organizer": "南京大学学生就业指导中心",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
       "driftReason": ""
     },
@@ -432,11 +474,13 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：南京大学学生就业指导中心《2027届毕业生秋季校园招聘活动安排》通知（2026-08-20）｜大型双选会（第二场·综合性专场）：9月19日(周六)，仙林校区",
+      "organizer": "南京大学学生就业指导中心",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
-      "driftReason": ""
+      "driftReason": "",
+      "mergedNotice": true
     },
     {
       "school": "中国科学技术大学",
@@ -456,14 +500,15 @@
       "dateConfidence": "exact",
       "monitoring": false,
       "verified": true,
-      "note": "该官方详情页同时覆盖 9-19 与 10-24 两场中科大站巡回双选会。",
+      "note": "官方详情页（中研博硕）确认本场 9-19；该页未提 10-24 第二场，若需请另行核实",
       "last_checked": "2026-09-14",
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：中国科学技术大学就业信息网 官方详情页（job.ustc.edu.cn）｜2026年秋季全国博士、博士后高层次人才巡回签约洽谈会—中国科学技术大学站：大会时间 2026-09-19 周六 14:30-17:00，地点 中国科学技术大学",
+      "organizer": "中研博硕英才网",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
       "driftReason": ""
     },
@@ -489,9 +534,10 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：上海交通大学学生就业服务和职业发展中心 官方详情页（job.sjtu.edu.cn）｜高端制造专场：举办时间 2026-09-20 13:30-16:00，地点 闵行校区学生中心D200多功能厅",
+      "organizer": "上海交通大学学生就业服务和职业发展中心",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
       "driftReason": ""
     },
@@ -517,9 +563,11 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：云校招平台 第三方详情页（hr.bysjy.com.cn）｜“链接人才 驱动未来”2026年秋季全国重点高校毕业生巡回招聘面试会（综合场次·哈工大站）：2026-09-20 14:30-17:30，地点 哈尔滨工业大学一校区；主办方：四川奔向未来商务信息咨询有限公司",
+      "organizer": "四川奔向未来商务信息咨询有限公司",
+      "note": "第三方巡回招聘会（云校招平台代发），非哈工大官方主办；日期取自云校招详情页",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
       "driftReason": ""
     },
@@ -545,9 +593,10 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：上海交通大学学生就业服务和职业发展中心 官方详情页｜航空航天专场：举办时间 2026-09-21 09:30-12:00，地点 闵行校区学生中心D200多功能厅",
+      "organizer": "上海交通大学学生就业服务和职业发展中心",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
       "driftReason": ""
     },
@@ -574,9 +623,10 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：哈尔滨工业大学就业网 官方详情页｜中国航发2027届校园招聘（双选会）：宣讲会时间 2026-09-21 09:00-12:00，地点 活动中心101",
+      "organizer": "中国航发哈尔滨东安发动机有限公司",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
       "driftReason": ""
     },
@@ -603,9 +653,10 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：西安交通大学就业信息网 官方邀请函（job.xjtu.edu.cn）｜西安交通大学第九届“千家单位 万名学子”综合类双选会（2026年秋季）：时间 2026-09-21 10:00，地点 创新港校区西迁大道",
+      "organizer": "西安交通大学",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
       "driftReason": ""
     },
@@ -631,9 +682,10 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：上海交通大学学生就业服务和职业发展中心 官方详情页｜船舶海洋专场：举办时间 2026-09-22 09:30-12:00，地点 闵行校区船建学院木兰楼",
+      "organizer": "上海交通大学学生就业服务和职业发展中心",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
       "driftReason": ""
     },
@@ -659,9 +711,10 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：上海交通大学学生就业服务和职业发展中心 官方详情页｜电子信息专场：举办时间 2026-09-22 13:30-16:00，地点 闵行校区电院群楼东侧长廊",
+      "organizer": "上海交通大学学生就业服务和职业发展中心",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
       "driftReason": ""
     },
@@ -688,9 +741,10 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：哈尔滨工业大学就业网 官方详情页｜军事科学院秋季校园招聘会（双选会）：宣讲会时间 2026-09-22 09:00-11:00，地点 活动中心214",
+      "organizer": "军事科学院军事智能研究院",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
       "driftReason": ""
     },
@@ -716,9 +770,39 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：北京大学学生就业指导服务中心 官方邀请函（io.scc.pku.edu.cn）｜北京大学2027届毕业生“新质生产力”双选会·集成电路专场：举办时间 2026年09月23日 14:00-17:00，地点 北京大学校内",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
+      "drift": false,
+      "driftReason": ""
+    },
+    {
+      "school": "复旦大学",
+      "title": "复旦大学2027届毕业生秋季综合招聘会（江湾校区专场）",
+      "date": "2026-09-28",
+      "dateConfidence": "approx",
+      "year": 2027,
+      "is_this_year": true,
+      "stale": false,
+      "place": "江湾校区中心广场（杨浦区淞沪路2005号）",
+      "url": "https://career.fudan.edu.cn/#/fair/2027-jiangan",
+      "domain": "career.fudan.edu.cn",
+      "from": "https://career.fudan.edu.cn/",
+      "source": "复旦大学学生就业指导中心 官方招聘会邀请函（江湾校区专场）",
+      "source_type": "official",
+      "verified": true,
+      "verified_by": "human",
+      "confidence": "high",
+      "bot_status": "alive",
+      "last_checked": "2026-09-14",
+      "organizer": "复旦大学学生就业指导中心",
+      "evidence": "来源：复旦大学官方招聘会邀请函（江湾校区专场）｜活动时间：2026年9月下旬，地点 复旦大学江湾校区中心广场（杨浦区淞沪路2005号）",
+      "note": "官方仅写“9月下旬”，具体日期待确认；复旦就业网 SPA 无法直连核对",
+      "flags": [],
+      "missing": [],
+      "monitoring": false,
+      "is_new": false,
+      "status": "进行中/即将开始",
       "drift": false,
       "driftReason": ""
     },
@@ -745,11 +829,12 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜综合双选会（秋冬第一场）：2026年10月11日下午",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
-      "driftReason": ""
+      "driftReason": "",
+      "mergedNotice": true
     },
     {
       "school": "南京大学",
@@ -774,9 +859,41 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：南京大学学生就业指导中心《2026年毕业生秋季大型双选会邀请函》（news_detail/488）｜10月份第一场（大型综合性专场·苏州校区）：10月11日(周日)",
+      "organizer": "南京大学学生就业指导中心",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
+      "drift": false,
+      "driftReason": "",
+      "mergedNotice": true
+    },
+    {
+      "school": "清华大学",
+      "title": "2026年秋季全国博士、博士后高层次人才巡回签约洽谈会·清华大学站（高博·新质引擎）",
+      "date": "2026-10-14",
+      "dateConfidence": "exact",
+      "year": 2027,
+      "is_this_year": true,
+      "stale": false,
+      "place": "清华大学",
+      "url": "https://career.cic.tsinghua.edu.cn/xsglxt/f/jyxt/anony/showZwxx?zpxxid=558338298",
+      "domain": "career.cic.tsinghua.edu.cn",
+      "from": "https://career.cic.tsinghua.edu.cn/xsglxt/f/jyxt/anony/showZwxx?zpxxid=558338298",
+      "source": "清华大学学生职业发展指导中心 官方页（高博人才·新质引擎）",
+      "source_type": "official",
+      "verified": true,
+      "verified_by": "human",
+      "confidence": "high",
+      "bot_status": "alive",
+      "last_checked": "2026-09-14",
+      "organizer": "高博人才科技(湖北)有限公司",
+      "evidence": "招聘会时间：2026年10月14日(星期三 14:00-17:00)｜来源：清华学生职业发展指导中心官方页（高博人才·新质引擎）",
+      "note": "与「中研博硕」9-12 清华站为不同主办方的两场同名巡回会，注意区分",
+      "flags": [],
+      "missing": [],
+      "monitoring": false,
+      "is_new": false,
+      "status": "进行中/即将开始",
       "drift": false,
       "driftReason": ""
     },
@@ -803,11 +920,12 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜重点行业专场双选会（信息类专场）：2026年10月16日下午",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
-      "driftReason": ""
+      "driftReason": "",
+      "mergedNotice": true
     },
     {
       "school": "南京大学",
@@ -832,11 +950,13 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：南京大学学生就业指导中心《2026年毕业生秋季大型双选会邀请函》（news_detail/488）｜10月份第二场（鼓楼校区）：10月17日(周六)",
+      "organizer": "南京大学学生就业指导中心",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
-      "driftReason": ""
+      "driftReason": "",
+      "mergedNotice": true
     },
     {
       "school": "西安交通大学",
@@ -861,9 +981,10 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：西安交通大学就业信息网 官方邀请函｜陕西省2026年医药卫生类毕业生秋季双选会：会议时间 2026-10-17 09:00-16:00，地点 西安交通大学雁塔校区生活区体育场（朱雀大街102号）",
+      "organizer": "陕西省教育厅·陕西省人力资源和社会保障厅（主办）·西安交通大学（承办）",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
       "driftReason": ""
     },
@@ -890,11 +1011,13 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：南京大学学生就业指导中心《2026年毕业生秋季大型双选会邀请函》（news_detail/488）｜10月份第三场（仙林校区）：10月18日(周日)",
+      "organizer": "南京大学学生就业指导中心",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
-      "driftReason": ""
+      "driftReason": "",
+      "mergedNotice": true
     },
     {
       "school": "浙江大学",
@@ -919,9 +1042,40 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜重点地域专场双选会（中西部地区）：2026年10月21日下午",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
+      "drift": false,
+      "driftReason": "",
+      "mergedNotice": true
+    },
+    {
+      "school": "复旦大学",
+      "title": "复旦大学2027届毕业生秋季招聘会·综合场（邯郸路校区）",
+      "date": "2026-10-21",
+      "dateConfidence": "exact",
+      "year": 2027,
+      "is_this_year": true,
+      "stale": false,
+      "place": "邯郸路校区（杨浦区邯郸路220号）",
+      "url": "https://career.fudan.edu.cn/#/fair/2027-autumn-hedalu",
+      "domain": "career.fudan.edu.cn",
+      "from": "https://career.fudan.edu.cn/",
+      "source": "复旦大学学生就业指导中心 官方招聘会邀请函（引自上海校园招聘会汇总页 021zhaopinhui.cn）",
+      "source_type": "official",
+      "verified": true,
+      "verified_by": "human",
+      "confidence": "high",
+      "bot_status": "alive",
+      "last_checked": "2026-09-14",
+      "organizer": "复旦大学学生就业指导中心",
+      "evidence": "来源：复旦大学官方招聘会邀请函（引自上海校园招聘会汇总页 021zhaopinhui.cn）｜复旦大学2027届毕业生秋季招聘会-综合场：时间 2026年10月21日 09:00-12:00，地址 复旦大学邯郸路校区（杨浦区邯郸路220号）",
+      "note": "复旦就业网为 SPA，官网正文无法自动核对；日期取自引用复旦官方邀请函的汇总页，建议点开核对",
+      "flags": [],
+      "missing": [],
+      "monitoring": false,
+      "is_new": false,
+      "status": "进行中/即将开始",
       "drift": false,
       "driftReason": ""
     },
@@ -948,9 +1102,10 @@
       "bot_status": "blocked",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：北京高校大学生就业创业指导中心 官方详情页（jobs.bjbys.net.cn）｜“京彩就业”北京大学2027届毕业生专场双选会（央国企·事业单位专场）：双选会时间 2026年10月22日 14:00-16:30，地点 北京大学邱德拔体育馆北二层",
+      "organizer": "北京高校大学生就业创业指导中心×北京大学",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
       "driftReason": ""
     },
@@ -977,11 +1132,12 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜重点行业专场双选会（大健康领域专场）：2026年10月24日下午",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
-      "driftReason": ""
+      "driftReason": "",
+      "mergedNotice": true
     },
     {
       "school": "浙江大学",
@@ -1006,11 +1162,12 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜重点地域专场双选会（粤港澳地区）：2026年10月27日下午",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
-      "driftReason": ""
+      "driftReason": "",
+      "mergedNotice": true
     },
     {
       "school": "浙江大学",
@@ -1035,11 +1192,12 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜综合双选会（秋冬第二场）：2026年10月28日下午",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
-      "driftReason": ""
+      "driftReason": "",
+      "mergedNotice": true
     },
     {
       "school": "清华大学",
@@ -1092,9 +1250,9 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：北京大学学生就业指导服务中心 官方详情页（scc.pku.edu.cn）｜北京大学医学部2027届毕业生秋季就业双选会：举办时间 2026年11月01日 14:00-17:00，地点 医学部校区",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
       "driftReason": ""
     },
@@ -1121,11 +1279,12 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜综合双选会（秋冬第三场）：2026年11月11日下午",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
-      "driftReason": ""
+      "driftReason": "",
+      "mergedNotice": true
     },
     {
       "school": "南京大学",
@@ -1150,11 +1309,13 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：南京大学学生就业指导中心《2027届毕业生秋季校园招聘活动安排》通知（2026-08-20）｜11月第二、三场（文科专场、理科专场）：11月14日(周六)，仙林校区",
+      "organizer": "南京大学学生就业指导中心",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
-      "driftReason": ""
+      "driftReason": "",
+      "mergedNotice": true
     },
     {
       "school": "南京大学",
@@ -1179,11 +1340,13 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：南京大学学生就业指导中心《2027届毕业生秋季校园招聘活动安排》通知（2026-08-20）｜11月第二、三场（文科专场、理科专场）：11月14日(周六)，仙林校区",
+      "organizer": "南京大学学生就业指导中心",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
-      "driftReason": ""
+      "driftReason": "",
+      "mergedNotice": true
     },
     {
       "school": "南京大学",
@@ -1208,11 +1371,13 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：南京大学学生就业指导中心《2027届毕业生秋季校园招聘活动安排》通知（2026-08-20）｜11月第四场（综合性专场）：11月15日(周日)，仙林校区",
+      "organizer": "南京大学学生就业指导中心",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
-      "driftReason": ""
+      "driftReason": "",
+      "mergedNotice": true
     },
     {
       "school": "浙江大学",
@@ -1237,11 +1402,12 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜重点行业专场双选会（高校科研院所专场）：2026年11月18日下午",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
-      "driftReason": ""
+      "driftReason": "",
+      "mergedNotice": true
     },
     {
       "school": "浙江大学",
@@ -1266,11 +1432,12 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜综合双选会（秋冬第四场）：2026年12月09日下午",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
-      "driftReason": ""
+      "driftReason": "",
+      "mergedNotice": true
     },
     {
       "school": "浙江大学",
@@ -1295,11 +1462,12 @@
       "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
+      "evidence": "来源：浙江大学就业指导与服务中心《2027届毕业生秋冬校园招聘工作安排》官方排期表（2026-08-10）｜冬季空中双选会（线上）：2026年12月16日-30日",
       "is_new": false,
       "status": "进行中/即将开始",
-      "evidence": "",
       "drift": false,
-      "driftReason": ""
+      "driftReason": "",
+      "mergedNotice": true
     },
     {
       "school": "中国科学技术大学",

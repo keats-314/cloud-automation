@@ -377,7 +377,7 @@ async function main() {
   const HARD_TOTAL_MS = 300000; // 5 分钟
   const hardTimer = setTimeout(() => { console.error("⛔ 抓取超过硬上限 5 分钟，强制退出（保留已有结果）"); process.exit(2); }, HARD_TOTAL_MS);
   const all = [];           // 所有核实通过的记录
-  const clues = [];         // 待核实（点不开/页面无内容）线索
+  let clues = [];         // 待核实（点不开/页面无内容）线索
   const perSchool = {};
 
   console.log(`开始检索 ${SCHOOLS.length} 校（官网直抓 + ${SEARCH_API_KEY ? SEARCH_PROVIDER + " 搜索兜底" : "无搜索key"}），并发 ${CONCURRENCY} 校/单校硬超时 ${SCHOOL_TIMEOUT / 1000}s…`);
@@ -440,7 +440,7 @@ async function main() {
   }
 
   console.log(`开始存活复验基线 ${baseAll.length} 条（仅判存活，不改写已核实字段）…`);
-  const records = [];   // 注意：clues 已在 main() 顶部声明，此处复用
+  let records = [];   // 注意：clues 已在 main() 顶部声明，此处复用
   const auditDead = [];
   const CH = 5; // 5 条并发复验
   for (let i = 0; i < baseAll.length; i += CH) {

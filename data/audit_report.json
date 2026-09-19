@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-18T03:19:18.611Z",
-  "today": "2026-09-18",
+  "generatedAt": "2026-09-19T03:15:07.498Z",
+  "today": "2026-09-19",
   "expectedTotal": 9,
   "verifiedCount": 39,
-  "unverifiedCount": 2,
+  "unverifiedCount": 3,
   "monitorCount": 1,
   "coveredOfficial": 8,
   "coveredThirdparty": 4,
@@ -71,9 +71,9 @@
       "high": 2,
       "medium": 0,
       "low": 0,
-      "unverified": 0,
+      "unverified": 1,
       "human": 2,
-      "total": 2
+      "total": 3
     },
     "浙江大学": {
       "high": 0,
@@ -98,6 +98,14 @@
       "title": "中国科学技术大学就业信息网",
       "date": "2026-01-06",
       "url": "https://www.job.ustc.edu.cn/Specialrecruitment/list.aspx",
+      "confidence": "unverified",
+      "reason": "待核实·自动爬取候选，待人工确认"
+    },
+    {
+      "school": "西安交通大学",
+      "title": "西安交通大学第九届“千家单位 万名学子”综合类双选会（2026年秋季）预告",
+      "date": "2026-09-18",
+      "url": "https://oa.xjtu.edu.cn/zxgg_index.jsp#",
       "confidence": "unverified",
       "reason": "待核实·自动爬取候选，待人工确认"
     }
@@ -152,6 +160,11 @@
       "school": "中国科学技术大学",
       "title": "中国科学技术大学就业信息网",
       "url": "https://www.job.ustc.edu.cn/Specialrecruitment/list.aspx"
+    },
+    {
+      "school": "西安交通大学",
+      "title": "西安交通大学第九届“千家单位 万名学子”综合类双选会（2026年秋季）预告",
+      "url": "https://oa.xjtu.edu.cn/zxgg_index.jsp#"
     }
   ],
   "linkAnomalies": [],

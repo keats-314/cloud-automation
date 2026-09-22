@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-22T03:25:16.445Z",
+  "updated": "2026-09-22T16:02:16.413Z",
   "today": "2026-09-22",
   "records": [
     {
@@ -70,7 +70,7 @@
       "verified": true,
       "note": "",
       "last_checked": "2026-09-22",
-      "bot_status": "blocked",
+      "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
       "evidence": "来源：北京高校大学生就业创业指导中心 官方详情页（jobs.bjbys.net.cn）｜“京彩就业”北京大学2027届毕业生专场双选会（央国企·事业单位专场）：双选会时间 2026年10月22日 14:00-16:30，地点 北京大学邱德拔体育馆北二层",
@@ -96,7 +96,7 @@
       "verified": true,
       "note": "",
       "last_checked": "2026-09-22",
-      "bot_status": "blocked",
+      "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high"
     },
@@ -144,7 +144,7 @@
       "monitoring": false,
       "verified": true,
       "last_checked": "2026-09-22",
-      "bot_status": "unreachable",
+      "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
       "evidence": "来源：上海交通大学学生就业服务和职业发展中心 官方详情页（job.sjtu.edu.cn）｜高端制造专场：举办时间 2026-09-20 13:30-16:00，地点 闵行校区学生中心D200多功能厅",
@@ -169,7 +169,7 @@
       "monitoring": false,
       "verified": true,
       "last_checked": "2026-09-22",
-      "bot_status": "unreachable",
+      "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
       "evidence": "来源：上海交通大学学生就业服务和职业发展中心 官方详情页｜航空航天专场：举办时间 2026-09-21 09:30-12:00，地点 闵行校区学生中心D200多功能厅",
@@ -194,7 +194,7 @@
       "monitoring": false,
       "verified": true,
       "last_checked": "2026-09-22",
-      "bot_status": "unreachable",
+      "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
       "evidence": "来源：上海交通大学学生就业服务和职业发展中心 官方详情页｜船舶海洋专场：举办时间 2026-09-22 09:30-12:00，地点 闵行校区船建学院木兰楼",
@@ -219,7 +219,7 @@
       "monitoring": false,
       "verified": true,
       "last_checked": "2026-09-22",
-      "bot_status": "unreachable",
+      "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
       "evidence": "来源：上海交通大学学生就业服务和职业发展中心 官方详情页｜电子信息专场：举办时间 2026-09-22 13:30-16:00，地点 闵行校区电院群楼东侧长廊",
@@ -1108,7 +1108,7 @@
     }
   ],
   "audit": {
-    "generatedAt": "2026-09-22T03:25:16.445Z",
+    "generatedAt": "2026-09-22T16:02:16.414Z",
     "drift": [],
     "humanApplied": 0,
     "deadCount": 0,

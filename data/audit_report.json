@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-30T04:06:04.702Z",
-  "today": "2026-09-30",
+  "generatedAt": "2026-10-01T04:17:26.500Z",
+  "today": "2026-10-01",
   "expectedTotal": 9,
-  "verifiedCount": 40,
+  "verifiedCount": 41,
   "unverifiedCount": 3,
   "monitorCount": 1,
   "coveredOfficial": 8,
@@ -12,12 +12,12 @@
   ],
   "bySchool": {
     "哈尔滨工业大学": {
-      "high": 10,
+      "high": 11,
       "medium": 0,
       "low": 0,
       "unverified": 0,
-      "human": 10,
-      "total": 10
+      "human": 11,
+      "total": 11
     },
     "清华大学": {
       "high": 3,

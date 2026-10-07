@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-06T05:00:03.002Z",
-  "today": "2026-10-06",
+  "generatedAt": "2026-10-07T04:27:08.734Z",
+  "today": "2026-10-07",
   "expectedTotal": 9,
   "verifiedCount": 41,
-  "unverifiedCount": 3,
+  "unverifiedCount": 4,
   "monitorCount": 1,
   "coveredOfficial": 8,
   "coveredThirdparty": 4,
@@ -23,9 +23,9 @@
       "high": 3,
       "medium": 0,
       "low": 0,
-      "unverified": 0,
+      "unverified": 1,
       "human": 3,
-      "total": 3
+      "total": 4
     },
     "中国科学技术大学": {
       "high": 3,
@@ -90,6 +90,14 @@
       "title": "“海量职位，乘风而来”Job One 网络招聘会前程无忧线上双选会 中国科学技术大学专属求职活动 2025-09-12",
       "date": "2025-09-12",
       "url": "https://www.job.ustc.edu.cn/famousRecommand/info.aspx?itemid=11259",
+      "confidence": "unverified",
+      "reason": "待核实·自动爬取候选，待人工确认"
+    },
+    {
+      "school": "清华大学",
+      "title": "2026届毕业生生物医药大健康专场招聘会顺利举行",
+      "date": "2025-10-30",
+      "url": "https://career.tsinghua.edu.cn/info/1032/5246.htm",
       "confidence": "unverified",
       "reason": "待核实·自动爬取候选，待人工确认"
     },

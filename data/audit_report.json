@@ -1,15 +1,13 @@
 {
-  "generatedAt": "2026-10-08T04:38:00.394Z",
-  "today": "2026-10-08",
+  "generatedAt": "2026-10-09T04:42:51.345Z",
+  "today": "2026-10-09",
   "expectedTotal": 9,
-  "verifiedCount": 41,
+  "verifiedCount": 42,
   "unverifiedCount": 4,
-  "monitorCount": 1,
-  "coveredOfficial": 8,
+  "monitorCount": 0,
+  "coveredOfficial": 9,
   "coveredThirdparty": 4,
-  "missingSchools": [
-    "浙江大学"
-  ],
+  "missingSchools": [],
   "bySchool": {
     "哈尔滨工业大学": {
       "high": 11,
@@ -76,11 +74,11 @@
       "total": 3
     },
     "浙江大学": {
-      "high": 0,
+      "high": 1,
       "medium": 0,
       "low": 0,
-      "unverified": 1,
-      "human": 0,
+      "unverified": 0,
+      "human": 1,
       "total": 1
     }
   },

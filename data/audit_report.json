@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-10T04:27:26.128Z",
-  "today": "2026-10-10",
+  "generatedAt": "2026-10-11T04:09:51.291Z",
+  "today": "2026-10-11",
   "expectedTotal": 9,
-  "verifiedCount": 43,
-  "unverifiedCount": 4,
+  "verifiedCount": 42,
+  "unverifiedCount": 5,
   "monitorCount": 0,
   "coveredOfficial": 9,
   "coveredThirdparty": 4,
@@ -18,9 +18,9 @@
       "total": 11
     },
     "清华大学": {
-      "high": 3,
+      "high": 2,
       "medium": 0,
-      "low": 0,
+      "low": 1,
       "unverified": 1,
       "human": 3,
       "total": 4
@@ -174,6 +174,12 @@
     }
   ],
   "linkAnomalies": [],
-  "drift": [],
+  "drift": [
+    {
+      "school": "清华大学",
+      "title": "2026年秋季全国博士、博士后高层次人才巡回签约洽谈会·清华大学站（高博·新质引擎）",
+      "url": "https://career.cic.tsinghua.edu.cn/xsglxt/f/jyxt/anony/showZwxx?zpxxid=558338298"
+    }
+  ],
   "humanApplied": 0
 }

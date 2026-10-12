@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-11T04:09:51.291Z",
-  "today": "2026-10-11",
+  "generatedAt": "2026-10-12T04:27:33.623Z",
+  "today": "2026-10-12",
   "expectedTotal": 9,
   "verifiedCount": 42,
   "unverifiedCount": 5,
@@ -174,12 +174,6 @@
     }
   ],
   "linkAnomalies": [],
-  "drift": [
-    {
-      "school": "清华大学",
-      "title": "2026年秋季全国博士、博士后高层次人才巡回签约洽谈会·清华大学站（高博·新质引擎）",
-      "url": "https://career.cic.tsinghua.edu.cn/xsglxt/f/jyxt/anony/showZwxx?zpxxid=558338298"
-    }
-  ],
+  "drift": [],
   "humanApplied": 0
 }

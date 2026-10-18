@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-18T03:09:05.359Z",
+  "updated": "2026-10-18T16:04:09.987Z",
   "today": "2026-10-18",
   "records": [
     {
@@ -70,7 +70,7 @@
       "verified": true,
       "note": "",
       "last_checked": "2026-10-18",
-      "bot_status": "blocked",
+      "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
       "evidence": "来源：北京高校大学生就业创业指导中心 官方详情页（jobs.bjbys.net.cn）｜“京彩就业”北京大学2027届毕业生专场双选会（央国企·事业单位专场）：双选会时间 2026年10月22日 14:00-16:30，地点 北京大学邱德拔体育馆北二层",
@@ -96,7 +96,7 @@
       "verified": true,
       "note": "",
       "last_checked": "2026-10-18",
-      "bot_status": "blocked",
+      "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high"
     },
@@ -580,7 +580,7 @@
       "verified": true,
       "verified_by": "human",
       "confidence": "high",
-      "bot_status": "unreachable",
+      "bot_status": "alive",
       "last_checked": "2026-10-18",
       "organizer": "复旦大学学生就业指导中心",
       "evidence": "来源：复旦大学官方招聘会邀请函（引自上海校园招聘会汇总页 021zhaopinhui.cn）｜复旦大学2027届毕业生秋季招聘会-综合场：时间 2026年10月21日 09:00-12:00，地址 复旦大学邯郸路校区（杨浦区邯郸路220号）",
@@ -956,7 +956,7 @@
       "monitoring": false,
       "verified": true,
       "last_checked": "2026-10-18",
-      "bot_status": "unreachable",
+      "bot_status": "alive",
       "verified_by": "human",
       "confidence": "high",
       "evidence": "来源：上海校园招聘会汇总信息｜百万英才汇南粤 2026年N城联动秋季招聘活动（复旦大学专场）：10月22日，地点以官方最终通知为准；复旦就业网SPA，日期待最终确认",
@@ -1279,7 +1279,7 @@
     }
   ],
   "audit": {
-    "generatedAt": "2026-10-18T03:09:05.359Z",
+    "generatedAt": "2026-10-18T16:04:09.987Z",
     "drift": [],
     "humanApplied": 0,
     "deadCount": 0,

@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-15T05:04:03.161Z",
-  "today": "2026-11-15",
+  "generatedAt": "2026-11-16T04:52:57.117Z",
+  "today": "2026-11-16",
   "expectedTotal": 9,
-  "verifiedCount": 51,
+  "verifiedCount": 52,
   "unverifiedCount": 6,
   "monitorCount": 0,
   "coveredOfficial": 9,
@@ -74,12 +74,12 @@
       "total": 3
     },
     "浙江大学": {
-      "high": 10,
+      "high": 11,
       "medium": 0,
       "low": 0,
       "unverified": 0,
-      "human": 10,
-      "total": 10
+      "human": 11,
+      "total": 11
     }
   },
   "needsConfirm": [
